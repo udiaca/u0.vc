@@ -15,7 +15,11 @@ const { title } = Astro.props.frontmatter || Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <script defer data-domain="u0.vc" src="https://plausible.io/js/plausible.js"
+    <script
+      defer
+      data-domain="u0.vc"
+      data-api="https://billowing-band-8e70.udia.workers.dev/api/event"
+      src="https://billowing-band-8e70.udia.workers.dev/js/script.js"
     ></script>
     <title>{title}</title>
   </head>
