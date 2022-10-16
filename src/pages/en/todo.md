@@ -3,14 +3,16 @@ layout: ../../layouts/MarkdownLayout.astro
 title: "To-Do"
 ---
 
-This app/blog/writing exercise would like to explore:
+This app/blog/writing exercise would like to explore, in no particular order:
 
 - [Analytics, Tracking, and GDPR]()
 - [Running SQLite in the browser on Cloudflare Pages]()
+  - [An every-languages dictionary on a static site for free!]()
 - [Authentication, from "Scratch"!]()
 - [Square, and Other Payment Processors]()
 - [Localization? i18n? Country, Region, Reason, and Language Codes]()
-- [Interactive Storytelling/Ads Cannibalizing Ads]()
+- [AdSense or AdBlock, a Dive into the Ad Networks and Blocking]()
+  - [Interactive Storytelling/Ads Cannibalizing Ads]()
 
 # Links
 
