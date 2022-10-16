@@ -1,0 +1,8 @@
+---
+const data = JSON.stringify(Astro, undefined, 2);
+Astro.response.status = 404;
+Astro.response.statusText = "Not Found";
+---
+
+<h1>Not Found</h1>
+<pre><code>{data}</code></pre>
