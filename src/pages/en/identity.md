@@ -30,6 +30,8 @@ This website should also be [entertaining](https://en.wikipedia.org/wiki/Enterta
 
 If you are interested in following along, or getting notified whenever something changes, feel free to `star` or `watch` [this repository on GitHub](https://github.com/udiaca/u0.vc).
 
+I aim to be as transparent as possible throughout the [creative process](https://www.youtube.com/watch?v=LqwEfZm9-nw).
+
 # Links
 
 [/en/UDIA](/en/)
