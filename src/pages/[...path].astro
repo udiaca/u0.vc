@@ -1,0 +1,36 @@
+---
+import { bestMatch } from "@udia/mime-parser";
+import { languageTags } from "../i18n/languages";
+
+const acceptLanguage = Astro.request.headers.get("accept-language");
+let language = "en";
+if (acceptLanguage) {
+  language = bestMatch(languageTags, acceptLanguage) || "en";
+}
+const { path } = Astro.params;
+const langPath = `/${language}/${path}`;
+const pages = await Astro.glob("./**/*.md");
+const urls = pages.map((page) => page.url);
+
+let redirectTo = null;
+if (urls.includes(langPath)) {
+  redirectTo = langPath;
+}
+
+const data = JSON.stringify(Astro, undefined, 2);
+if (redirectTo === null) {
+  Astro.response.status = 404;
+  Astro.response.statusText = "Not Found";
+}
+---
+
+{
+  redirectTo ? (
+    <meta http-equiv="refresh" content={`0;url=${redirectTo}`} />
+  ) : (
+    <>
+      <h1>Not Found</h1>
+      <pre><code>{data}</code></pre>
+    </>
+  )
+}

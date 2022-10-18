@@ -1,0 +1,15 @@
+---
+import { languageTags } from "../i18n/languages";
+import { bestMatch } from "@udia/mime-parser";
+
+const acceptLanguage = Astro.request.headers.get("accept-language");
+
+let language = "en";
+if (acceptLanguage) {
+  language = bestMatch(languageTags, acceptLanguage) || "en";
+}
+
+const { path } = Astro.params;
+---
+
+<meta http-equiv="refresh" content={`0;url=/${language}/${path}`} />

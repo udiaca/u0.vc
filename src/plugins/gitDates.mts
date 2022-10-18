@@ -8,7 +8,6 @@ import * as child from "node:child_process";
  * @returns {string} ISO 8601 commit timestamp for first commit or empty string
  */
 function publishDateTime(mdPath: string) {
-  console.log(mdPath);
   try {
     return child
       .execFileSync(

@@ -10,5 +10,5 @@ export default defineConfig({
     remarkPlugins: [gitDatesPlugin],
     drafts: true,
   },
-  adapter: cloudflare()
+  adapter: cloudflare({ mode: "directory" })
 });
