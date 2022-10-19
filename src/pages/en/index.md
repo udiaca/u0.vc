@@ -6,6 +6,7 @@ title: "U0"
 Everything app
 
 - [ ] Do you get it?
+- [Now Clock](/now)
 - [x] TODO: Haven't built this out yet
 
 # Links

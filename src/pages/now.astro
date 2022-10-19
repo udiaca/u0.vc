@@ -1,0 +1,17 @@
+---
+import Time from "../components/Time.svelte";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// en-CA,en-US;q=0.7,en;q=0.3
+const acceptLanguage = Astro.request.headers.get("accept-language") || "";
+// [ 'en-CA', 'en-US;q=0.7', 'en;q=0.3' ]
+const acceptLanguages = acceptLanguage.split(",");
+// [ 'en-CA', 'en-US', 'en' ]
+const defaultLanguages = acceptLanguages.map(
+  (rawLang) => rawLang.split(";")[0]
+);
+---
+
+<BaseLayout>
+  <Time defaultLocales={defaultLanguages} client:load />
+</BaseLayout>

@@ -20,10 +20,13 @@ npm run dev
 | `npm run preview`      | Preview your build locally, before deploying       |
 | `npm run astro ...`    | Run CLI commands like `astro add`, `astro preview` |
 | `npm run astro --help` | Get help using the Astro CLI                       |
+| `npm run deploy`       | Manually deploy to Cloudflare Pages (skip CI)      |
 
 # Deployment
 
 This site will automatically deploy to [`u0.vc`](https://u0.vc) on pushes the [`main` branch](https://github.com/udiaca/u0.vc/tree/main) of [the GitHub remote](https://github.com/udiaca/u0.vc).
+
+Alternatively, a manual deploy may be triggered by running `npm run deploy`.
 
 We use [Cloudflare Pages](https://pages.cloudflare.com/)'s product offering to deploy to the edge network. There are currently no actively managed servers.
 
