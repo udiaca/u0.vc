@@ -1,23 +1,26 @@
 <script lang='ts'>
-export let understanding:string = ""
+import { understanding } from '../../utils/stores';
+
+let understandingValue: string;
+understanding.subscribe(value => understandingValue = value)
 </script>
 
-{#if understanding === 'UDIA'}
+{#if understandingValue === 'UDIA'}
   <p>UDIA</p>
-{:else if understanding === 'UDIa'}
+{:else if understandingValue === 'UDIa'}
   <p><a href="/author">/author</a></p>
-{:else if understanding === 'UDiA'}
+{:else if understandingValue === 'UDiA'}
   <!-- make this more fun, go to another thing -->
   <p>Congratuations, you've understood!</p>
-{:else if understanding === 'UdIA'}
+{:else if understandingValue === 'UdIA'}
   <p><a href="/identity">/identity</a></p>
-{:else if understanding === 'uDIA'}
+{:else if understandingValue === 'uDIA'}
   <p><a href="/">/udia</a></p>
-{:else if understanding === 'udia'}
+{:else if understandingValue === 'udia'}
   <h3>Only select <strong>1</strong></h3>
-{:else if understanding.toUpperCase() === 'UDIA'}
-  <code>TODO: not implemented yet</code>
-{:else if understanding}
+{:else if understandingValue.toUpperCase() === 'UDIA'}
+  <p><code>TODO: not implemented yet</code></p>
+{:else if understandingValue}
   <p>Not quite...</p>
 {/if}
-<input bind:value={understanding} />
+<input bind:value={$understanding} size=4 maxlength=4 />

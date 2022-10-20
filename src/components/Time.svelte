@@ -192,7 +192,7 @@
       transition-duration: 4s;
     }
     a#go-back:hover {
-      font-size: 1em;
+      font-size: 1px;
     }
   </style>
 </div>

@@ -1,4 +1,5 @@
 ---
+import UDIA from "../../../components/story/UDIA.svelte";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import UnderstandImagine from "../../../components/story/UnderstandImagine.svelte";
 ---
@@ -6,38 +7,7 @@ import UnderstandImagine from "../../../components/story/UnderstandImagine.svelt
 <BaseLayout>
   <h2>Imagine you are writing a short story,</h2><br />
   but you're only allowed to talk to yourself.
-
-  <dl>
-    <dt>U</dt><dd>niverse</dd>
-    <dt>D</dt><dd>ream</dd>
-    <dt>I</dt><dd>You</dd>
-    <dt>A</dt><dd>wareness</dd>
-  </dl>
-
+  <UDIA client:load />
   Do you understand?
   <UnderstandImagine client:load />
-  <style>
-    dl {
-      display: flex;
-      flex-wrap: wrap;
-    }
-    dt {
-      font-size: 10vh;
-      transition-property: font-size;
-      transition-duration: 4s;
-      text-align: right;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    dt:hover {
-      font-size: 1em;
-    }
-    dd {
-      margin-left: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-  </style>
 </BaseLayout>
