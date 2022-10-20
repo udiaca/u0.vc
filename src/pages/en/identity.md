@@ -19,7 +19,7 @@ My domain name was purchased by [Alex][alex] through [Gandi.net](https://www.gan
 
 I am using the GDPR friendly analytics tool/SaaS offering [Plausible](https://plausible.io).
 
-- [See the full website statistics here!](https://plausible.io/u0.vc)
+- [See the full website statistics here!](/analytics)
 - [We apply a proxy through CloudFlare Workers](https://plausible.io/docs/proxy/guides/cloudflare).
 
 All unmodified source code can be found within [GitHub](https://github.com/udiaca/u0.vc).

@@ -17,6 +17,7 @@ understanding.subscribe(value => understandingValue = value)
   dl {
     display: flex;
     flex-wrap: wrap;
+    cursor: pointer;
   }
   dt {
     font-size: 10vh;

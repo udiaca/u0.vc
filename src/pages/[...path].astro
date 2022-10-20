@@ -9,7 +9,7 @@ if (acceptLanguage) {
 }
 const { path } = Astro.params;
 const langPath = `/${language}/${path}`;
-const pages = await Astro.glob("./**/*.md");
+const pages = await Astro.glob("./**/*");
 const urls = pages.map((page) => page.url);
 
 let redirectTo = null;
@@ -30,7 +30,9 @@ if (redirectTo === null) {
   ) : (
     <>
       <h1>Not Found</h1>
-      <pre><code>{data}</code></pre>
+      <pre>
+        <code>{data}</code>
+      </pre>
     </>
   )
 }

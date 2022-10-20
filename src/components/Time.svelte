@@ -95,104 +95,102 @@
   <pre><code>{error}</code></pre>
   {/if}
 </div>
-<div>
-  <details>
-    <summary>Configuration</summary>
-    <label for="locale">Locale:</label><br>
+<details>
+  <summary>Configuration</summary>
+  <label for="locale">Locale:</label><br>
+  <input
+    type="text"
+    id="locale"
+    name="locale"
+    bind:value={locale}
+    placeholder={localePlaceholder}
+  /><br>
+
+  <label for="dateStyle">Date Style:</label><br>
+  <select name="dateStyle" bind:value={dateStyle}>
+    {#each dateTimeStyleOptions as dateTimeStyleOption}
+      <option value={dateTimeStyleOption.id}>
+        {dateTimeStyleOption.text}
+      </option>
+    {/each}
+  </select><br>
+
+  <label for="timeStyle">Time Style:</label><br>
+  <select name="timeStyle" bind:value={timeStyle}>
+    {#each dateTimeStyleOptions as dateTimeStyleOption}
+      <option value={dateTimeStyleOption.id}>
+        {dateTimeStyleOption.text}
+      </option>
+    {/each}
+  </select><br>
+
+  <label for="calendar">Calendar:</label><br>
+  {#if calendarOptions.length === 0}
     <input
       type="text"
-      id="locale"
-      name="locale"
-      bind:value={locale}
-      placeholder={localePlaceholder}
-    /><br>
-
-    <label for="dateStyle">Date Style:</label><br>
-    <select name="dateStyle" bind:value={dateStyle}>
-      {#each dateTimeStyleOptions as dateTimeStyleOption}
-        <option value={dateTimeStyleOption.id}>
-          {dateTimeStyleOption.text}
+      id="calendar"
+      name="calendar"
+      bind:value={calendar}
+    />
+  {:else}
+    <select name="calendar" bind:value={calendar}>
+      {#each calendarOptions as calendarOption}
+        <option value={calendarOption.id}>
+          {calendarOption.text}
         </option>
       {/each}
-    </select><br>
-
-    <label for="timeStyle">Time Style:</label><br>
-    <select name="timeStyle" bind:value={timeStyle}>
-      {#each dateTimeStyleOptions as dateTimeStyleOption}
-        <option value={dateTimeStyleOption.id}>
-          {dateTimeStyleOption.text}
-        </option>
-      {/each}
-    </select><br>
-
-    <label for="calendar">Calendar:</label><br>
-    {#if calendarOptions.length === 0}
-      <input
-        type="text"
-        id="calendar"
-        name="calendar"
-        bind:value={calendar}
-      />
-    {:else}
-      <select name="calendar" bind:value={calendar}>
-        {#each calendarOptions as calendarOption}
-          <option value={calendarOption.id}>
-            {calendarOption.text}
-          </option>
-        {/each}
-      </select>
-    {/if}
-    <br>
-
-    <label for="numberingSystem">Numbering System:</label><br>
-    {#if numberingSystemChoices.length === 0}
-      <input
-        type="text"
-        id="numberingSystem"
-        name="numberingSystem"
-        bind:value={numberingSystem}
-      />
-    {:else}
-      <select name="numberingSystem" bind:value={numberingSystem}>
-        {#each numberingSystemOptions as numberingSystemOption}
-          <option value={numberingSystemOption.id}>
-            {numberingSystemOption.text}
-          </option>
-        {/each}
-      </select>
-    {/if}
-    <br>
-
-    <label for="timeZone">Time Zone:</label><br>
-    {#if timeZoneChoices.length === 0}
-      <input
-        type="text"
-        id="timeZone"
-        name="timeZone"
-        bind:value={timeZone}
-      />
-    {:else}
-      <select name="timeZone" bind:value={timeZone}>
-        {#each timeZoneChoices as timeZoneChoice}
-          <option value={timeZoneChoice}>
-            {timeZoneChoice}
-          </option>
-        {/each}
-      </select>
-    {/if}
-    <br>
-  </details>
-  {#if showGoBack}
-  <a id="go-back" href="/">Go Back</a>
+    </select>
   {/if}
-  <style>
-    a#go-back {
-      font-size: 10vh;
-      transition-property: font-size;
-      transition-duration: 4s;
-    }
-    a#go-back:hover {
-      font-size: 1px;
-    }
-  </style>
-</div>
+  <br>
+
+  <label for="numberingSystem">Numbering System:</label><br>
+  {#if numberingSystemChoices.length === 0}
+    <input
+      type="text"
+      id="numberingSystem"
+      name="numberingSystem"
+      bind:value={numberingSystem}
+    />
+  {:else}
+    <select name="numberingSystem" bind:value={numberingSystem}>
+      {#each numberingSystemOptions as numberingSystemOption}
+        <option value={numberingSystemOption.id}>
+          {numberingSystemOption.text}
+        </option>
+      {/each}
+    </select>
+  {/if}
+  <br>
+
+  <label for="timeZone">Time Zone:</label><br>
+  {#if timeZoneChoices.length === 0}
+    <input
+      type="text"
+      id="timeZone"
+      name="timeZone"
+      bind:value={timeZone}
+    />
+  {:else}
+    <select name="timeZone" bind:value={timeZone}>
+      {#each timeZoneChoices as timeZoneChoice}
+        <option value={timeZoneChoice}>
+          {timeZoneChoice}
+        </option>
+      {/each}
+    </select>
+  {/if}
+  <br>
+</details>
+{#if showGoBack}
+<a id="go-back" href="/">Go Back</a>
+{/if}
+<style>
+  a#go-back {
+    font-size: 10vh;
+    transition-property: font-size;
+    transition-duration: 4s;
+  }
+  a#go-back:hover {
+    font-size: 1px;
+  }
+</style>
