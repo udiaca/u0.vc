@@ -16,3 +16,5 @@ The corporate entity that I choose was the [Sole Proprietor](https://www.canada.
 - This entity will be owned by one individual (myself) and I assume all risks of this business.
 
 The business registration was completed on `October 18, 2022`.
+
+TODO: Business bank accounts/credit. Consolidate all recurring UDIA expenses and track openly.
