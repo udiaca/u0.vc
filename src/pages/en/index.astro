@@ -1,7 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-
-let getIt = false;
 ---
 
 <BaseLayout>
@@ -9,10 +7,11 @@ let getIt = false;
 
   <ul>
     <!-- TODO, fix this, use counter, make more interesting -->
-    <li><input type="checkbox" checked={getIt} /> Do you get it?</li>
-    {getIt && <li>Want to try story mode?</li>}
+    <li id="getItListItem">
+      <input id="getIt" type="checkbox" /> Do you get it?
+    </li>
     <!-- TODO: gotta update locale redirect to support nesting -->
-    <li><a href="/en/story/imagine">Try Story Mode</a></li>
+    <li id="outputListItem"></li>
     <li><a href="/now">Now</a></li>
     <li>
       <input type="checkbox" checked={true} disabled={true} />
@@ -26,4 +25,23 @@ let getIt = false;
     <a href="/identity">/Identity</a>
     <a href="/author">/Author</a>
   </div>
+  <script>
+    let checkbox = document.getElementById("getIt") as HTMLInputElement;
+    let output = document.getElementById("outputListItem") as HTMLElement;
+    checkbox.addEventListener("change", () => {
+      while (output.firstChild) {
+        output.removeChild(output.firstChild);
+      }
+      if (checkbox.checked) {
+        const anchor = document.createElement("a");
+        anchor.setAttribute("href", "/en/story/imagine");
+        anchor.textContent = "Try Story Mode";
+        output.appendChild(anchor);
+      } else {
+        output.textContent = "...";
+      }
+    });
+    checkbox.checked; // it returns Boolean value
+    console.log("foo");
+  </script>
 </BaseLayout>
