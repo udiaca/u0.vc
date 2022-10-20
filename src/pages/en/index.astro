@@ -8,7 +8,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   <ul>
     <!-- TODO, fix this, use counter, make more interesting -->
     <li id="getItListItem">
-      <input id="getIt" type="checkbox" /> Do you get it?
+      <input id="getIt" type="checkbox" checked={false} />
+      <label for="getIt">Do you get it?</label>
     </li>
     <!-- TODO: gotta update locale redirect to support nesting -->
     <li id="outputListItem"></li>
@@ -28,20 +29,26 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   <script>
     let checkbox = document.getElementById("getIt") as HTMLInputElement;
     let output = document.getElementById("outputListItem") as HTMLElement;
-    checkbox.addEventListener("change", () => {
-      while (output.firstChild) {
-        output.removeChild(output.firstChild);
-      }
-      if (checkbox.checked) {
-        const anchor = document.createElement("a");
-        anchor.setAttribute("href", "/en/story/imagine");
-        anchor.textContent = "Try Story Mode";
-        output.appendChild(anchor);
-      } else {
-        output.textContent = "...";
-      }
-    });
-    checkbox.checked; // it returns Boolean value
-    console.log("foo");
+
+    const sideEffectWrapper = (notCheckedContent = "...") => {
+      const sideEffect = () => {
+        while (output.firstChild) {
+          output.removeChild(output.firstChild);
+        }
+        if (checkbox.checked) {
+          const anchor = document.createElement("a");
+          anchor.setAttribute("href", "/en/story/imagine");
+          anchor.textContent = "Try Story Mode";
+          output.appendChild(anchor);
+        } else {
+          output.textContent = notCheckedContent;
+        }
+      };
+      return sideEffect;
+    };
+
+    checkbox.addEventListener("change", sideEffectWrapper());
+    sideEffectWrapper("")();
   </script>
+  <style></style>
 </BaseLayout>

@@ -5,6 +5,8 @@ title: "Identity"
 
 [I am UDIA, the identity.](/)
 
+I am an `attention` idle game.
+
 ## More Technical
 
 I am a website running on the [Astro web framework](https://astro.build/).
