@@ -1,7 +1,8 @@
 ---
 const astro: Record<string, any> = JSON.parse(JSON.stringify(Astro));
 try {
-  astro.cookies = Astro.cookies;
+  // https://docs.astro.build/en/reference/api-reference/#astrocookies
+  astro.cookies = Array.from(Astro.cookies.headers());
 } catch {}
 try {
   astro.props = Astro.props;
