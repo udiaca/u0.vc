@@ -1,0 +1,85 @@
+---
+---
+
+<div id="menu">
+  <code>
+    <a href="/" class="menu-link">/Udia</a>
+  </code>
+  <code>
+    <a href="/todo" class="menu-link">/to-Do</a>
+  </code>
+  <code>
+    <a href="/identity" class="menu-link">/Identity</a>
+  </code>
+  <code>
+    <a href="/author" class="menu-link">/Author</a>
+  </code>
+</div>
+<div id="menu-background"></div>
+
+<style>
+  #menu {
+    display: flex;
+    justify-content: space-between;
+    min-width: 50vw;
+  }
+
+  .menu-link {
+    text-decoration: none;
+    z-index: 1;
+  }
+
+  #menu:hover .menu-link {
+    opacity: 0.3;
+  }
+
+  #menu:hover .menu-link:hover {
+    opacity: 1;
+  }
+
+  #menu-background {
+    height: 100vh;
+    width: 100vw;
+
+    background-image: radial-gradient(#ffffff 1%, transparent 9%);
+    background-position: 0% 0%;
+    background-size: 12vmin 12vmin;
+
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+
+    transition: background-color 800ms ease, opacity 800ms ease,
+      background-size 800ms ease, background-position 800ms ease;
+  }
+
+  #menu:hover ~ #menu-background {
+    background-color: #663399;
+    background-size: 11vmin 11vmin;
+    opacity: 0.5;
+  }
+
+  #menu[data-active-index="0"] ~ #menu-background {
+    background-position: -100 0% %;
+  }
+  #menu[data-active-index="1"] ~ #menu-background {
+    background-position: -25% 0%;
+  }
+  #menu[data-active-index="2"] ~ #menu-background {
+    background-position: -50% 0%;
+  }
+  #menu[data-active-index="3"] ~ #menu-background {
+    background-position: -75% 0%;
+  }
+</style>
+<script>
+  const menu = document.getElementById("menu") as HTMLElement;
+  Array.from(document.getElementsByClassName("menu-link")).forEach(
+    (item, index) => {
+      item.addEventListener("mouseover", () => {
+        menu.dataset.activeIndex = index.toString();
+      });
+    }
+  );
+</script>

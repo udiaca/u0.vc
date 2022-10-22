@@ -1,0 +1,23 @@
+---
+const astro: Record<string, any> = JSON.parse(JSON.stringify(Astro));
+try {
+  astro.cookies = Astro.cookies;
+} catch {}
+try {
+  astro.props = Astro.props;
+} catch {}
+---
+
+<details>
+  <summary><code>meta</code></summary>
+  <code>
+    <pre>{JSON.stringify(astro, undefined, 2)}</pre>
+  </code>
+</details>
+<style>
+  pre {
+    max-width: 100vw;
+    overflow-x: auto;
+    border: 1px dashed rebeccapurple;
+  }
+</style>

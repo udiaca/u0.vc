@@ -13,9 +13,3 @@ This app/blog/writing exercise would like to explore, in no particular order:
 - [Localization? i18n? Country, Region, Reason, and Language Codes]()
 - [AdSense or AdBlock, a Dive into the Ad Networks and Blocking]()
   - [Interactive Storytelling/Ads Cannibalizing Ads]()
-
-# Links
-
-[/en/UDIA](/en/)
-[/en/Identity](/en/identity)
-[/en/Author](/en/author)

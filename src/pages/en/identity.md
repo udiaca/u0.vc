@@ -36,10 +36,4 @@ If you are interested in following along, or getting notified whenever something
 
 I aim to be as transparent as possible throughout the [creative process](https://www.youtube.com/watch?v=LqwEfZm9-nw).
 
-# Links
-
-[/en/UDIA](/en/)
-[/en/to-Do](/en/todo)
-[/en/Author](/en/author)
-
 [alex]: https://udia.ca/about

@@ -8,9 +8,10 @@
     "dev:wrangler": "wrangler pages dev ./dist --proxy 3000",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "wrangler pages dev ./dist",
+    "preview": "astro build && wrangler pages dev ./dist",
     "astro": "astro",
-    "deploy": "wrangler pages publish dist --project-name u0-vc"
+    "deploy": "wrangler pages publish dist --project-name u0-vc",
+    "test": "astro check"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^3.1.0",

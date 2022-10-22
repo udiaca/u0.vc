@@ -21,6 +21,7 @@ npm run dev
 | `npm run astro ...`    | Run CLI commands like `astro add`, `astro preview` |
 | `npm run astro --help` | Get help using the Astro CLI                       |
 | `npm run deploy`       | Manually deploy to Cloudflare Pages (skip CI)      |
+| `npm run test`         | Run astro check                                    |
 
 # Deployment
 

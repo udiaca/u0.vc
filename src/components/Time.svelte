@@ -12,7 +12,7 @@
   }
   const supportedValuesOf = (input: string) => {
     try {
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf
+      // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf
       if (typeof (Intl as any).supportedValuesOf !== 'undefined') {
         return (Intl as any).supportedValuesOf(input);
       }
@@ -96,8 +96,24 @@
   {/if}
 </div>
 <details>
-  <summary>Configuration</summary>
-  <label for="locale">Locale:</label><br>
+  <summary>
+    <code>
+      <a
+        href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options"
+        target="_blank"
+        rel="noreferrer"
+      >
+      Intl.DateTimeFormat options
+      </a>
+    </code>
+  </summary>
+  <label for="locale">
+    <code>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#locales">
+        locale
+      </a>:
+    </code>
+  </label><br>
   <input
     type="text"
     id="locale"
@@ -106,7 +122,13 @@
     placeholder={localePlaceholder}
   /><br>
 
-  <label for="dateStyle">Date Style:</label><br>
+  <label for="dateStyle">
+    <code>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#datestyle">
+        dateStyle
+      </a>:
+    </code>
+  </label><br>
   <select name="dateStyle" bind:value={dateStyle}>
     {#each dateTimeStyleOptions as dateTimeStyleOption}
       <option value={dateTimeStyleOption.id}>
@@ -115,7 +137,13 @@
     {/each}
   </select><br>
 
-  <label for="timeStyle">Time Style:</label><br>
+  <label for="timeStyle">
+    <code>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timestyle">
+        timeStyle
+      </a>:
+    </code>
+  </label><br>
   <select name="timeStyle" bind:value={timeStyle}>
     {#each dateTimeStyleOptions as dateTimeStyleOption}
       <option value={dateTimeStyleOption.id}>
@@ -124,7 +152,13 @@
     {/each}
   </select><br>
 
-  <label for="calendar">Calendar:</label><br>
+  <label for="calendar">
+    <code>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#calendar">
+        calendar
+      </a>:
+    </code>
+  </label><br>
   {#if calendarOptions.length === 0}
     <input
       type="text"
@@ -143,7 +177,13 @@
   {/if}
   <br>
 
-  <label for="numberingSystem">Numbering System:</label><br>
+  <label for="numberingSystem">
+    <code>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#numberingsystem">
+        numberingSystem
+      </a>:
+    </code>
+  </label><br>
   {#if numberingSystemChoices.length === 0}
     <input
       type="text"
@@ -162,7 +202,13 @@
   {/if}
   <br>
 
-  <label for="timeZone">Time Zone:</label><br>
+  <label for="timeZone">
+    <code>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timezone">
+        timeZone
+      </a>:
+    </code>
+  </label><br>
   {#if timeZoneChoices.length === 0}
     <input
       type="text"

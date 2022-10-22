@@ -1,4 +1,6 @@
 ---
+import MainLinks from "../components/MainLinks.astro";
+import Meta from "../components/Meta.astro";
 import GlobalStyles from "./GlobalStyles.astro";
 
 export interface Props {
@@ -20,6 +22,8 @@ const { title } = Astro.props.frontmatter || Astro.props;
   </head>
   <body>
     <slot />
+    <MainLinks />
+    <Meta />
     <GlobalStyles />
     <noscript
       ><code>Javascript is disabled in your web browser.</code>
