@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "dev:wrangler": "wrangler pages dev ./dist --proxy 3000",
+    "dev:wrangler": "wrangler pages dev --proxy 3000 -- npx astro dev",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro build && wrangler pages dev ./dist",

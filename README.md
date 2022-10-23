@@ -31,6 +31,13 @@ Alternatively, a manual deploy may be triggered by running `npm run deploy`.
 
 We use [Cloudflare Pages](https://pages.cloudflare.com/)'s product offering to deploy to the edge network. There are currently no actively managed servers.
 
+# Environment Variables
+
+| Name                   | Description          |
+| ---------------------- | -------------------- |
+| `GITHUB_CLIENT_ID`     | OAuth2 Client ID     |
+| `GITHUB_CLIENT_SECRET` | OAuth2 Client Secret |
+
 # License
 
 [GNU Affero General Public License version 3 (`AGPLv3`)](https://www.gnu.org/licenses/agpl-3.0.html)

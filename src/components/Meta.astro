@@ -6,6 +6,12 @@ try {
 try {
   astro.props = Astro.props;
 } catch {}
+
+try {
+  astro.misc = {};
+  astro.misc.clientId = __GITHUB_CLIENT_ID;
+  astro.misc.Fragment = Fragment;
+} catch {}
 ---
 
 <details>

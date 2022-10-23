@@ -1,0 +1,9 @@
+---
+import Auth from "../../components/Auth.svelte";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+console.log(__GITHUB_CLIENT_ID);
+---
+
+<BaseLayout>
+  <Auth clientId={__GITHUB_CLIENT_ID} />
+</BaseLayout>
