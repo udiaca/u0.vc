@@ -1,9 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import everythingApp from "../../images/everythingApp.svg";
 ---
 
 <BaseLayout>
-  <p>Everything app</p>
+  <img width="120em" src={everythingApp} alt="Everything App" />
 
   <ul>
     <!-- TODO, fix this, use counter, make more interesting -->
@@ -16,7 +17,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <li><a href="/now">Now</a></li>
     <li>
       <input type="checkbox" checked={true} disabled={true} />
-      <code>TODO: Haven't built this out yet</code>
+      <a href="https://github.com/udiaca/u0.vc/issues/new/choose"
+        >TODO: Haven't built this out yet</a
+      ><code></code>
     </li>
   </ul>
 
