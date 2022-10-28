@@ -1,6 +1,3 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "exclude": [
-    "functions/**/*"
-  ],
+  "extends": "astro/tsconfigs/strict"
 }

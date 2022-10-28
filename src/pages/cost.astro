@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+interface Payment {
+  id: string; //"e8e60ed0e3b85691b3d4dbba143b040f";
+  type: string; //"invoice";
+  action: string; //"payment";
+  description: string; //"Payment";
+  occurred_at: string; //"2022-10-20T00:00:00Z";
+  amount: number; //5.25;
+  amount_to_pay: number; //0;
+  invoice_id: string; //"209608550";
+  receipt_id: string; //"CFUSA5492410";
+  status: string; //"CLOSED";
+}
+
+// this code relies on the cloudflare runtime to exist.
+const runtime = Reflect.get(Astro.request, Symbol.for("runtime"));
+const env = runtime.env;
+const readBillingToken = env.CLOUDFLARE_API_TOKEN_READ_BILLING;
+const endpoint = "https://api.cloudflare.com/client/v4/user/billing/history";
+
+const resp = await fetch(endpoint, {
+  headers: {
+    authorization: `Bearer ${readBillingToken}`,
+    "content-type": "application/json",
+  },
+});
+
+const body = await resp.json();
+
+const { result } = body;
+
+// en-CA,en-US;q=0.7,en;q=0.3
+const acceptLanguage: string =
+  Astro.request.headers.get("accept-language") || "";
+// [ 'en-CA', 'en-US;q=0.7', 'en;q=0.3' ]
+const acceptLanguages = acceptLanguage.split(",");
+// [ 'en-CA', 'en-US', 'en' ]
+const defaultLanguages = acceptLanguages.map(
+  (rawLang) => rawLang.split(";")[0]
+);
+
+const dtFormat = new Intl.DateTimeFormat(defaultLanguages);
+const numFormat = new Intl.NumberFormat(defaultLanguages, {
+  style: "currency",
+  currency: "USD",
+});
+---
+
+<BaseLayout>
+  <h1>Existence costs</h1>
+  <p>Incomplete... will update as needed</p>
+  <div>
+    <table>
+      <tr>
+        <th><a href="/now"></a></th>
+        <th><a href="/">UDIA</a></th>
+        <th><a href="/todo">DEPOSITS</a></th>
+        <th><a href="/identity">INTO</a></th>
+        <th><a href="/author">AMOUNT</a></th>
+        <th><a href="/en/story/imagine">STATUS</a></th>
+      </tr>
+      {
+        result.map((payment: Payment) => {
+          const occurredAt = new Date(payment.occurred_at);
+          const dispOccurredAt = dtFormat.format(occurredAt);
+
+          let amount = payment.amount;
+          let deposit = "\u2192";
+          if (payment.amount_to_pay > 0) {
+            deposit = `\u2026 ${deposit}`;
+            amount = payment.amount_to_pay;
+          }
+          const dispNumPaid = numFormat.format(payment.amount);
+          const status = payment.status;
+          return (
+            <tr>
+              <td>{dispOccurredAt}</td>
+              <td>
+                <a href="/author">UDIA</a>
+              </td>
+              <td>{deposit}</td>
+              <td>
+                <a href="https://cloudflare.com">cloudflare</a>
+              </td>
+              <td>{dispNumPaid}</td>
+              <td>{status}</td>
+            </tr>
+          );
+        })
+      }
+
+    </table>
+    <style>
+      th {
+        font-family: monospace;
+      }
+    </style>
+  </div>
+</BaseLayout>
