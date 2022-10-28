@@ -6,7 +6,7 @@
     <a href="/" class="menu-link">/Udia</a>
   </code>
   <code>
-    <a href="/todo" class="menu-link">/to-Do</a>
+    <a href="/todo" class="menu-link">/toDo</a>
   </code>
   <code>
     <a href="/identity" class="menu-link">/Identity</a>
@@ -22,6 +22,11 @@
     display: flex;
     justify-content: space-between;
     min-width: 50vw;
+  }
+  @media only screen and (max-width: 500px) {
+    #menu {
+      width: 90vw;
+    }
   }
 
   .menu-link {

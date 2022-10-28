@@ -1,4 +1,5 @@
 interface Env {
   GITHUB_CLIENT_ID: string;
   GITHUB_CLIENT_SECRET: string;
+  CLOUDFLARE_API_TOKEN_READ_BILLING: string;
 }

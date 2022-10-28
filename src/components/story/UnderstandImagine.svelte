@@ -10,10 +10,9 @@ understanding.subscribe(value => understandingValue = value)
 {:else if understandingValue === 'UDIa'}
   <p><a href="/author">/author</a></p>
 {:else if understandingValue === 'UDiA'}
-  <!-- make this more fun, go to another thing -->
-  <p>Congratuations, you've understood!</p>
-{:else if understandingValue === 'UdIA'}
   <p><a href="/identity">/identity</a></p>
+{:else if understandingValue === 'UdIA'}
+  <p><a href="/todo">/todo</a></p>
 {:else if understandingValue === 'uDIA'}
   <p><a href="/">/udia</a></p>
 {:else if understandingValue === 'udia'}
@@ -22,5 +21,7 @@ understanding.subscribe(value => understandingValue = value)
   <p><code>TODO: not implemented yet</code></p>
 {:else if understandingValue}
   <p>Not quite...</p>
+{:else}
+  <pre> </pre>
 {/if}
 <input bind:value={$understanding} size=4 maxlength=4 />
