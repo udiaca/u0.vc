@@ -22,6 +22,7 @@
     display: flex;
     justify-content: space-between;
     min-width: 50vw;
+    padding-bottom: 1rem;
   }
   @media only screen and (max-width: 500px) {
     #menu {
@@ -35,7 +36,7 @@
   }
 
   #menu:hover .menu-link {
-    opacity: 0.3;
+    opacity: 0.1;
   }
 
   #menu:hover .menu-link:hover {
@@ -46,7 +47,7 @@
     height: 100vh;
     width: 100vw;
 
-    background-image: radial-gradient(#ffffff 1%, transparent 9%);
+    background-image: radial-gradient(var(--background-color) 1%, transparent 9%);
     background-position: 0% 0%;
     background-size: 12vmin 12vmin;
 
@@ -62,7 +63,7 @@
   #menu:hover ~ #menu-background {
     background-color: #663399;
     background-size: 11vmin 11vmin;
-    opacity: 0.5;
+    opacity: 0.6;
   }
 
   #menu[data-active-index="0"] ~ #menu-background {

@@ -4,29 +4,87 @@ import NormalizeCSS from "./NormalizeCSS.astro";
 
 <NormalizeCSS />
 <style is:global>
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    justify-content: center;
-    align-items: center;
-  }
-  details {
-    cursor: pointer;
-  }
-  pre {
-    max-width: 100vw;
-    overflow-x: auto;
-    border: 1px dashed rebeccapurple;
-  }
+:root {
+}
 
-  noscript {
-    background-color: #ffffff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px dashed rebeccapurple;
-    margin: 0.5em;
-    padding: 0.1em;
+@media (prefers-color-scheme: light) {
+  :root {
+    --emph-color: #663399;
+    --background-color: #ffffff;
+    --mute-background-color: rgba(0, 0, 0, 0.1);
+    --color: #000000;
+
+    --link-color: #004089;
+    --link-visited-color: #;
   }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --emph-color: #C9AFE4;
+    --background-color: rgb(3, 5, 32);
+    --mute-background-color: rgba(3, 5, 32, 0.5);
+    --color: #ffffff;
+
+    --link-color: #74B5FF;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-color);
+  color: var(--color);
+}
+details {
+  cursor: pointer;
+}
+pre {
+  max-width: 100vw;
+  overflow-x: auto;
+  border: 1px dashed var(--emph-color);
+}
+
+a:visited {
+  color: var(--color);
+  opacity: 0.7;
+}
+a:link {
+  color: var(--link-color);
+  opacity: 0.7;
+}
+a:hover {
+  color: var(--link-color);
+  opacity: 1;
+}
+a:active {
+  color: var(--color);
+  opacity: 1;
+}
+a[href]:not(:where(
+  /* exclude hash only links */
+  [href^="#"],
+  /* exclude relative but not double slash only links */
+  [href^="/"]:not([href^="//"]),
+  /* domains to exclude */
+  [href*="//stackoverflow.com"],
+  /* subdomains to exclude */
+  [href*="//meta.stackoverflow.com"],
+)):after{
+  content: '\29c9';
+}
+
+noscript {
+  background-color: var(--background-color);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border: 1px dashed var(--emph-color);
+  margin: 0.5em;
+  padding: 0.1em;
+}
 </style>

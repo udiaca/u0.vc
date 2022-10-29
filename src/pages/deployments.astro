@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Deployments from "../components/Deployments.svelte";
+
+let result: CFPagesDeployment[] = [];
+try {
+  const runtime = Reflect.get(Astro.request, Symbol.for("runtime"));
+  const {
+    // Account.Cloudflare Pages Read
+    CLOUDFLARE_API_TOKEN_READ_PAGES: token,
+    CLOUDFLARE_API_ACCOUNT_ID: cfAccountId,
+    CLOUDFLARE_API_PROJECT_NAME: cfProjectName,
+  } = runtime.env;
+
+  const endpoint = `https://api.cloudflare.com/client/v4/accounts/${cfAccountId}/pages/projects/${cfProjectName}/deployments`;
+
+  const resp = await fetch(endpoint, {
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+  });
+
+  const body = await resp.json();
+  result = body.result.map((rawDeployment: CFPagesDeployment) => {
+    const {env_vars, ...deployment} = rawDeployment
+    return { ...deployment, env_vars: {}}
+  });
+} catch (err) {
+  console.error(err);
+}
+
+
+---
+<BaseLayout>
+  <h1>Deployments</h1>
+  <Deployments client:load deployments={result} />
+</BaseLayout>

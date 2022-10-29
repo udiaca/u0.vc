@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout>
@@ -10,19 +10,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     frameborder="0"
     loading="lazy"
     style="width: 1px; min-width: 100%;"></iframe>
-  <div style="font-size: 14px; padding-bottom: 14px;">
+  <div>
     Stats powered by <a
       target="_blank"
-      style="color: #4F46E5; text-decoration: underline;"
       href="https://plausible.io/u0.vc">Plausible Analytics</a
     >
   </div>
   <script async src="https://plausible.io/js/embed.host.js"></script>
-
-  <h1>Links</h1>
-  <div>
-    <a href="/todo">/to-Do</a>
-    <a href="/identity">/Identity</a>
-    <a href="/author">/Author</a>
-  </div>
 </BaseLayout>

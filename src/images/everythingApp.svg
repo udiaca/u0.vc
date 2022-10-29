@@ -1,9 +1,13 @@
-<svg version="1.1"
-     height="4.5em" width="6.5em"
-     xmlns="http://www.w3.org/2000/svg">
-  <text x="73" y="15" fill="rebeccapurple">U</text>
-  <text x="73" y="30" fill="rebeccapurple">D</text>
-  <text x="73" y="45" fill="rebeccapurple">I</text>
-  <text x="73" y="60" fill="rebeccapurple">A</text>
+<svg version="1.1" height="4.5em" width="7em"
+  xmlns="http://www.w3.org/2000/svg">
+  <text x="85" y="15" fill="rebeccapurple">U</text>
+  <text x="85" y="30" fill="rebeccapurple">D</text>
+  <text x="85" y="45" fill="rebeccapurple">I</text>
+  <text x="85" y="60" fill="rebeccapurple">A</text>
   <text x="0" y="60" fill="rebeccapurple">everything App</text>
+  <style>
+    text {
+      font-family: monospace;
+    }
+  </style>
 </svg>

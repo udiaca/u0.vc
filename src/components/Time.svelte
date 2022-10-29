@@ -102,9 +102,7 @@
         href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options"
         target="_blank"
         rel="noreferrer"
-      >
-      Intl.DateTimeFormat options
-      </a>
+      >Intl.DateTimeFormat options</a>
     </code>
   </summary>
   <label for="locale">
@@ -124,9 +122,7 @@
 
   <label for="dateStyle">
     <code>
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#datestyle">
-        dateStyle
-      </a>:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#datestyle">dateStyle</a>:
     </code>
   </label><br>
   <select name="dateStyle" bind:value={dateStyle}>
@@ -139,9 +135,7 @@
 
   <label for="timeStyle">
     <code>
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timestyle">
-        timeStyle
-      </a>:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timestyle">timeStyle</a>:
     </code>
   </label><br>
   <select name="timeStyle" bind:value={timeStyle}>
@@ -154,9 +148,7 @@
 
   <label for="calendar">
     <code>
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#calendar">
-        calendar
-      </a>:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#calendar">calendar</a>:
     </code>
   </label><br>
   {#if calendarOptions.length === 0}
@@ -179,9 +171,7 @@
 
   <label for="numberingSystem">
     <code>
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#numberingsystem">
-        numberingSystem
-      </a>:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#numberingsystem">numberingSystem</a>:
     </code>
   </label><br>
   {#if numberingSystemChoices.length === 0}
@@ -204,9 +194,7 @@
 
   <label for="timeZone">
     <code>
-      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timezone">
-        timeZone
-      </a>:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timezone">timeZone</a>:
     </code>
   </label><br>
   {#if timeZoneChoices.length === 0}

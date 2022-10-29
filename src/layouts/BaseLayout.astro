@@ -31,12 +31,17 @@ if (runtime && runtime.name === "cloudflare") {
   </head>
   <body>
     <slot />
-    <img width="128px" src={logo} alt="UDIA" />
+    <img class="logo" width="128px" src={logo} alt="UDIA" />
     <MainLinks />
     <Meta />
     <GlobalStyles />
     <noscript
       ><code>Javascript is disabled in your web browser.</code>
     </noscript>
+    <style>
+      .logo {
+        padding: 1rem 0px;
+      }
+    </style>
   </body>
 </html>
