@@ -2,7 +2,25 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Deployments from "../components/Deployments.svelte";
 
+interface ResultInfo {
+  page: number;
+  per_page: number;
+  count: number;
+  total_count: number;
+}
+
 let result: CFPagesDeployment[] = [];
+let resultInfo: ResultInfo = {
+  page: 1,
+  per_page: 25,
+  count: 1,
+  total_count: 1,
+};
+
+const currentUrl = Astro.url;
+const curPath = currentUrl.pathname;
+const pageNum = currentUrl.searchParams.get("page");
+
 try {
   const runtime = Reflect.get(Astro.request, Symbol.for("runtime"));
   const {
@@ -12,7 +30,11 @@ try {
     CLOUDFLARE_API_PROJECT_NAME: cfProjectName,
   } = runtime.env;
 
-  const endpoint = `https://api.cloudflare.com/client/v4/accounts/${cfAccountId}/pages/projects/${cfProjectName}/deployments`;
+  let endpoint = `https://api.cloudflare.com/client/v4/accounts/${cfAccountId}/pages/projects/${cfProjectName}/deployments`;
+  if (pageNum !== null && parseInt(pageNum)) {
+    const apiSearchParams = new URLSearchParams({ page: pageNum });
+    endpoint = `${endpoint}?${apiSearchParams.toString()}`;
+  }
 
   const resp = await fetch(endpoint, {
     headers: {
@@ -23,16 +45,27 @@ try {
 
   const body = await resp.json();
   result = body.result.map((rawDeployment: CFPagesDeployment) => {
-    const {env_vars, ...deployment} = rawDeployment
-    return { ...deployment, env_vars: {}}
+    const { env_vars, ...deployment } = rawDeployment;
+    return { ...deployment, env_vars: {} };
   });
+
+  resultInfo = body.result_info;
 } catch (err) {
   console.error(err);
 }
 
-
+const showNext =
+  (resultInfo.page - 1) * resultInfo.per_page + resultInfo.count <
+  resultInfo.total_count;
+const showPrev = resultInfo.page > 1;
 ---
+
 <BaseLayout>
   <h1>Deployments</h1>
   <Deployments client:load deployments={result} />
+  <div class="pagination">
+    {showPrev && <a href={curPath + `?page=${resultInfo.page - 1}`}>prev</a>}
+    <span>Page {resultInfo.page}</span>
+    {showNext && <a href={curPath + `?page=${resultInfo.page + 1}`}>next</a>}
+  </div>
 </BaseLayout>

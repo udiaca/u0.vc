@@ -1,71 +1,89 @@
 ---
 import NormalizeCSS from "./NormalizeCSS.astro";
+
+/**
+ * Breakpoints:
+ * // very small screens
+ * media only screen and (max-width: 599px) {...}
+ * // Small screen devices
+ * media only screen and (min-width: 600px) {...}
+ * // Medium screen devices (768px and above)
+ * media only screen and (min-width: 768px) {...}
+ * // Big screen devices (889px and above)
+ * media only screen and (min-width: 889px) {...}
+ * // Extra big screen devices (1200px and above)
+ * media only screen and (min-width: 1200px) {...}
+ */
 ---
 
 <NormalizeCSS />
 <style is:global>
-:root {
-}
-
-@media (prefers-color-scheme: light) {
   :root {
-    --emph-color: #663399;
-    --background-color: #ffffff;
-    --mute-background-color: rgba(0, 0, 0, 0.1);
-    --color: #000000;
-
-    --link-color: #004089;
-    --link-visited-color: #;
   }
-}
 
+  @media (prefers-color-scheme: light) {
+    :root {
+      --emph-color: #663399;
+      --background-color: #ffffff;
+      --mute-background-color: rgba(0, 0, 0, 0.1);
+      --color: #000000;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --emph-color: #C9AFE4;
-    --background-color: rgb(3, 5, 32);
-    --mute-background-color: rgba(3, 5, 32, 0.5);
-    --color: #ffffff;
+      --link-color: rgb(0, 64, 137);
+      --link-visited-color: rgba(0, 64, 137, 0.8);
 
-    --link-color: #74B5FF;
+      --label-primary-color: #14bceb;
+    }
   }
-}
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--background-color);
-  color: var(--color);
-}
-details {
-  cursor: pointer;
-}
-pre {
-  max-width: 100vw;
-  overflow-x: auto;
-  border: 1px dashed var(--emph-color);
-}
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --emph-color: #c9afe4;
+      --background-color: rgb(3, 5, 32);
+      --mute-background-color: rgba(255, 255, 255, 0.1);
+      --color: #ffffff;
 
-a:visited {
-  color: var(--color);
-  opacity: 0.7;
-}
-a:link {
-  color: var(--link-color);
-  opacity: 0.7;
-}
-a:hover {
-  color: var(--link-color);
-  opacity: 1;
-}
-a:active {
-  color: var(--color);
-  opacity: 1;
-}
-a[href]:not(:where(
+      --link-color: rgb(116, 181, 255);
+      --link-visited-color: rgb(116, 181, 255, 0.8);
+
+      --label-primary-color: #00485c;
+    }
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    color: var(--color);
+  }
+  details {
+    cursor: pointer;
+  }
+  pre {
+    max-width: 100vw;
+    overflow-x: auto;
+    border: 1px dashed var(--emph-color);
+  }
+
+  a:visited {
+    color: var(--color);
+    opacity: 0.7;
+  }
+  a:link {
+    color: var(--link-color);
+    opacity: 0.7;
+  }
+  a:hover {
+    color: var(--link-color);
+    opacity: 1;
+  }
+  a:active {
+    color: var(--color);
+    opacity: 1;
+  }
+  a[href]:not(:where(
   /* exclude hash only links */
   [href^="#"],
   /* exclude relative but not double slash only links */
@@ -74,17 +92,17 @@ a[href]:not(:where(
   [href*="//stackoverflow.com"],
   /* subdomains to exclude */
   [href*="//meta.stackoverflow.com"],
-)):after{
-  content: '\29c9';
-}
+)):after {
+    content: "\29c9";
+  }
 
-noscript {
-  background-color: var(--background-color);
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  border: 1px dashed var(--emph-color);
-  margin: 0.5em;
-  padding: 0.1em;
-}
+  noscript {
+    background-color: var(--background-color);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border: 1px dashed var(--emph-color);
+    margin: 0.5em;
+    padding: 0.1em;
+  }
 </style>
