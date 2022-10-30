@@ -1,0 +1,18 @@
+<svg version="1.1" height="6rem" width="11rem"
+  xmlns="http://www.w3.org/2000/svg">
+  <text x="90" y="15" fill="rebeccapurple">y</text>
+  <text x="95" y="31" fill="rebeccapurple">o</text>
+
+  <text x="100" y="45" fill="rebeccapurple">universe</text>
+  <text x="100" y="60" fill="rebeccapurple">Demands</text>
+  <text x="100" y="75" fill="rebeccapurple">I</text>
+  <text x="100" y="90" fill="rebeccapurple">A</text>
+  <text x="0" y="90" fill="rebeccapurple">everything</text>
+  <text x="100" y="90" fill="rebeccapurple">App</text>
+  <style>
+    text {
+      font-size: 1rem;
+      font-family: 'Fira Mono', 'Input', 'Pitch', 'Triplicate', 'Courier New', monospace;
+    }
+  </style>
+</svg>

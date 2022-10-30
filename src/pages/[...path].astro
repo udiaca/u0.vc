@@ -11,6 +11,7 @@ let language = "en";
 if (acceptLanguage) {
   language = bestMatch(languageTags, acceptLanguage) || "en";
 }
+
 const { path } = Astro.params;
 const langPath = `/${language}/${path}`;
 const pages = await Astro.glob("./**/*");
@@ -35,7 +36,7 @@ Astro.response.statusText = statusText;
 
 {
   redirectTo ? (
-    <meta http-equiv="refresh" content={`0;url=${redirectTo}`} />
+    <meta http-equiv="refresh" content={`0;url=${redirectTo}${Astro.url.search}`} />
   ) : (
     <>
       <BaseLayout>

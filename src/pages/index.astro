@@ -4,7 +4,6 @@ import { languageTags } from "../i18n/languages";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const acceptLanguage = Astro.request.headers.get("accept-language");
-
 let language = "en";
 if (acceptLanguage) {
   language = bestMatch(languageTags, acceptLanguage) || "en";
@@ -12,6 +11,6 @@ if (acceptLanguage) {
 ---
 <BaseLayout title="UDIA">
   <Fragment slot="head">
-    <meta http-equiv="refresh" content={`0;url=/${language}`} />
+    <meta http-equiv="refresh" content={`0;url=/${language}${Astro.url.search}`} />
   </Fragment>
 </BaseLayout>
