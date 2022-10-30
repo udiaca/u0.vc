@@ -16,6 +16,7 @@ import everythingApp from "../../images/everythingApp.svg";
     <li id="outputListItem"></li>
     <li><a href="/now">Now</a></li>
     <li><a href="/cost">Cost of existence</a></li>
+    <li><a href="/analytics">Proof of existence</a></li>
     <li><a href="/deployments">Deployments (historical)</a></li>
     <li>
       <input type="checkbox" checked={true} disabled={true} />
@@ -36,7 +37,7 @@ import everythingApp from "../../images/everythingApp.svg";
         }
         if (checkbox.checked) {
           const anchor = document.createElement("a");
-          anchor.setAttribute("href", "/en/story/imagine");
+          anchor.setAttribute("href", "/story/imagine");
           anchor.textContent = "Try Story Mode";
           output.appendChild(anchor);
         } else {
@@ -49,5 +50,4 @@ import everythingApp from "../../images/everythingApp.svg";
     checkbox.addEventListener("change", sideEffectWrapper());
     sideEffectWrapper("")();
   </script>
-  <style></style>
 </BaseLayout>

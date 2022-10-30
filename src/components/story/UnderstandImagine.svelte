@@ -12,7 +12,7 @@ understanding.subscribe(value => understandingValue = value)
 {:else if understandingValue === 'UDiA'}
   <p><a href="/identity">/identity</a></p>
 {:else if understandingValue === 'UdIA'}
-  <p><a href="/todo">/todo</a></p>
+  <p><a href="/deployments">/deployments</a></p>
 {:else if understandingValue === 'uDIA'}
   <p><a href="/">/udia</a></p>
 {:else if understandingValue === 'udia'}
