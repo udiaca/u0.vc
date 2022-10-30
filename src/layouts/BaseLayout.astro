@@ -1,7 +1,7 @@
 ---
 import MainLinks from "../components/MainLinks.astro";
 import Meta from "../components/Meta.astro";
-import GlobalStyles from "./GlobalStyles.astro";
+import GlobalStyles from "../components/GlobalStyles.astro";
 import logo from "../images/logo.svg";
 
 export interface Props {
@@ -23,13 +23,16 @@ if (runtime && runtime.name === "cloudflare") {
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <script defer data-domain="u0.vc" data-api="/opt/event" src="/opt/script.js"
+    <script defer data-domain="u0.vc" data-api="/opt/event" src="/opt/script.outbound-links.js"
     ></script>
     <link rel="icon" type="image/svg+xml" href={logo} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body>
+    <!-- https://bugzilla.mozilla.org/show_bug.cgi?id=1404468 -->
+    <script>true;</script>
     <slot />
     <img class="logo" width="128px" src={logo} alt="UDIA" />
     <MainLinks />

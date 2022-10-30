@@ -18,9 +18,6 @@ import NormalizeCSS from "./NormalizeCSS.astro";
 
 <NormalizeCSS />
 <style is:global>
-  :root {
-  }
-
   @media (prefers-color-scheme: light) {
     :root {
       --emph-color: #663399;
@@ -57,6 +54,11 @@ import NormalizeCSS from "./NormalizeCSS.astro";
     align-items: center;
     background-color: var(--background-color);
     color: var(--color);
+    font-family: 'Fort', 'Seravek', 'Fira Sans', 'FF Unit', 'Concourse', 'Calibri', system-ui;
+    /* font-family: 'Verdigris', 'Iowan Old Style', 'Palatino Nova', 'Valkyrie', 'Palatino', system-ui; */
+  }
+  code {
+    font-family: 'Fira Mono', 'Input', 'Pitch', 'Triplicate', 'Courier New', monospace;
   }
   details {
     cursor: pointer;

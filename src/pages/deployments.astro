@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Deployments from "../components/Deployments.svelte";
 
+const title = "Deployments";
+
 interface ResultInfo {
   page: number;
   per_page: number;
@@ -60,7 +62,7 @@ const showNext =
 const showPrev = resultInfo.page > 1;
 ---
 
-<BaseLayout>
+<BaseLayout title={title}>
   <h1>Deployments</h1>
   <Deployments client:load deployments={result} />
   <div class="pagination">

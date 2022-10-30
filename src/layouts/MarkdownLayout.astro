@@ -4,7 +4,11 @@ const { frontmatter } = Astro.props;
 const { title } = Astro.props.frontmatter || Astro.props;
 ---
 
-<BaseLayout>
+<BaseLayout title={title}>
+  <Fragment slot="head">
+    <meta name="source-type" content="markdown" />
+  </Fragment>
+
   <h1>{title}</h1>
   <slot />
   <details>
