@@ -38,14 +38,18 @@ try {
     endpoint = `${endpoint}?${apiSearchParams.toString()}`;
   }
 
-  const resp = await fetch(endpoint, {
+  const req = new Request(endpoint, {
     headers: {
       authorization: `Bearer ${token}`,
       "content-type": "application/json",
     },
   });
-
-  const body = await resp.json();
+  let response = await caches.default.match(req);
+  if (!response) {
+    response = await fetch(req);
+    caches.default.put(req, response.clone());
+  }
+  const body = await response.json();
   result = body.result.map((rawDeployment: CFPagesDeployment) => {
     const { env_vars, ...deployment } = rawDeployment;
     return { ...deployment, env_vars: {} };

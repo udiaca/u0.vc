@@ -23,16 +23,18 @@ try {
   const env = runtime.env;
   const readBillingToken = env.CLOUDFLARE_API_TOKEN_READ_BILLING;
   const endpoint = "https://api.cloudflare.com/client/v4/user/billing/history";
-
-  const resp = await fetch(endpoint, {
+  const req = new Request(endpoint, {
     headers: {
       authorization: `Bearer ${readBillingToken}`,
       "content-type": "application/json",
     },
   });
-
-  const body = await resp.json();
-
+  let response = await caches.default.match(req);
+  if (!response) {
+    response = await fetch(req);
+    caches.default.put(req, response.clone())
+  }
+  const body = await response.json();
   result = body.result;
 } catch (err) {
   console.error(err);
