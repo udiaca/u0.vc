@@ -1,10 +1,8 @@
 ---
 import { bestMatch } from "@udia/mime-parser";
+import Meta from "../components/Meta.astro";
 import { languageTags } from "../i18n/languages";
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-// This is, unfortunately, syntactically invalid
-// import 404 from "./404.astro"
 
 const acceptLanguage = Astro.request.headers.get("accept-language");
 let language = "en";
@@ -22,7 +20,6 @@ if (urls.includes(langPath)) {
   redirectTo = langPath;
 }
 
-const data = JSON.stringify(Astro, undefined, 2);
 const status = Astro.response.status;
 Astro.response.status = status && status !== 200 ? status : 404;
 const statusText =
@@ -41,9 +38,7 @@ Astro.response.statusText = statusText;
     <>
       <BaseLayout>
         <h1>{statusText}</h1>
-        <code style="max-width: 100vw;">
-          <pre>{data}</pre>
-        </code>
+        <Meta />
       </BaseLayout>
     </>
   )

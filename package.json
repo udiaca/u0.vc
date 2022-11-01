@@ -8,9 +8,9 @@
     "dev:wrangler": "wrangler pages dev --proxy 3000 -- npx astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro build && wrangler pages dev ./dist --compatibility-date=2022-10-27 --live-reload",
+    "preview": "astro build && wrangler pages dev dist --compatibility-date=2022-10-27 --live-reload",
     "astro": "astro",
-    "deploy": "wrangler pages publish dist --project-name u0-vc",
+    "deploy:preview": "astro build && wrangler pages publish dist --project-name u0-vc --branch preview --commit-dirty",
     "test": "astro check"
   },
   "dependencies": {

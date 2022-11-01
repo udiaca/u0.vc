@@ -1,4 +1,5 @@
 ---
+import Meta from "../components/Meta.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const data = JSON.stringify(Astro, undefined, 2);
@@ -12,7 +13,5 @@ console.log(statusText, statusText !== "OK")
 
 <BaseLayout>
   <h1>{statusText}</h1>
-  <code style="max-width: 100vw;">
-    <pre>{data}</pre>
-  </code>
+  <Meta />
 </BaseLayout>

@@ -6,4 +6,6 @@ interface Env {
   CLOUDFLARE_API_TOKEN_READ_PAGES: string;
   CLOUDFLARE_API_ACCOUNT_ID: string;
   CLOUDFLARE_API_PROJECT_NAME: string;
+
+  DO_SESSION: DurableObjectNamespace;
 }

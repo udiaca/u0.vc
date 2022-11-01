@@ -6,9 +6,10 @@ try {
 } catch {}
 
 try {
-  astro.request.headers = Object.fromEntries(
-    Array.from(Astro.request.headers.entries())
-  );
+  astro.request.headers = {}
+  Astro.request.headers.forEach((value, key) => {
+    astro.request.headers[key] = value;
+  })
 } catch {}
 
 try {

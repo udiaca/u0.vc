@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCached } from "../utils/caches";
 
 const title = "Cost";
 
@@ -24,23 +25,22 @@ try {
   const readBillingToken = env.CLOUDFLARE_API_TOKEN_READ_BILLING;
   const endpoint = "https://api.cloudflare.com/client/v4/user/billing/history";
 
-  const resp = await fetch(endpoint, {
+  const req = new Request(endpoint, {
     headers: {
       authorization: `Bearer ${readBillingToken}`,
       "content-type": "application/json",
     },
   });
 
-  const body = await resp.json();
-
-  result = body.result;
+  const response = await getCached(req);
+  const body = (await response.json()) as any;
+  result = body.result ?? [];
 } catch (err) {
   console.error(err);
 }
 
 // en-CA,en-US;q=0.7,en;q=0.3
-const acceptLanguage: string =
-  Astro.request.headers.get("accept-language") || "";
+const acceptLanguage = Astro.request.headers.get("accept-language") || "";
 // [ 'en-CA', 'en-US;q=0.7', 'en;q=0.3' ]
 const acceptLanguages = acceptLanguage.split(",");
 // [ 'en-CA', 'en-US', 'en' ]
@@ -98,12 +98,12 @@ const numFormat = new Intl.NumberFormat(defaultLanguages, {
         })
       }
 
-
       <style>
         th {
           font-family: monospace;
         }
       </style>
+
     </table>
   </div>
 </BaseLayout>

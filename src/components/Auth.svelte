@@ -10,6 +10,6 @@
   console.log(url);
 </script>
 
-<label for="ack-set-cookie">I accept the terms and conditions.</label>
+<label for="ack-set-cookie">I consent to receiving a first party authorization session cookie.</label>
 <input id="ack-set-cookie" type="checkbox"/>
 <a href="{url.toString()}">GitHub OAuth2</a>
