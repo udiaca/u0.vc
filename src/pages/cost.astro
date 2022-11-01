@@ -24,7 +24,6 @@ try {
   const env = runtime.env;
   const readBillingToken = env.CLOUDFLARE_API_TOKEN_READ_BILLING;
   const endpoint = "https://api.cloudflare.com/client/v4/user/billing/history";
-
   const req = new Request(endpoint, {
     headers: {
       authorization: `Bearer ${readBillingToken}`,
