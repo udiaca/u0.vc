@@ -1,5 +1,5 @@
 <script lang='ts'>
-import { understanding } from '../../utils/stores';
+import { understanding } from '../../utils/svelteStores';
 
 let understandingValue: string;
 understanding.subscribe(value => understandingValue = value)

@@ -1,11 +1,4 @@
-const parseCookie = (str: string): any =>
-  (str.indexOf(';') >= 0 ? str.split(';') : [str,])
-    .map(v => v.split('='))
-    .filter(v => v.length === 2)
-    .reduce((acc, v) => {
-      acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
-      return acc;
-    }, {});
+import { parseCookie } from "../logout";
 
 /**
  * https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps#1-request-a-users-github-identity
@@ -34,7 +27,7 @@ const requestIdentity: PagesFunction<Env> = async (context) => {
     statusText: 'Found',
     headers: {
       location,
-      'set-cookie': `__Secure-SessionId=${id}; Domain=${url.host}; SameSite=Lax; Secure; HttpOnly`
+      'set-cookie': `__Secure-SessionId=${id}; Path=/; Domain=${url.host}; SameSite=Lax; Secure; HttpOnly`
     }
   })
 }
@@ -119,11 +112,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const { request } = context;
   const url = new URL(request.url)
 
-  // return new Response(JSON.stringify({ now, context, url }), { headers: {
-  //   'content-type': 'application/json'
-  // }})
-
-  if (url.pathname.endsWith('/authorize')) {
+  if (url.pathname.endsWith('/authorize') && request.method === 'POST') {
     return requestIdentity(context)
   } else if (url.pathname.endsWith('/callback')) {
     return handleRedirect(context)

@@ -57,7 +57,7 @@
 
   // DateTimeFormat locales and options
   $: locale = ""
-  const localePlaceholder = new Intl.ListFormat(locale || defaultLocales, { style: 'short', type: 'disjunction' }).format(defaultLocales)
+  const localePlaceholder = new Intl.ListFormat(locale || defaultLocales, { style: 'short', type: 'disjunction' }).format(defaultLocales || '')
 
   // form options
   const dateTimeStyleOptions = dateTimeStyleChoices.map((dateTimeStyleChoice) => (

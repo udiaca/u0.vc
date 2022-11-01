@@ -2,13 +2,10 @@
 import Meta from "../components/Meta.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const data = JSON.stringify(Astro, undefined, 2);
 const status = Astro.response.status;
 Astro.response.status = (status && status !== 200) ? status : 404;
 const statusText = (Astro.response.statusText && Astro.response.statusText !== "OK") ? Astro.response.statusText : status === 404 ? "Not Found" : "Error";
 Astro.response.statusText = statusText;
-
-console.log(statusText, statusText !== "OK")
 ---
 
 <BaseLayout>

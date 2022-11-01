@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SerializeUser from "../components/SerializeUser.svelte";
+
+const title = "User";
+---
+
+<BaseLayout title={title}>
+  <h1>{title}</h1>
+  <SerializeUser client:load />
+</BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import everythingApp from "../../images/everythingAppEn.svg";
+import Auth from "../../components/Auth.svelte";
 
 const title = "UDIA";
 ---
@@ -20,6 +21,7 @@ const title = "UDIA";
     <li><a href="/cost">Cost of existence</a></li>
     <li><a href="/analytics">Proof of existence</a></li>
     <li><a href="/deployments">Deployments (historical)</a></li>
+    <li><Auth client:load /></li>
     <li>
       <input type="checkbox" checked={true} disabled={true} />
       <a href="https://github.com/udiaca/u0.vc/issues/new/choose"
