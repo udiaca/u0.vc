@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Deployments from "../components/Deployments.svelte";
+import { getCached } from "../utils/caches";
 
 const title = "Deployments";
 
@@ -44,12 +45,9 @@ try {
       "content-type": "application/json",
     },
   });
-  let response = await caches.default.match(req);
-  if (!response) {
-    response = await fetch(req);
-    caches.default.put(req, response.clone());
-  }
-  const body = await response.json();
+
+  const response = await getCached(req);
+  const body = await response.json() as any;
   result = body.result.map((rawDeployment: CFPagesDeployment) => {
     const { env_vars, ...deployment } = rawDeployment;
     return { ...deployment, env_vars: {} };

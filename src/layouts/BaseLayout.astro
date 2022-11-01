@@ -1,18 +1,63 @@
 ---
+import GlobalStore from "../components/GlobalStore.svelte";
+import GlobalStyles from "../components/GlobalStyles.astro";
 import MainLinks from "../components/MainLinks.astro";
 import Meta from "../components/Meta.astro";
-import GlobalStyles from "../components/GlobalStyles.astro";
 import logo from "../images/logo.svg";
+import { getCached } from "../utils/caches";
+import { parseCookie } from "../utils/parseCookie";
+import { setUser } from "../utils/stores/user";
 
 export interface Props {
   title?: string;
 }
 const { title } = Astro.props.frontmatter || Astro.props;
 
-const runtime = Reflect.get(Astro.request, Symbol.for("runtime"));
+// TODO: this is very ugly and should be refactored out
+const cookie = Astro.request.headers.get("cookie");
+const { "__Secure-SessionId": rawDOSessionId } = parseCookie(cookie || "");
 
-if (runtime && runtime.name === "cloudflare") {
-  console.log("Running on Cloudflare Workers");
+let sessionPayload: any = { zero_state: true };
+try {
+  const runtime = Reflect.get(Astro.request, Symbol.for("runtime"));
+  const doSessionNamespace = (runtime.env as Env).DO_SESSION;
+  const doSessionId = doSessionNamespace.idFromString(rawDOSessionId);
+  const doStub = doSessionNamespace.get(doSessionId);
+  const sessionResp = await doStub.fetch(
+    "https://do-session.workers.u0.vc/oauth",
+    {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+    }
+  );
+  sessionPayload = await sessionResp.json();
+} catch (err) {
+  console.error(err);
+  sessionPayload["err"] = JSON.stringify(err);
+}
+
+// check if authenticated using Github OAuth2.0 flow
+let user: any = { zero_state: true };
+if (sessionPayload.type === "github") {
+  try {
+    const ghResp = await getCached(
+      new Request("https://api.github.com/user", {
+        headers: {
+          authorization: `${sessionPayload.token_type} ${sessionPayload.access_token}`,
+          "content-type": "application/json",
+          "user-agent": "UDIA",
+        },
+      })
+    );
+    user = { github: await ghResp.json() };
+
+    setUser(user);
+  } catch (err) {
+    user["err"] = JSON.stringify(err);
+  }
 }
 ---
 
@@ -23,7 +68,11 @@ if (runtime && runtime.name === "cloudflare") {
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <script defer data-domain="u0.vc" data-api="/opt/event" src="/opt/script.outbound-links.js"
+    <script
+      defer
+      data-domain="u0.vc"
+      data-api="/opt/event"
+      src="/opt/script.outbound-links.js"
     ></script>
     <link rel="icon" type="image/svg+xml" href={logo} />
     <link rel="icon" type="image/png" href="/favicon.png" />
@@ -32,7 +81,13 @@ if (runtime && runtime.name === "cloudflare") {
   </head>
   <body>
     <!-- https://bugzilla.mozilla.org/show_bug.cgi?id=1404468 -->
-    <script>true;</script>
+    <script>
+      true;
+    </script>
+    <GlobalStore user={user} client:load />
+    <script define:vars={{ user }}>
+      Reflect.set(window, Symbol.for("uDIA"), user);
+    </script>
     <slot />
     <img draggable="false" class="logo" width="128px" src={logo} alt="UDIA" />
     <MainLinks />
