@@ -1,6 +1,6 @@
 # u0.vc
 
-Project containing u0.vc app source code.
+Project containing [`u0.vc`](https://u0.vc) app source code.
 
 ## Get Started
 
@@ -37,6 +37,12 @@ We use [Cloudflare Pages](https://pages.cloudflare.com/)'s product offering to d
 | ---------------------- | -------------------- |
 | `GITHUB_CLIENT_ID`     | OAuth2 Client ID     |
 | `GITHUB_CLIENT_SECRET` | OAuth2 Client Secret |
+
+# Companion Repository
+
+Due to limitations with Cloudflare Pages, durable objects must be bound into pages and cannot be run locally.
+
+Refer to [udiaca/u0-workers](https://github.com/udiaca/u0-workers) for the durable objects code base.
 
 # License
 
