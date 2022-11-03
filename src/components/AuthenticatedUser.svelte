@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { user } from '../utils/svelteStores'
 
   let visibility: string = 'hidden';
   let innerHeight: number = 0;
@@ -24,7 +25,9 @@
   }
 
   onMount(() => {
-    visibility = 'visible'
+    if ($user) {
+      visibility = 'visible'
+    }
   })
 
   $: {
