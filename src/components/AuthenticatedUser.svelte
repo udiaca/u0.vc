@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { user } from '../utils/svelteStores'
 
-  let visibility: string = 'hidden';
+  $: visibility = $user ? 'visible' : 'hidden';
   let innerHeight: number = 0;
   let authUserElement: HTMLDivElement | undefined;
   let lastY: number = -1;
@@ -23,12 +22,6 @@
       authUserElement.classList.add("hidden");
     }
   }
-
-  onMount(() => {
-    if ($user) {
-      visibility = 'visible'
-    }
-  })
 
   $: {
     if (lastY >= 0) {
