@@ -25,7 +25,7 @@ try {
   const doSessionId = doSessionNamespace.idFromString(rawDOSessionId);
   const doStub = doSessionNamespace.get(doSessionId);
   const sessionResp = await doStub.fetch(
-    "https://do-session.workers.u0.vc/oauth",
+    "https://do-session.workers.u0.vc/oauth-github",
     {
       method: "GET",
       headers: {

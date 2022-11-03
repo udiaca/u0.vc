@@ -1,25 +1,22 @@
 <script lang='ts'>
 import { understanding } from '../../utils/svelteStores';
-
-let understandingValue: string;
-understanding.subscribe(value => understandingValue = value)
 </script>
 
-{#if understandingValue === 'UDIA'}
+{#if $understanding === 'UDIA'}
   <p>UDIA</p>
-{:else if understandingValue === 'UDIa'}
+{:else if $understanding === 'UDIa'}
   <p><a href="/author">/author</a></p>
-{:else if understandingValue === 'UDiA'}
+{:else if $understanding === 'UDiA'}
   <p><a href="/identity">/identity</a></p>
-{:else if understandingValue === 'UdIA'}
+{:else if $understanding === 'UdIA'}
   <p><a href="/deployments">/deployments</a></p>
-{:else if understandingValue === 'uDIA'}
+{:else if $understanding === 'uDIA'}
   <p><a href="/">/udia</a></p>
-{:else if understandingValue === 'udia'}
+{:else if $understanding === 'udia'}
   <h3>Only select <strong>1</strong></h3>
-{:else if understandingValue.toUpperCase() === 'UDIA'}
+{:else if $understanding.toUpperCase() === 'UDIA'}
   <p><code>TODO: not implemented yet</code></p>
-{:else if understandingValue}
+{:else if $understanding}
   <p>Not quite...</p>
 {:else}
   <pre> </pre>

@@ -8,7 +8,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const id = url.pathname.split("/").pop() || ''
   const doId = context.env.DO_SESSION.idFromString(id)
   const doStub = context.env.DO_SESSION.get(doId)
-  return doStub.fetch('https://do-session.workers.u0.vc/oauth', { headers: {
+  return doStub.fetch('https://do-session.workers.u0.vc/oauth-github', { headers: {
     'content-type': 'application/json',
     'accept': 'application/json'
   }})

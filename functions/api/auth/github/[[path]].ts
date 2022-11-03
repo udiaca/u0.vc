@@ -79,7 +79,7 @@ const handleRedirect: PagesFunction<Env> = async (context) => {
   // store the github oauth token into the durable object for authed session
   const doId = env.DO_SESSION.idFromString(state)
   const doStub = env.DO_SESSION.get(doId)
-  waitUntil(doStub.fetch('https://do-session.workers.u0.vc/oauth', {
+  waitUntil(doStub.fetch('https://do-session.workers.u0.vc/oauth-github', {
     method: 'POST',
     body: JSON.stringify({
       type: 'github',
