@@ -1,17 +1,10 @@
 <script lang="ts">
-  import { user } from "../utils/stores/user";
+  import { user } from "../utils/svelteStores";
 
   let authOk = false;
 </script>
 
-{#if $user}
-<div>
-  <a href="/user">User</a>
-  <form method="post" action="/api/auth/logout">
-    <input type="submit" value="Logout" />
-  </form>
-</div>
-{:else}
+{#if !$user}
   <form method="post" action="/api/auth/github/authorize" disabled={!authOk}>
     <div>
       <label for="ack-set-cookie">

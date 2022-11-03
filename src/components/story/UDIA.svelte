@@ -1,18 +1,18 @@
 <script lang="ts">
-import { understanding } from '../../utils/svelteStores';
-
-let understandingValue: string;
-understanding.subscribe(value => understandingValue = value)
-
+  import { understanding } from "../../utils/svelteStores";
 </script>
 
-<!-- nit: there must be a better way to do this -->
 <dl>
-  <dt id="u" class:emphasized="{understandingValue.includes("u")}">U</dt><dd>niverse</dd>
-  <dt id="d" class:emphasized="{understandingValue.includes("d")}">D</dt><dd>ream</dd>
-  <dt id="i" class:emphasized="{understandingValue.includes("i")}">I</dt><dd>You</dd>
-  <dt id="a" class:emphasized="{understandingValue.includes("a")}">A</dt><dd>wareness</dd>
+  <dt id="u" class:emphasized={$understanding.includes("u")}>U</dt>
+  <dd>niverse</dd>
+  <dt id="d" class:emphasized={$understanding.includes("d")}>D</dt>
+  <dd>ream</dd>
+  <dt id="i" class:emphasized={$understanding.includes("i")}>I</dt>
+  <dd>You</dd>
+  <dt id="a" class:emphasized={$understanding.includes("a")}>A</dt>
+  <dd>wareness</dd>
 </dl>
+
 <style>
   dl {
     display: flex;

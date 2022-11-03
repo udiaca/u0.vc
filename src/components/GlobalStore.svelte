@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { setUser } from "../utils/stores/user";
+  import { user as svelteUser } from "../utils/svelteStores";
 
   export let user: any;
 
   if (user && user.github) {
-    setUser(user)
+    svelteUser.set(user)
   }
 </script>
