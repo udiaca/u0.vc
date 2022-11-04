@@ -1,34 +1,55 @@
-export const parseCookie = (str: string): any =>
-  (str.indexOf(';') >= 0 ? str.split(';') : [str,])
-    .map(v => v.split('='))
-    .filter(v => v.length === 2)
-    .reduce((acc, v) => {
-      acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
-      return acc;
-    }, {});
+import { isValidDurableObjectIdString } from '../../../src/utils/isValidDurableObjId'
+import { parseCookie } from '../../../src/utils/parseCookie'
+
+/**
+ * Generate a 'Set-Cookie' header value for the user's session
+ * @param host Domain for the cookie
+ * @param sessionId Unique identifier for session, or '0' if logging a user out
+ * @param maxAgeSec How long the cookie should exist for, in seconds, or 0 for logging a user out
+ * @returns Set-Cookie header value
+ */
+export const genSessionCookie = (
+  host: string,
+  sessionId = '0',
+  maxAgeSec: number = 0
+) =>
+  [
+    `__Secure-SessionId=${sessionId}`,
+    'Path=/',
+    `Domain=${host}`,
+    'SameSite=Lax',
+    'Secure',
+    'HttpOnly',
+    `Max-Age=${maxAgeSec}`,
+  ].join('; ')
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
-  const { env, request, waitUntil } = context;
+  const { env, request, waitUntil } = context
   const cookie = request.headers.get('cookie') || ''
   const { '__Secure-SessionId': rawDOSessionId } = parseCookie(cookie || '')
 
-  const doSessionNamespace = env.DO_SESSION;
-  const doSessionId = doSessionNamespace.idFromString(rawDOSessionId);
-  const doStub = doSessionNamespace.get(doSessionId);
+  if (isValidDurableObjectIdString(rawDOSessionId)) {
+    const doSessionNamespace = env.DO_SESSION
+    const doSessionId = doSessionNamespace.idFromString(rawDOSessionId!)
+    const doStub = doSessionNamespace.get(doSessionId)
 
-  waitUntil(doStub.fetch('https://do-session.workers.u0.vc', {
-    method: 'DELETE',
-    headers: {
-      "content-type": "application/json",
-      accept: "application/json",
-    }
-  }))
+    waitUntil(
+      doStub.fetch('https://do-session.workers.u0.vc', {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json',
+          accept: 'application/json',
+        },
+      })
+    )
+  }
 
   const url = new URL(request.url)
   return new Response(null, {
-    status: 302, headers: {
+    status: 302,
+    headers: {
       location: url.origin,
-      'set-cookie': `__Secure-SessionId=0; Path=/; Domain=${url.host}; SameSite=Lax; Secure; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT`
-    }
+      'set-cookie': genSessionCookie(url.host),
+    },
   })
 }

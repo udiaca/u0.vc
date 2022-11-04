@@ -3,7 +3,7 @@
 
   export let user: any;
 
-  if (user && user.github) {
+  if (user) {
     svelteUser.set(user)
   }
 </script>
