@@ -7,7 +7,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const url = new URL(context.request.url)
   // Array(6) [ "", "api", "preview", "cf", "do_session", "<id>" ]
   const parts = url.pathname.split('/').slice(5)
-  const id = parts[0]
+  const id = parts[0] || ''
   const key = parts.slice(1).join('.')
   const doId = context.env.DO_SESSION.idFromString(id)
   const doStub = context.env.DO_SESSION.get(doId)
