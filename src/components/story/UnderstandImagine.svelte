@@ -12,6 +12,8 @@ import { understanding } from '../../utils/svelteStores';
   <p><a href="/deployments">/deployments</a></p>
 {:else if $understanding === 'uDIA'}
   <p><a href="/">/udia</a></p>
+{:else if $understanding === 'uDIa'}
+  <p><a href="/all_users"><code>USERS ALL</code></a></p>
 {:else if $understanding === 'udia'}
   <h3>Only select <strong>1</strong></h3>
 {:else if $understanding.toUpperCase() === 'UDIA'}

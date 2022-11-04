@@ -1,11 +1,12 @@
 ---
 import { getRuntime } from "@astrojs/cloudflare/runtime";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCached } from "../utils/caches";
 
 const title = 'All Users'
 
-let rawDoUsers = null;
-
+let rawDoUsers: any = null;
+let result: Record<string, string>[] = []
 try {
   const runtime = getRuntime<Env>(Astro.request)
 
@@ -27,23 +28,45 @@ try {
     }
    */
   const namespaceId = '82b1a00cd6334e9098cc4e60d496724f'
-  let endpoint = `https://api.cloudflare.com/client/v4/accounts/${cfAccountId}/workers/durable_objects/namespaces/${namespaceId}/objects`;
 
+  let endpoint = `https://api.cloudflare.com/client/v4/accounts/${cfAccountId}/workers/durable_objects/namespaces/${namespaceId}/objects`;
   if (searchParams) {
     endpoint = `${endpoint}?${searchParams}`;
   }
 
-  const rawDoUsersResp = await fetch(endpoint, {
+  const rawDoUsersResp = await getCached(new Request(endpoint, {
     headers: {
       authorization: `Bearer ${token}`,
       "content-type": "application/json",
     },
-  });
+  }));
 
   rawDoUsers = await rawDoUsersResp.json()
+
+  const { result: rawResult }: {result: Record<string, string>[]} = rawDoUsers ? rawDoUsers : { result: [] }
+  result = rawResult;
+} catch (err) {
+  console.error(err)
 }
+
 ---
 
 <BaseLayout title={title}>
-  <code><pre>{JSON.stringify(rawDoUsers, undefined, 2)}</pre></code>
+  <ul>
+    {result.map((rawUser) => (
+      <li><a href={'u/' + rawUser.id}>{rawUser.id}</a></li>
+    ))}
+  </ul>
+  <details>
+    <summary><code>rawDoUsers</code></summary>
+    <code><pre>{JSON.stringify(rawDoUsers, undefined, 2)}</pre></code>
+  </details>
+  <style>
+  ul {
+    list-style: none;
+  }
+  li::before {
+    content: 'u/'
+  }
+  </style>
 </BaseLayout>
