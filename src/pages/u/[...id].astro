@@ -1,0 +1,38 @@
+---
+import { getRuntime } from "@astrojs/cloudflare/runtime";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { isValidDurableObjectIdString } from "../../utils/isValidDurableObjId";
+
+const { id } = Astro.params;
+
+let publicUser: any = null
+let title = `u/${id}`;
+
+if (title === 'u/undefined') {
+  title = 'u/ndefined'
+}
+
+if (isValidDurableObjectIdString(id)) {
+  const runtime = getRuntime<Env>(Astro.request)
+  const doUserRuntime = runtime.env.DO_USER
+  const doUserId = doUserRuntime.idFromString(`${id}`)
+  const doUserStub = doUserRuntime.get(doUserId)
+
+  const doUserResp = await doUserStub.fetch(`https://do-user.workers.u0.vc`, {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+    },
+  })
+
+  const fullUser = await doUserResp.json() as any
+
+  // only show the keys
+  publicUser = Object.keys(fullUser)
+}
+---
+
+<BaseLayout title={title}>
+  <h1>{title}</h1>
+  <code><pre>{JSON.stringify(publicUser, undefined, 2)}</pre></code>
+</BaseLayout>

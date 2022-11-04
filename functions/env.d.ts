@@ -9,4 +9,5 @@ interface Env {
   CLOUDFLARE_API_TOKEN_READ_WORKERS: string;
 
   DO_SESSION: DurableObjectNamespace;
+  DO_USER: DurableObjectNamespace;
 }

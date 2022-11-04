@@ -13,6 +13,11 @@
     "deploy:preview": "astro build && wrangler pages publish dist --project-name u0-vc --branch preview --commit-dirty",
     "test": "astro check"
   },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  },
   "dependencies": {
     "@astrojs/cloudflare": "^3.1.1",
     "@astrojs/svelte": "^1.0.2",
