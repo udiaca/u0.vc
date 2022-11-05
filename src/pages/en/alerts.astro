@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AlertMarketing from "../../components/story/AlertMarketing.svelte"
+import Auth from "../../components/Auth.svelte";
+
+const title = "Alerts"
+---
+<BaseLayout title={title}>
+  <div id="block-a">
+    <AlertMarketing client:load />
+
+    <h1>Be <span class="emphasized">notified</span> by your alerts.</h1>
+    <p>We deliver alerts via push notification, email, text message, phone call, and more*.</p>
+  
+    <span style="font-size:x-small">*product does not currently exist yet.</span>
+  </div>
+  <div id="block-b">
+    <h2>How does it work?</h2>
+    <div>
+      <h3>1. Create an alert</h3>
+      <p>What do you want to be alerted about, and when?</p>
+    </div>
+    <div class="center">
+      <h3>2. Define a schedule</h3>
+      <p>Should the alert be run periodically?</p>
+    </div>
+    <div class="right">
+      <h3>3. Configure notifications</h3>
+      <p>How should the alert be delievered?</p>
+    </div>
+  </div>
+  <div id="block-c">
+    <h2>Our easy-to-use scheduling engine enables you to build complex alert schedules tailored to your needs.</h2>
+  </div>
+  <div id="block-d">
+    <h2>Interested?</h2>
+    <Auth client:visible />
+  </div>
+</BaseLayout>
+<style>
+  #block-a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 90vh;
+  }
+
+  #block-b {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: radial-gradient(closest-side, var(--mute-background-color) 0%, transparent 100%);
+  }
+
+  #block-c {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 40vh;
+  }
+
+  #block-d {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 40vh;
+    width: 100%;
+    background: radial-gradient(closest-side, var(--mute-background-color) 0%, transparent 100%);
+  }
+
+  .emphasized {
+    color: var(--emph-color);
+    font-style: italic;
+  }
+
+  .center {
+    align-self: center;
+  }
+
+  .right {
+    align-self: flex-end;
+  }
+</style>

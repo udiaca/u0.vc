@@ -12,7 +12,7 @@ const { text, tooltipText } = Astro.props
     position: relative;
     display: inline-block;
     text-decoration: underline 1px dotted var(--emph-color); /* If you want dots under the hoverable text */
-    cursor: default;
+    cursor: help;
   }
 
   /* Tooltip text */
@@ -34,7 +34,6 @@ const { text, tooltipText } = Astro.props
     top: 100%;
     left: 50%;
     margin-left: -50%;
-    transform: translateY(0.5rem);
   }
 
   .tooltip .tooltiptext::after {

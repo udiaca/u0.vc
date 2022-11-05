@@ -2,12 +2,13 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import everythingApp from "../../images/everythingAppEn.svg";
 import Auth from "../../components/Auth.svelte";
+import Tooltip from "../../components/Tooltip.astro";
 
 const title = "UDIA";
 ---
 
 <BaseLayout title={title}>
-  <img draggable="false" src={everythingApp} alt="Everything App" />
+  <img id="everything-app" draggable="false" src={everythingApp} alt="Everything App" />
 
   <ul>
     <!-- TODO, fix this, use counter, make more interesting -->
@@ -21,8 +22,9 @@ const title = "UDIA";
     <li><a href="/cost">Cost of existence</a></li>
     <li><a href="/analytics">Proof of existence</a></li>
     <li><a href="/deployments">Deployments (historical)</a></li>
+    <li><a href="/all_users">All Users (<Tooltip text={"warning, slow"} tooltipText={"https://discord.com/channels/595317990191398933/779390076219686943/1038014526131548161"} />)</a></li>
     <li><Auth client:load /></li>
-    <li><a href="/all_users">All Users</a></li>
+    <li><Tooltip text="Alerts" tooltipText="&#x2B21;" />(<a href="/en/alerts">Marketing</a>)</li>
     <li>
       <input type="checkbox" checked={true} disabled={true} />
       <a href="https://github.com/udiaca/u0.vc/issues/new/choose"
@@ -62,6 +64,9 @@ const title = "UDIA";
       line-height: 1.5em;
       text-align: center;
       padding: 0;
+    }
+    img#everything-app {
+      padding-top: 1rem;
     }
   </style>
 </BaseLayout>

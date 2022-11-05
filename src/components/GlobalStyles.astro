@@ -56,9 +56,18 @@ import NormalizeCSS from './NormalizeCSS.astro'
     color: var(--color);
     font-family: 'Fort', 'Seravek', 'Fira Sans', 'FF Unit', 'Concourse',
       'Calibri', system-ui;
+    font-size: 16pt;
     /* font-family: 'Verdigris', 'Iowan Old Style', 'Palatino Nova', 'Valkyrie', 'Palatino', system-ui; */
     word-wrap: break-word;
     word-break: break-word;
+  }
+
+  @media screen and (min-width: 1200px) {
+    body {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
   code {
     font-family: 'Fira Mono', 'Input', 'Pitch', 'Triplicate', 'Courier New',
