@@ -1,16 +1,20 @@
 ---
-import { bestMatch } from "@udia/mime-parser";
-import { languageTags } from "../i18n/languages";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import { bestMatch } from '@udia/mime-parser'
+import { languageTags } from '../i18n/languages'
+import BaseLayout from '../layouts/BaseLayout.astro'
 
-const acceptLanguage = Astro.request.headers.get("accept-language");
-let language = "en";
+const acceptLanguage = Astro.request.headers.get('accept-language')
+let language = 'en'
 if (acceptLanguage) {
-  language = bestMatch(languageTags, acceptLanguage) || "en";
+  language = bestMatch(languageTags, acceptLanguage) || 'en'
 }
 ---
+
 <BaseLayout title="UDIA">
   <Fragment slot="head">
-    <meta http-equiv="refresh" content={`0;url=/${language}${Astro.url.search}`} />
+    <meta
+      http-equiv="refresh"
+      content={`0;url=/${language}${Astro.url.search}`}
+    />
   </Fragment>
 </BaseLayout>

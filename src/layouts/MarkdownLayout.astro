@@ -1,16 +1,61 @@
 ---
-import BaseLayout from "./BaseLayout.astro";
-const { frontmatter } = Astro.props;
-const { title } = Astro.props.frontmatter || Astro.props;
+import Tooltip from '../components/Tooltip.astro'
+import { getRelativeTimeString } from '../utils/getRelativeTimeString'
+import { parseLocalesFromAcceptLanguage } from '../utils/parseLocalesFromAcceptLanguage'
+import BaseLayout from './BaseLayout.astro'
+const { frontmatter } = Astro.props
+const { title } = Astro.props.frontmatter || Astro.props
+
+const { publishedAt, updatedAt } = frontmatter
+
+const publishedAtDate = new Date(publishedAt)
+const updatedAtDate = new Date(updatedAt)
+
+const now = Date.now()
+
+const publishedAtDeltaMSec = publishedAtDate.getTime() - now
+const updatedAtDeltaMSec = updatedAtDate.getTime() - now
+
+const locales = parseLocalesFromAcceptLanguage(
+  Astro.request.headers.get('accept-language') || ''
+)
+
+const publishedAtDelta = getRelativeTimeString(publishedAtDeltaMSec, locales)
+const updatedAtDelta = getRelativeTimeString(updatedAtDeltaMSec, locales)
 ---
 
 <BaseLayout title={title}>
   <Fragment slot="head">
     <meta name="source-type" content="markdown" />
   </Fragment>
-
-  <h1>{title}</h1>
-  <slot />
+  <h1 id="markdown-title">{title}</h1>
+  <div id="markdown-description">
+    <dl>
+      {
+        updatedAtDelta !== publishedAtDelta && (
+          <>
+            <dt>Last Updated</dt>
+            <dd>
+              <Tooltip
+                text={updatedAtDelta}
+                tooltipText={updatedAtDate.toISOString()}
+              />
+            </dd>
+          </>
+        )
+      }
+      <dt>Last Published</dt>
+      <dd>
+        <Tooltip
+          text={publishedAtDelta}
+          tooltipText={publishedAtDate.toISOString()}
+        />
+      </dd>
+    </dl>
+  </div>
+  <div id="markdown-wrapper">
+    <slot />
+  </div>
   <details>
     <summary><code>frontmatter</code></summary>
     <code>
@@ -22,8 +67,20 @@ const { title } = Astro.props.frontmatter || Astro.props;
       color: var(--emph-color);
       font-size: 2.3em;
     }
-    body {
+    #markdown-title {
+      margin: 1rem 0 0 1rem;
+      align-self: flex-start;
+    }
+    #markdown-description {
+      margin: 0 0 0 1rem;
+      align-self: flex-start;
+    }
+    #markdown-description > dl {
+      margin: 0;
+    }
+    #markdown-wrapper {
       margin: 1em;
+      align-items: flex-start;
     }
   </style>
 </BaseLayout>
