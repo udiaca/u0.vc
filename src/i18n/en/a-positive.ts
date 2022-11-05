@@ -5,6 +5,7 @@ export const a = [
   "achievement",
   "agent",
   "asset",
+  "automaton"
 ] as const
 
 export default a

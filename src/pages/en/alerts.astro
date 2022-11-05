@@ -14,7 +14,7 @@ const title = "Alerts"
   
     <span style="font-size:x-small">*product does not currently exist yet.</span>
   </div>
-  <div id="block-b">
+  <div id="block-b" class="lr-pad">
     <h2>How does it work?</h2>
     <div>
       <h3>1. Create an alert</h3>
@@ -29,26 +29,30 @@ const title = "Alerts"
       <p>How should the alert be delievered?</p>
     </div>
   </div>
-  <div id="block-c">
+  <div id="block-c" class="lr-pad">
     <h2>Our easy-to-use scheduling engine enables you to build complex alert schedules tailored to your needs.</h2>
   </div>
-  <div id="block-d">
+  <div id="block-d" class="lr-pad">
     <h2>Interested?</h2>
     <Auth client:visible />
   </div>
 </BaseLayout>
 <style>
+  .lr-pad {
+    padding: 0 1rem;
+  }
   #block-a {
     display: flex;
     flex-direction: column;
     justify-content: center;
     min-height: 90vh;
+    width: min(95vw, 1200px);
   }
 
   #block-b {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: min(95vw, 1200px);
     background: radial-gradient(closest-side, var(--mute-background-color) 0%, transparent 100%);
   }
 
