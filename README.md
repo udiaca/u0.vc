@@ -31,13 +31,6 @@ Alternatively, a manual deploy may be triggered by running `npm run deploy`.
 
 We use [Cloudflare Pages](https://pages.cloudflare.com/)'s product offering to deploy to the edge network. There are currently no actively managed servers.
 
-# Environment Variables
-
-| Name                   | Description          |
-| ---------------------- | -------------------- |
-| `GITHUB_CLIENT_ID`     | OAuth2 Client ID     |
-| `GITHUB_CLIENT_SECRET` | OAuth2 Client Secret |
-
 # Companion Repository
 
 Due to limitations with Cloudflare Pages, durable objects must be bound into pages and cannot be run locally.
