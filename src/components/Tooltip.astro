@@ -11,8 +11,8 @@ const { text, tooltipText } = Astro.props
   .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted var(--emph-color); /* If you want dots under the hoverable text */
-    cursor: default;
+    text-decoration: underline 1px dotted var(--emph-color); /* If you want dots under the hoverable text */
+    cursor: help;
   }
 
   /* Tooltip text */
@@ -20,7 +20,7 @@ const { text, tooltipText } = Astro.props
     visibility: hidden;
     opacity: 0;
 
-    width: 300%;
+    width: 100%;
     background-color: var(--label-primary-color);
     color: var(--color);
     text-align: center;
@@ -31,20 +31,20 @@ const { text, tooltipText } = Astro.props
 
     position: absolute;
     z-index: 1;
-    top: -5px;
-    left: 100%;
-    transform: translateX(0.5rem);
+    top: 100%;
+    left: 50%;
+    margin-left: -50%;
   }
 
   .tooltip .tooltiptext::after {
     content: ' ';
     position: absolute;
-    top: 50%;
-    right: 100%; /* To the left of the tooltip */
-    margin-top: -5px;
+    left: 50%;
+    bottom: 100%;
+    margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent var(--label-primary-color) transparent transparent;
+    border-color: transparent transparent var(--label-primary-color) transparent;
   }
 
   /* Show the tooltip text when you mouse over the tooltip container */

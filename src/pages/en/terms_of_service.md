@@ -2,7 +2,6 @@
 layout: "../../layouts/MarkdownLayout.astro"
 title: "Terms of Service"
 ---
-Last updated November 01, 2022
 
 **TABLE OF CONTENTS**
 

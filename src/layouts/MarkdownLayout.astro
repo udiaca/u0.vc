@@ -28,32 +28,32 @@ const updatedAtDelta = getRelativeTimeString(updatedAtDeltaMSec, locales)
   <Fragment slot="head">
     <meta name="source-type" content="markdown" />
   </Fragment>
-  <h1 id="markdown-title">{title}</h1>
-  <div id="markdown-description">
-    <dl>
-      {
-        updatedAtDelta !== publishedAtDelta && (
-          <>
-            <dt>Last Updated</dt>
-            <dd>
-              <Tooltip
-                text={updatedAtDelta}
-                tooltipText={updatedAtDate.toISOString()}
-              />
-            </dd>
-          </>
-        )
-      }
-      <dt>Last Published</dt>
-      <dd>
-        <Tooltip
-          text={publishedAtDelta}
-          tooltipText={publishedAtDate.toISOString()}
-        />
-      </dd>
-    </dl>
-  </div>
   <div id="markdown-wrapper">
+    <h1 id="markdown-title">{title}</h1>
+    <div id="markdown-description">
+      <dl>
+        {
+          updatedAtDelta !== publishedAtDelta && (
+            <>
+              <dt>Last Updated</dt>
+              <dd>
+                <Tooltip
+                  text={updatedAtDelta}
+                  tooltipText={updatedAtDate.toISOString()}
+                />
+              </dd>
+            </>
+          )
+        }
+        <dt>Published</dt>
+        <dd>
+          <Tooltip
+            text={publishedAtDelta}
+            tooltipText={publishedAtDate.toISOString()}
+          />
+        </dd>
+      </dl>
+    </div>
     <slot />
   </div>
   <details>
@@ -68,11 +68,11 @@ const updatedAtDelta = getRelativeTimeString(updatedAtDeltaMSec, locales)
       font-size: 2.3em;
     }
     #markdown-title {
-      margin: 1rem 0 0 1rem;
+      margin: 1rem 0 0 0;
       align-self: flex-start;
     }
     #markdown-description {
-      margin: 0 0 0 1rem;
+      margin: 0;
       align-self: flex-start;
     }
     #markdown-description > dl {
