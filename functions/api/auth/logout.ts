@@ -29,19 +29,28 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { '__Secure-SessionId': rawDOSessionId } = parseCookie(cookie || '')
 
   if (isValidDurableObjectIdString(rawDOSessionId)) {
-    const doSessionNamespace = env.DO_SESSION
-    const doSessionId = doSessionNamespace.idFromString(rawDOSessionId!)
-    const doStub = doSessionNamespace.get(doSessionId)
 
-    waitUntil(
-      doStub.fetch('https://do-session.workers.u0.vc', {
-        method: 'DELETE',
-        headers: {
-          'content-type': 'application/json',
-          accept: 'application/json',
-        },
-      })
-    )
+    const endpoint = 'https://do-session.workers.u0.vc'
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+        'authorization': context.env.DEV_PASSTHROUGH ? '' : `bearer ${context.env.DEV_PASSTHROUGH}`
+      },
+    }
+
+    let resp: Promise<Response>
+    try {
+      const doSessionNamespace = env.DO_SESSION
+      const doSessionId = doSessionNamespace.idFromString(rawDOSessionId!)
+      const doStub = doSessionNamespace.get(doSessionId)
+      resp = doStub.fetch(endpoint, options)
+    } catch (err) {
+      resp = fetch(endpoint, options)
+    }
+
+    waitUntil(resp);
   }
 
   const url = new URL(request.url)

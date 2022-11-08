@@ -7,6 +7,7 @@ interface Env {
   CLOUDFLARE_API_ACCOUNT_ID: string;
   CLOUDFLARE_API_PROJECT_NAME: string;
   CLOUDFLARE_API_TOKEN_READ_WORKERS: string;
+  DEV_PASSTHROUGH: string | undefined;
 
   DO_SESSION: DurableObjectNamespace;
   DO_USER: DurableObjectNamespace;

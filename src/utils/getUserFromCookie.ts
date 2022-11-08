@@ -18,20 +18,26 @@ export const getUserFromCookie = async (
     return user
   }
 
-  const doSessionNamespace = runtime.env.DO_SESSION
-  const doSessionId = doSessionNamespace.idFromString(rawDOSessionId)
-  const doSessionStub = doSessionNamespace.get(doSessionId)
+  const endpoint = 'https://do-session.workers.u0.vc/?prefix=user'
+  const options: RequestInit = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      'authorization': runtime.env.DEV_PASSTHROUGH ? '' : `bearer ${runtime.env.DEV_PASSTHROUGH}`
+    },
+  };
+  let sessionUserRefResp: Response;
+  try {
+    const doSessionNamespace = runtime.env.DO_SESSION
+    const doSessionId = doSessionNamespace.idFromString(rawDOSessionId)
+    const doSessionStub = doSessionNamespace.get(doSessionId)
+    sessionUserRefResp = await doSessionStub.fetch(endpoint, options)
+  } catch (err) {
+    // possible fail due to context environment missing DO (development)
+    // just fetch the endpoint
+    sessionUserRefResp = await fetch(endpoint, options)
 
-  // todo- make this more generic for other oauth providers
-  const sessionUserRefResp = await doSessionStub.fetch(
-    'https://do-session.workers.u0.vc/?prefix=user',
-    {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
-    }
-  )
+  }
   const sessionUserRefPayload = await sessionUserRefResp.json<
     Record<string, string>
   >()
