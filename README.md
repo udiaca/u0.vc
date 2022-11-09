@@ -5,8 +5,10 @@ Project containing [`u0.vc`](https://u0.vc) app source code.
 ## Get Started
 
 ```bash
+# clone the project repository
 git clone git@github.com:udiaca/u0.vc.git
 cd u0.vc
+
 npm i
 npm run dev
 ```
