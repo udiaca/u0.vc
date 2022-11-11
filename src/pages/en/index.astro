@@ -5,6 +5,11 @@ import Auth from "../../components/Auth.svelte";
 import Tooltip from "../../components/Tooltip.astro";
 
 const title = "UDIA";
+
+let randomString = ''
+try {
+  randomString = crypto.randomUUID()
+} catch (err) {}
 ---
 
 <BaseLayout title={title}>
@@ -23,7 +28,7 @@ const title = "UDIA";
     <li><a href="/analytics">Proof of existence</a></li>
     <li><a href="/deployments">Deployments (historical)</a></li>
     <li><a href="/all_users">All Users (<Tooltip text={"warning, slow"} tooltipText={"https://discord.com/channels/595317990191398933/779390076219686943/1038014526131548161"} />)</a></li>
-    <li><Auth client:load /></li>
+    <li><Auth randomStringFromServer={randomString} client:load /></li>
     <li><Tooltip text="Alerts" tooltipText="&#x2B21;" />(<a href="/en/alerts">Marketing</a>)</li>
     <li>
       <input type="checkbox" checked={true} disabled={true} />

@@ -4,6 +4,11 @@ import AlertMarketing from "../../components/story/AlertMarketing.svelte"
 import Auth from "../../components/Auth.svelte";
 
 const title = "Alerts"
+
+let randomString = ''
+try {
+  randomString = crypto.randomUUID()
+} catch (err) {}
 ---
 <BaseLayout title={title}>
   <div id="block-a">
@@ -34,7 +39,7 @@ const title = "Alerts"
   </div>
   <div id="block-d" class="lr-pad">
     <h2>Interested?</h2>
-    <Auth client:visible />
+    <Auth randomStringFromServer={randomString} client:visible />
   </div>
 </BaseLayout>
 <style>
