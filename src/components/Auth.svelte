@@ -67,54 +67,60 @@
 </script>
 
 {#if !$user}
-  <div>
+  <div class:agreed={tosOk}>
     <label for="ack-tos"
       >I agree to the <a href="/en/terms_of_service">Terms of Service</a
       >.</label
     >
     <input id="ack-tos" type="checkbox" bind:checked={tosOk} />
-  </div>
-  {#if tosOk}
-    <Radio {options} legend="Authorize with" bind:userSelected={authValue} />
-    {#if authValue == 'github'}
-      <form
-        method="post"
-        action="/api/auth/github/authorize"
-        disabled={!authOk}
-      >
-        <input class="button" type="submit" value="GitHub OAuth2" />
-      </form>
-    {:else if authValue == 'webauthn'}
-      <div>
-        <label for="user-id">User ID</label>
-        <input id="user-id" type="text" bind:value={userId} />
-      </div>
-      <div>
-        <label for="user-name">User Name</label>
-        <input id="user-name" type="text" bind:value={userName} />
-      </div>
-      <div>
-        <label for="display-name">Display Name</label>
-        <input id="display-name" type="text" bind:value={userDisplayName} />
-      </div>
+    {#if tosOk}
+      <Radio {options} legend="Authorize with" bind:userSelected={authValue} />
+      {#if authValue == 'github'}
+        <form
+          method="post"
+          action="/api/auth/github/authorize"
+          disabled={!authOk}
+        >
+          <input class="button" type="submit" value="GitHub OAuth2" />
+        </form>
+      {:else if authValue == 'webauthn'}
+        <div>
+          <label for="user-id">User ID</label>
+          <input id="user-id" type="text" bind:value={userId} />
+        </div>
+        <div>
+          <label for="user-name">User Name</label>
+          <input id="user-name" type="text" bind:value={userName} />
+        </div>
+        <div>
+          <label for="display-name">Display Name</label>
+          <input id="display-name" type="text" bind:value={userDisplayName} />
+        </div>
 
-      {#await credentialPromise}
-        <p>...waiting</p>
-      {:then credential}
-        <p>{credential}</p>
-      {:catch error}
-        <p>{error}</p>
-      {/await}
+        {#await credentialPromise}
+          <p>...waiting</p>
+        {:then credential}
+          <p>{credential}</p>
+        {:catch error}
+          <p>{error}</p>
+        {/await}
 
-      <button on:click={handleWebAuthnClick} {disabled}> Authenticate </button>
+        <button on:click={handleWebAuthnClick} {disabled}> Authenticate </button>
+      {/if}
     {/if}
-  {/if}
+  </div>
   <style>
     .button {
       cursor: pointer;
     }
     .button:disabled {
       cursor: not-allowed;
+    }
+
+    .agreed {
+      border-style: dotted;
+      border-color: var(--emph-color);
+      padding: 0.2em;
     }
   </style>
 {/if}
