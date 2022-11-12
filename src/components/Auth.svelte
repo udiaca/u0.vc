@@ -26,8 +26,18 @@
   let userDisplayName = 'Lee'
 
   let disabled = false
+  const createWebAuthnPK = async (opts?: CredentialCreationOptions) => {
+    try {
+      return await navigator.credentials.create(opts)
+    } catch (err) {
+      throw err
+    } finally {
+      disabled = false;
+    }
+  }
+
   const handleWebAuthnClick = () => {
-    credentialPromise = navigator.credentials.create({
+    credentialPromise = createWebAuthnPK({
       publicKey: {
         challenge: Uint8Array.from(randomStringFromServer, (c) =>
           c.charCodeAt(0)
