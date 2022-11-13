@@ -9,30 +9,23 @@
   let tosOk = false
   let navigatorCredentials = false
   let authValue: string | undefined = undefined
-  let options = [
-    {
-      value: 'webauthn',
-      label: 'Web Authentication',
-    },
-    {
-      value: 'github',
-      label: 'GitHub',
-    },
-  ]
+  let options: { value: string; label: string }[] = []
   let credentialPromise = new Promise(() => {})
 
   let userId = 'UZSL85T9AFC'
   let userName = 'lee@webauthn.guide'
   let userDisplayName = 'Lee'
 
+  const forceDisabled = true
   let disabled = false
   const createWebAuthnPK = async (opts?: CredentialCreationOptions) => {
+    console.log(opts)
     try {
       return await navigator.credentials.create(opts)
     } catch (err) {
       throw err
     } finally {
-      disabled = false;
+      disabled = false
     }
   }
 
@@ -65,14 +58,16 @@
   onMount(() => {
     navigatorCredentials = navigator && !!navigator.credentials
     // https://webauthn.guide/#webauthn-api
-    if (!navigatorCredentials) {
-      options = [
-        {
-          value: 'github',
-          label: 'GitHub',
-        },
-      ]
+    if (navigatorCredentials) {
+      options.push({
+        value: 'webauthn',
+        label: 'Web Authentication',
+      })
     }
+    options.push({
+      value: 'github',
+      label: 'GitHub',
+    })
   })
 </script>
 
@@ -115,7 +110,9 @@
           <p>{error}</p>
         {/await}
 
-        <button on:click={handleWebAuthnClick} {disabled}> Authenticate </button>
+        <button on:click={handleWebAuthnClick} disabled={disabled || forceDisabled}>
+          {forceDisabled ? "FORCE DISABLED" : "Authenticate"}
+        </button>
       {/if}
     {/if}
   </div>

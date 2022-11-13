@@ -54,7 +54,7 @@ try {
 <BaseLayout title={title}>
   <ul>
     {result.map((rawUser) => (
-      <li><a href={'u/' + rawUser.id}>{rawUser.id}</a></li>
+      <li><a href={'/u/' + rawUser.id}>{rawUser.id}</a></li>
     ))}
   </ul>
   <details>

@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
   // based on suggestions from:
   // Sami Keijonen https://webdesign.tutsplus.com/tutorials/how-to-make-custom-accessible-checkboxes-and-radio-buttons--cms-32074
   // and Inclusive Components by Heydon Pickering https://inclusive-components.design/toggle-button/
 
-  export let options
-  export let legend
-  export let userSelected = options[0].value
+  export let options: { value: string, label: string }[]
+  export let legend: string
+  export let userSelected = options[0]?.value
   export let flexDirection = 'column'
 
   const uniqueID = Math.floor(Math.random() * 100)
@@ -35,11 +35,6 @@
 </div>
 
 <style>
-  :root {
-    --accent-color: CornflowerBlue;
-    --gray: #ccc;
-  }
-
   .group-container {
     border-radius: 2px;
     display: flex;
@@ -82,13 +77,13 @@
     width: 1em;
     height: 1em;
     background: transparent;
-    border: 1px solid var(--gray, #ccc);
+    border: 1px solid var(--mute-background-color, #ccc);
     border-radius: 50%;
     top: 0.2em;
   }
 
   input[type='radio']:checked + label::before {
-    border: 1px solid var(--gray, #ccc);
+    border: 1px solid var(--mute-background-color, #ccc);
     border-radius: 50%;
   }
 
@@ -100,8 +95,8 @@
     height: 0.5em;
     top: 0.45em;
     left: 0.25em;
-    background: var(--accent-color, #282828);
-    border: 1px solid var(--accent-color, #282828);
+    background: var(--emph-color, #282828);
+    border: 1px solid var(--emph-color, #282828);
     border-radius: 50%;
     transform: scale(0);
   }
@@ -112,16 +107,16 @@
   }
 
   input[type='radio']:focus + label::before {
-    box-shadow: 0 0 0 1px var(--accent-color, #282828);
+    box-shadow: 0 0 0 1px var(--emph-color, #282828);
     border-radius: 50%;
   }
 
   input[type='radio']:disabled + label {
-    color: darken(var(--gray, #ccc), 10);
+    color: darken(var(--mute-background-color, #ccc), 10);
   }
 
   input[type='radio']:disabled + label::before {
-    background: var(--gray, #ccc);
+    background: var(--mute-background-color, #ccc);
   }
   /* gravy */
 
@@ -142,7 +137,7 @@
   }
 
   input[type='radio']:focus + label::before {
-    box-shadow: 0 0px 8px var(--accent-color, #282828);
+    box-shadow: 0 0px 8px var(--emph-color, #282828);
     border-radius: 50%;
   }
 </style>
