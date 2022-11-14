@@ -10,9 +10,25 @@ let randomString = ''
 try {
   randomString = crypto.randomUUID()
 } catch (err) {}
+
+const allPosts = await Astro.glob('./**/*.md');
+
+// sort by most recently published
+allPosts.sort((a, b) => {
+  const aDate = new Date(a.frontmatter.publishedAt)
+  const bDate = new Date(b.frontmatter.publishedAt)
+  return aDate.valueOf() - bDate.valueOf()
+})
+.reverse();
+
+const mostRecentPost = allPosts[0]
 ---
 
 <BaseLayout title={title}>
+  <iframe src={mostRecentPost?.url} title="description"></iframe>
+
+  <hr id="clean-slate" />
+
   <img id="everything-app" draggable="false" src={everythingApp} alt="Everything App" />
 
   <ul>
@@ -73,6 +89,16 @@ try {
     }
     img#everything-app {
       padding-top: 1rem;
+    }
+    iframe {
+      width: 99vw;
+      height: 80vh;
+      border: 0;
+    }
+
+    hr#clean-slate {
+      width: 100vw;
+      color: var(--emph-color);
     }
   </style>
 </BaseLayout>
