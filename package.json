@@ -12,6 +12,7 @@
     "preview": "astro build && wrangler pages dev dist --compatibility-date=2022-10-27 --live-reload --local-protocol https",
     "astro": "astro",
     "deploy:preview": "astro build && wrangler pages publish dist --project-name u0-vc --branch preview --commit-dirty",
+    "deploy:prod": "astro build && wrangler pages publish dist --project-name u0-vc --branch main --commit-dirty",
     "test": "astro check"
   },
   "prettier": {
