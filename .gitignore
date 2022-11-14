@@ -5,6 +5,9 @@ dist/
 # dependencies
 node_modules/
 
+#
+r2.u0.vc
+
 # logs
 npm-debug.log*
 yarn-debug.log*
