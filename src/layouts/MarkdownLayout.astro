@@ -22,12 +22,35 @@ const locales = parseLocalesFromAcceptLanguage(
 
 const publishedAtDelta = getRelativeTimeString(publishedAtDeltaMSec, locales)
 const updatedAtDelta = getRelativeTimeString(updatedAtDeltaMSec, locales)
+
+const allPosts = await Astro.glob('../pages/**/*.md');
+
+allPosts.sort((a, b) => {
+  const aDate = new Date(a.frontmatter.publishedAt)
+  const bDate = new Date(b.frontmatter.publishedAt)
+  return aDate.valueOf() - bDate.valueOf()
+})
+.reverse();
+
+// get the current post within all posts
+const curIdx = allPosts.findIndex((allPost) => allPost.url === Astro.props.url)
+const prevIdx = curIdx - 1
+const nextIdx = curIdx + 1
+
+const prevMd = allPosts[prevIdx]
+const nextMd = allPosts[nextIdx]
 ---
 
 <BaseLayout title={title}>
   <Fragment slot="head">
     <meta name="source-type" content="markdown" />
   </Fragment>
+
+  <code><pre>index {curIdx} of a journey (length {allPosts.length})</pre></code>
+
+  <a href={prevMd?.url}>index {prevIdx}</a>
+  <a href={nextMd?.url}>index {nextIdx}</a>
+
   <div id="markdown-wrapper">
     <h1 id="markdown-title">{title}</h1>
     <div id="markdown-description">
