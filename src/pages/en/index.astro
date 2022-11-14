@@ -21,12 +21,11 @@ const sortedAllPosts = allPosts.sort((a, b) => {
 })
 .reverse();
 
-const mostRecentPost = sortedAllPosts[0]
+const mostRecentPost = sortedAllPosts[0];
+const Content = mostRecentPost?.Content;
 ---
-
-<BaseLayout title={title}>
-  <iframe src={mostRecentPost?.url} title="description"></iframe>
-
+<BaseLayout title={title} disableLinks={true}>
+  {Content && <Content />}
   <hr id="clean-slate" />
 
   <img id="everything-app" draggable="false" src={everythingApp} alt="Everything App" />
@@ -91,13 +90,14 @@ const mostRecentPost = sortedAllPosts[0]
       padding-top: 1rem;
     }
     iframe {
-      width: 99vw;
+      width: 100vw;
       height: 80vh;
       border: 0;
     }
 
     hr#clean-slate {
-      width: 100vw;
+      margin: 0;
+      width: 50vw;
       color: var(--emph-color);
     }
   </style>

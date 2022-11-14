@@ -10,6 +10,7 @@ import { getUserFromCookie } from '../utils/getUserFromCookie'
 
 export interface Props {
   title?: string
+  disableLinks?: boolean
 }
 const { title } = Astro.props.frontmatter || Astro.props
 const cookie = Astro.request.headers.get('cookie') || ''
@@ -21,6 +22,8 @@ try {
 } catch (err) {
   console.error(err)
 }
+
+const showLinks = !Astro.props.disableLinks
 ---
 
 <!DOCTYPE html>
@@ -48,7 +51,7 @@ try {
     <AuthenticatedUser client:load />
     <slot />
     <img draggable="false" class="logo" width="128px" src={logo} alt="UDIA" />
-    <MainLinks />
+    {showLinks && <MainLinks />}
     <Meta />
     <GlobalStyles />
     <noscript><code>Javascript is disabled in your web browser.</code></noscript>
