@@ -19,15 +19,13 @@
 
 <style>
   #menu {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 1em;
+    justify-items: center;
+    align-items: center;
     min-width: 50vw;
     padding-bottom: 1rem;
-  }
-  @media only screen and (max-width: 599px) {
-    #menu {
-      width: 90vw;
-    }
   }
 
   .menu-link {

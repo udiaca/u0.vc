@@ -36,23 +36,50 @@ allPosts.sort((a, b) => {
 const curIdx = allPosts.findIndex((allPost) => allPost.url === Astro.props.url)
 const prevIdx = curIdx - 1
 const nextIdx = curIdx + 1
+const lastIdx = allPosts.length - 1
 
-const curMd = allPosts[curIdx]
+const firstMd = allPosts[0]
 const prevMd = allPosts[prevIdx]
+const curMd = allPosts[curIdx]
 const nextMd = allPosts[nextIdx]
+const lastMd = allPosts[lastIdx]
+
+// are we currently being served on the index?
+const disableLinks = Astro.url.pathname !== frontmatter.url
+console.log("==== MarkdownLayout")
+
+const MDLayout = disableLinks ? Fragment : BaseLayout
+const noNext = nextMd?.url ? undefined : 'no-next';
+const prevUrl = prevMd?.url || '/'
+
 ---
 
-<BaseLayout title={title}>
+<MDLayout title={title}>
   <Fragment slot="head">
     <meta name="source-type" content="markdown" />
   </Fragment>
 
   <code><pre>index {curIdx} of a journey (length {allPosts.length})</pre></code>
 
-  <a href={prevMd?.url || "/"}>index {prevIdx}</a>
-  {curMd?.url === Astro.url.pathname ? <span>{curMd?.frontmatter.title}</span> : <a href={curMd?.url}>{curMd?.frontmatter.title}</a>}
-  <a href={nextMd?.url}>index {nextIdx}</a>
-
+  <div class="journey-steps-container">
+    <a href={lastMd?.url}>
+      &LeftArrowBar;
+      <span>index {lastIdx}</span>
+    </a>
+    <a href={nextMd?.url} class={noNext}>
+      &LeftArrow;
+      <span>index {nextIdx}</span>
+    </a>
+    {curMd?.url === Astro.url.pathname ? <span>{curMd?.frontmatter.title}</span> : <a href={curMd?.url}>{curMd?.frontmatter.title}</a>}
+    <a href={prevUrl}>
+      {prevUrl === '/' ? 'UDIA' : <span>index {prevIdx}</span>}
+      &RightArrow;
+    </a>
+    <a href={firstMd?.url || "/"}>
+      <span>index <code>0</code></span>
+      &RightArrowBar;
+    </a>
+  </div>
   <div id="markdown-wrapper">
     <h1 id="markdown-title">{title}</h1>
     <div id="markdown-description">
@@ -108,10 +135,22 @@ const nextMd = allPosts[nextIdx]
       align-items: flex-start;
       max-width: 100vw;
     }
-  </style>
-  <style is:global>
-    pre {
-      max-width: 800px;
+
+    .journey-steps-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      column-gap: 1em;
+      justify-items: center;
+      align-items: center;
     }
+
+    .journey-steps-container * {
+      text-align: center;
+    }
+
+    .journey-steps-container .no-next {
+      cursor: not-allowed;
+    }
+
   </style>
-</BaseLayout>
+</MDLayout>

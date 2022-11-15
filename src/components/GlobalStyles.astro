@@ -62,11 +62,21 @@ import NormalizeCSS from './NormalizeCSS.astro'
     word-break: break-word;
   }
 
+  pre {
+    max-width: 99vw;
+    overflow-x: auto;
+    border: 1px dashed var(--emph-color);
+  }
+
   @media screen and (min-width: 1200px) {
     body {
       max-width: 1400px;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    pre {
+      max-width: 1200px;
     }
   }
   code {
@@ -75,11 +85,6 @@ import NormalizeCSS from './NormalizeCSS.astro'
   }
   details {
     cursor: pointer;
-  }
-  pre {
-    max-width: 99vw;
-    overflow-x: auto;
-    border: 1px dashed var(--emph-color);
   }
   li + li {
     margin-top: 0.2rem;
