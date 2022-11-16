@@ -70,12 +70,13 @@ const prevUrl = prevMd?.url || '/'
       &RightArrowBar;
     </a>
   </div>
+
   <div id="markdown-wrapper">
     <h1 id="markdown-title">{title}</h1>
     <div id="markdown-description">
       <dl>
         {
-          updatedAtDate !== publishedAtDate && (
+          updatedAtDate.valueOf() !== publishedAtDate.valueOf() && (
             <>
               <dt>Last Updated</dt>
               <dd>
@@ -100,6 +101,27 @@ const prevUrl = prevMd?.url || '/'
     </div>
     <slot />
   </div>
+
+  <div class="journey-steps-container">
+    <a href={lastMd?.url}>
+      &LeftArrowBar;
+      <span>index {lastIdx}</span>
+    </a>
+    <a href={nextMd?.url} class={noNext}>
+      &LeftArrow;
+      <span>index {nextIdx}</span>
+    </a>
+    {curMd?.url === Astro.url.pathname ? <span>{curMd?.frontmatter.title}</span> : <a href={curMd?.url}>{curMd?.frontmatter.title}</a>}
+    <a href={prevUrl}>
+      {prevUrl === '/' ? 'UDIA' : <span>index {prevIdx}</span>}
+      &RightArrow;
+    </a>
+    <a href={firstMd?.url || "/"}>
+      <span>index <code>0</code></span>
+      &RightArrowBar;
+    </a>
+  </div>
+
   <details>
     <summary><code>frontmatter</code></summary>
     <code>
