@@ -1,6 +1,5 @@
 ---
-import Tooltip from '../components/Tooltip.astro'
-import { getRelativeTimeString } from '../utils/getRelativeTimeString'
+import DateDelta from '../components/DateDelta.svelte'
 import { parseLocalesFromAcceptLanguage } from '../utils/parseLocalesFromAcceptLanguage'
 import BaseLayout from './BaseLayout.astro'
 const { frontmatter } = Astro.props
@@ -11,17 +10,9 @@ const { publishedAt, updatedAt } = frontmatter
 const publishedAtDate = new Date(publishedAt)
 const updatedAtDate = new Date(updatedAt)
 
-const now = Date.now()
-
-const publishedAtDeltaMSec = publishedAtDate.getTime() - now
-const updatedAtDeltaMSec = updatedAtDate.getTime() - now
-
 const locales = parseLocalesFromAcceptLanguage(
   Astro.request.headers.get('accept-language') || ''
 )
-
-const publishedAtDelta = getRelativeTimeString(publishedAtDeltaMSec, locales)
-const updatedAtDelta = getRelativeTimeString(updatedAtDeltaMSec, locales)
 
 const allPosts = await Astro.glob('../pages/**/*.md');
 
@@ -46,7 +37,6 @@ const lastMd = allPosts[lastIdx]
 
 // are we currently being served on the index?
 const disableLinks = Astro.url.pathname !== frontmatter.url
-console.log("==== MarkdownLayout")
 
 const MDLayout = disableLinks ? Fragment : BaseLayout
 const noNext = nextMd?.url ? undefined : 'no-next';
@@ -85,13 +75,14 @@ const prevUrl = prevMd?.url || '/'
     <div id="markdown-description">
       <dl>
         {
-          updatedAtDelta !== publishedAtDelta && (
+          updatedAtDate !== publishedAtDate && (
             <>
               <dt>Last Updated</dt>
               <dd>
-                <Tooltip
-                  text={updatedAtDelta}
-                  tooltipText={updatedAtDate.toISOString()}
+                <DateDelta
+                  client:load
+                  locales={locales}
+                  toDelta={updatedAtDate}
                 />
               </dd>
             </>
@@ -99,9 +90,10 @@ const prevUrl = prevMd?.url || '/'
         }
         <dt>Published</dt>
         <dd>
-          <Tooltip
-            text={publishedAtDelta}
-            tooltipText={publishedAtDate.toISOString()}
+          <DateDelta
+            client:load
+            locales={locales}
+            toDelta={publishedAtDate}
           />
         </dd>
       </dl>
@@ -151,6 +143,5 @@ const prevUrl = prevMd?.url || '/'
     .journey-steps-container .no-next {
       cursor: not-allowed;
     }
-
   </style>
 </MDLayout>

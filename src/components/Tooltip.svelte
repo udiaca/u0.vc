@@ -1,7 +1,7 @@
----
-const { text, tooltipText } = Astro.props
----
-
+<script lang="ts">
+export let text: string;
+export let tooltipText: string;
+</script>
 <div class="tooltip">
   {text}
   <span class="tooltiptext">{tooltipText}</span>
