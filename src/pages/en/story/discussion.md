@@ -1,6 +1,7 @@
 ---
 layout: ../../../layouts/MarkdownLayout.astro
 title: Discussion with UDIA
+center: true
 ---
 
 # Diffusion

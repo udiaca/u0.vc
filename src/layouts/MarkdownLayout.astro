@@ -3,7 +3,7 @@ import DateDelta from '../components/DateDelta.svelte'
 import { parseLocalesFromAcceptLanguage } from '../utils/parseLocalesFromAcceptLanguage'
 import BaseLayout from './BaseLayout.astro'
 const { frontmatter } = Astro.props
-const { title } = Astro.props.frontmatter || Astro.props
+const { title, center } = frontmatter || Astro.props
 
 const { publishedAt, updatedAt } = frontmatter
 
@@ -49,8 +49,6 @@ const prevUrl = prevMd?.url || '/'
     <meta name="source-type" content="markdown" />
   </Fragment>
 
-  <code><pre>index {curIdx} of a journey (length {allPosts.length})</pre></code>
-
   <div class="journey-steps-container">
     <a href={lastMd?.url}>
       &LeftArrowBar;
@@ -60,7 +58,7 @@ const prevUrl = prevMd?.url || '/'
       &LeftArrow;
       <span>index {nextIdx}</span>
     </a>
-    {curMd?.url === Astro.url.pathname ? <span>{curMd?.frontmatter.title}</span> : <a href={curMd?.url}>{curMd?.frontmatter.title}</a>}
+    {curIdx}
     <a href={prevUrl}>
       {prevUrl === '/' ? 'UDIA' : <span>index {prevIdx}</span>}
       &RightArrow;
@@ -71,7 +69,7 @@ const prevUrl = prevMd?.url || '/'
     </a>
   </div>
 
-  <div id="markdown-wrapper">
+  <div id="markdown-wrapper" class={center ? 'center' : undefined}>
     <h1 id="markdown-title">{title}</h1>
     <div id="markdown-description">
       <dl>
@@ -111,7 +109,7 @@ const prevUrl = prevMd?.url || '/'
       &LeftArrow;
       <span>index {nextIdx}</span>
     </a>
-    {curMd?.url === Astro.url.pathname ? <span>{curMd?.frontmatter.title}</span> : <a href={curMd?.url}>{curMd?.frontmatter.title}</a>}
+    {curIdx}
     <a href={prevUrl}>
       {prevUrl === '/' ? 'UDIA' : <span>index {prevIdx}</span>}
       &RightArrow;
@@ -121,6 +119,8 @@ const prevUrl = prevMd?.url || '/'
       &RightArrowBar;
     </a>
   </div>
+
+  <code><pre>of a journey (length {allPosts.length})</pre></code>
 
   <details>
     <summary><code>frontmatter</code></summary>
@@ -164,6 +164,11 @@ const prevUrl = prevMd?.url || '/'
 
     .journey-steps-container .no-next {
       cursor: not-allowed;
+    }
+
+    .center {
+      display: grid;
+      justify-items: center;
     }
   </style>
 </MDLayout>
