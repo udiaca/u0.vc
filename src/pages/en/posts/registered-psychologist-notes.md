@@ -30,3 +30,11 @@ Nov 9, 2022. 12-1pm.
 
 - I want the app to feel like there is a benevolent 'someone' living inside of your head.
     - I would use that.
+
+# Third session with Doris.
+
+Nov 23, 2022. 1:15-2:15pm.
+
+- Neurodivergent: brains work differently than opposite of Neurotypical.
+    - A class of neurodivergent individuals who are low functioning tend to be repetitive
+    - Opposite spectrum, individuals who are high functioning tend to have hyper-focus (expertise)

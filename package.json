@@ -9,7 +9,7 @@
     "start": "astro dev",
     "build": "astro build",
     "build:watch": "astro build && fswatch src | (while read; do npx astro build; done)",
-    "preview": "astro build && wrangler pages dev dist --compatibility-date=2022-10-27 --live-reload --local-protocol https",
+    "preview": "wrangler pages dev dist --local --compatibility-date=2022-10-27 --live-reload --local-protocol https --log-level debug",
     "astro": "astro",
     "deploy:preview": "astro build && wrangler pages publish dist --project-name u0-vc --branch preview --commit-dirty",
     "deploy:prod": "astro build && wrangler pages publish dist --project-name u0-vc --branch main --commit-dirty",
