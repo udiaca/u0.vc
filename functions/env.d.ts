@@ -11,4 +11,6 @@ interface Env {
 
   DO_SESSION: DurableObjectNamespace;
   DO_USER: DurableObjectNamespace;
+
+  D1_U0_VC: D1Database;
 }

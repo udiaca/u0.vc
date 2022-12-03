@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import gitDatesPlugin from './src/plugins/gitDates.mts';
+import indexEntry from './src/plugins/indexEntry';
 import cloudflare from "@astrojs/cloudflare";
 
 import svelte from "@astrojs/svelte";
@@ -14,5 +15,5 @@ export default defineConfig({
   adapter: cloudflare({
     mode: "directory"
   }),
-  integrations: [svelte()]
+  integrations: [svelte(), indexEntry()]
 });
