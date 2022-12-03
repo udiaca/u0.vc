@@ -5,6 +5,7 @@
 import type { AstroConfig, AstroIntegration, RouteData } from "astro";
 import { publishDateTime, updatedDateTime } from "./gitDates.mjs";
 import { readFile } from 'fs/promises';
+import type { IndexEntryPayload } from "../../functions/api/entry.js";
 
 // const DEV_PASSTHROUGH = ""
 const DEV_PASSTHROUGH = "1ae724bfb63e05586d586a52b507b4c3";
@@ -24,21 +25,28 @@ export default function indexEntry(): AstroIntegration {
 
     // get the component file contents
     const file = await readFile(component, 'utf-8')
+    // maybe need to normalize file, simplify all whitespace or something?
+    const content = file
+      .split(/(\s+)/).filter(inp => inp.trim().length > 0)
+      .map(inp => inp.trim())
+      .join(" ")
+
+    const payload: IndexEntryPayload = {
+      url: pathname,
+      content,
+      published: publishedAt,
+      updated: updatedAt
+    }
     const resp = await fetch('https://u0.vc/api/entry', {
       method: 'POST',
-      body: JSON.stringify({
-        url: pathname,
-        content: file,
-        published: publishedAt,
-        updated: updatedAt
-      }),
+      body: JSON.stringify(payload),
       headers: {
         'authorization': `bearer ${DEV_PASSTHROUGH}`,
         'content-type': 'application/json'
       }
     })
-    const payload = await resp.text()
-    console.log(pathname, resp, payload)
+    const resPayload = await resp.text()
+    console.log(pathname, resp, resPayload)
     console.log('====\n')
   }
 

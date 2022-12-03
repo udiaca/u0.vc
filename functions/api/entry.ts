@@ -29,7 +29,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const search = url.searchParams.get('q') || ''
 
   try {
-    const result = await D1_U0_VC.prepare(SearchFTS).bind(search).run();
+    const result = await D1_U0_VC.prepare(SearchFTS).bind(search).all();
     return new Response(JSON.stringify({ result, url }), {
       status: 200, headers: {
         'content-type': 'application/json'
