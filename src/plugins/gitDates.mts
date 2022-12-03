@@ -1,4 +1,7 @@
-// Automatically populate pubDate and updatedDate from git metadata
+/**
+ * Remark Plugin
+ * Automatically populate pubDate and updatedDate from git metadata
+ */
 
 import * as child from "node:child_process";
 
@@ -7,7 +10,7 @@ import * as child from "node:child_process";
  * @param {string} mdPath Path to file
  * @returns {string} ISO 8601 commit timestamp for first commit or empty string
  */
-function publishDateTime(mdPath: string) {
+export function publishDateTime(mdPath: string) {
   try {
     return child
       .execFileSync(
@@ -26,7 +29,7 @@ function publishDateTime(mdPath: string) {
  * @param {string} mdPath Path to file
  * @returns {string} ISO 8601 commit timestamp for first commit or empty string
  */
-function updatedDateTime(mdPath: string) {
+export function updatedDateTime(mdPath: string) {
   try {
     return child
       .execFileSync("git", ["log", "-1", "--pretty=format:%cI", "--", mdPath], {

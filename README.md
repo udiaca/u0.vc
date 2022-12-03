@@ -51,7 +51,7 @@ Refer to [udiaca/u0-workers](https://github.com/udiaca/u0-workers) for the durab
 
 [GNU Affero General Public License version 3 (`AGPLv3`)](https://www.gnu.org/licenses/agpl-3.0.html)
 
-```text
+```
 u0.vc
 Copyright (C) 2022  Alexander Wong
 
