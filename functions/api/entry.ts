@@ -6,18 +6,25 @@ export interface IndexEntryPayload {
 }
 
 
+interface FTSEntry {
+  url: string;
+  content: string;
+}
+
 const InsertEntry = `
-  INSERT INTO entries (url, published, updated)
+  INSERT OR REPLACE INTO entries (url, published, updated)
   VALUES (?, ?, ?);
 `;
 
 const InsertFTS = `
-  INSERT INTO ftsEntries (url, content)
+  INSERT OR REPLACE INTO ftsEntries (url, content)
   VALUES (?, ?);
-`;
+`;[]
 
 const SearchFTS = `
-  SELECT * FROM ftsEntries(?);
+  SELECT * FROM entries
+  JOIN ftsEntries ON ftsEntries.url = entries.url
+  WHERE ftsEntries = (?);
 `;
 
 
@@ -29,8 +36,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const search = url.searchParams.get('q') || ''
 
   try {
-    const result = await D1_U0_VC.prepare(SearchFTS).bind(search).all();
-    return new Response(JSON.stringify({ result, url }), {
+    const result = await D1_U0_VC.prepare(SearchFTS).bind(search).all<FTSEntry>();
+    return new Response(JSON.stringify(result), {
       status: 200, headers: {
         'content-type': 'application/json'
       }
