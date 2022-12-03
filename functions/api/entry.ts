@@ -36,7 +36,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       }
     })
   } catch (err) {
-    return new Response(`${err}`, { status: 500, headers: { 'content-type': 'application/json' }});
+    return new Response(`${err}`, { status: 500 });
   }
 }
 
@@ -67,6 +67,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       }
     });
   } catch (err) {
-    return new Response(`${err}`, { status: 500, headers: { 'content-type': 'application/json' } });
+    return new Response(`${err}`, { status: 500 });
   }
 }

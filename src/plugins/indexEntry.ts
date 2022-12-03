@@ -38,7 +38,7 @@ export default function indexEntry(): AstroIntegration {
       }
     })
     const payload = await resp.text()
-    console.log(pathname, resp.status, payload)
+    console.log(pathname, resp, payload)
     console.log('====\n')
   }
 
