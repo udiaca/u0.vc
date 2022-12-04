@@ -8,7 +8,7 @@ This post documents how to perform client side search using SQLite in the browse
 
 [sql-js-httpsvfs]: https://github.com/phiresky/sql.js-httpvfs "github.com/phiresky/sql.js-httpvfs"
 
-*lowering expectations*
+[*lowering expectations*](/en/story/2022-12-03#stuff-made-here-original-unpickable-lock-guy)
 
 # Content Search
 
@@ -104,3 +104,11 @@ Not too happy with how I'm doing the push to `u0.vc` d1 database, [running it on
 [Query also works](https://github.com/udiaca/u0.vc/blob/preview/functions/api/entry.ts).
 Call to [u0.vc/api/entry?q=hariscarrom](https://u0.vc/api/entry?q=hariscarrom) serves raw JSON but you can search for strings.
 Need to axe the dev passthrough env variable, add search pagination.
+
+## Client Side Search Implementation
+
+**Three**. Create a web UI for the search.
+
+Written [`src/components/SearchEntities.svelte`](https://github.com/udiaca/u0.vc/blob/preview/src/components/SearchEntities.svelte), first pass.
+
+Bare bones search on blur with stylized text to show search states. If you are reading this, the search bar at the top should be working.

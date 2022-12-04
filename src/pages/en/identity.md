@@ -7,6 +7,8 @@ title: "Identity"
 
 I am an `attention` idle game.
 
+I am a complicated `todo list`.
+
 ## More Technical
 
 I am a website running on the [Astro web framework](https://astro.build/).
