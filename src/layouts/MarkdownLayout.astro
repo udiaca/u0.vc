@@ -7,8 +7,16 @@ const { title, center } = frontmatter || Astro.props
 
 const { publishedAt, updatedAt } = frontmatter
 
-const publishedAtDate = new Date(publishedAt)
-const updatedAtDate = new Date(updatedAt)
+const parseDate = (rawDate: string) => {
+  try {
+    return new Date(rawDate);
+  } catch (err) {
+    return new Date();
+  }
+}
+
+const publishedAtDate = parseDate(publishedAt)
+const updatedAtDate = parseDate(updatedAt)
 
 const locales = parseLocalesFromAcceptLanguage(
   Astro.request.headers.get('accept-language') || ''
@@ -17,8 +25,8 @@ const locales = parseLocalesFromAcceptLanguage(
 const allPosts = await Astro.glob('../pages/**/*.md');
 
 allPosts.sort((a, b) => {
-  const aDate = new Date(a.frontmatter.publishedAt)
-  const bDate = new Date(b.frontmatter.publishedAt)
+  const aDate = parseDate(a.frontmatter.publishedAt)
+  const bDate = parseDate(b.frontmatter.publishedAt)
   return aDate.valueOf() - bDate.valueOf()
 })
 .reverse();

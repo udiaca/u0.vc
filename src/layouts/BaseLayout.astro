@@ -7,6 +7,7 @@ import Meta from '../components/Meta.astro'
 import logo from '../images/logo.svg'
 import { getRuntime } from '@astrojs/cloudflare/runtime'
 import { getUserFromCookie } from '../utils/getUserFromCookie'
+import SearchEntities from '../components/SearchEntities.svelte'
 
 export interface Props {
   title?: string
@@ -47,6 +48,7 @@ try {
     <script>true</script>
     <GlobalStore user={user} client:load />
     <AuthenticatedUser client:load />
+    <SearchEntities client:load />
     <slot />
     <img draggable="false" class="logo" width="128px" src={logo} alt="UDIA" />
     <MainLinks />

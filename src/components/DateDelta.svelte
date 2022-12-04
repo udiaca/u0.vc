@@ -20,13 +20,20 @@
 
   const intlDTF = new Intl.DateTimeFormat(locales, intlDTFOpts).format(toDelta);
 
-  let deltaMSec = toDelta.getTime() - Date.now();
-  let localizedDeltaDate = getRelativeTimeString(deltaMSec, locales);
+  let deltaMSec: number
+  let localizedDeltaDate: string
 
-  onInterval(() => {
-    deltaMSec = toDelta.getTime() - Date.now();
-    localizedDeltaDate = getRelativeTimeString(deltaMSec, locales);
-  }, 1000)
+  const tickTime = () => {
+    try {
+      deltaMSec = toDelta.getTime() - Date.now();
+      localizedDeltaDate = getRelativeTimeString(deltaMSec, locales);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  tickTime()
+  onInterval(tickTime, 1000)
 </script>
 <Tooltip
   text={localizedDeltaDate}
