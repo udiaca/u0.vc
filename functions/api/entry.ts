@@ -23,12 +23,13 @@ const InsertFTS = `
 `;[]
 
 const SearchFTS = `
-  SELECT snippet(ftsEntries, -1, "⬡", "⬢", "⬣", 64) content, url FROM ftsEntries
-  JOIN entries ON entries.url = ftsEntries.url
+  SELECT snippet(ftsEntries, -1, '⬡', '⬢', '⬣', 64) as content, entries.url FROM ftsEntries, entries
   WHERE ftsEntries = (?)
+  AND entries.url = ftsEntries.url
   ORDER BY rank;
 `;
-
+// debug helper
+// npx wrangler d1 execute d1-u0-vc --command "SELECT snippet(ftsEntries, -1, '⬡', '⬢', '⬣', 64) as content, entries.url FROM ftsEntries, entries WHERE ftsEntries = 'hariscarrom' AND entries.url = ftsEntries.url ORDER BY rank;"
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { env, request } = context;
