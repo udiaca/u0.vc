@@ -13,7 +13,8 @@
     "astro": "astro",
     "deploy:preview": "astro build && wrangler pages publish dist --project-name u0-vc --branch preview --commit-dirty",
     "deploy:prod": "astro build && wrangler pages publish dist --project-name u0-vc --branch main --commit-dirty",
-    "test": "astro check"
+    "test": "astro check",
+    "reset:db": "wrangler d1 execute d1-u0-vc --file db/schema.sql"
   },
   "prettier": {
     "tabWidth": 2,

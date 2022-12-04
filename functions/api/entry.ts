@@ -42,7 +42,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const result = await D1_U0_VC.prepare(SearchFTS).bind(search).all<FTSEntry>();
     return new Response(JSON.stringify(result), {
       status: 200, headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'access-control-allow-origin': '*'
       }
     })
   } catch (err) {

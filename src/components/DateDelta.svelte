@@ -18,15 +18,25 @@
     })
   }
 
-  const intlDTF = new Intl.DateTimeFormat(locales, intlDTFOpts).format(toDelta);
+  const intlDTF = new Intl.DateTimeFormat(locales, intlDTFOpts)
+  let tooltipText = ""
+  if (!isNaN(toDelta.valueOf())) {
+    tooltipText = intlDTF.format(toDelta);
+  }
 
-  let deltaMSec: number
-  let localizedDeltaDate: string
+  let deltaMSec = 0
+  let localizedDeltaDate = ""
 
   const tickTime = () => {
     try {
+      if (isNaN(toDelta.valueOf())) {
+        // date is not valid, return
+        return
+      }
       deltaMSec = toDelta.getTime() - Date.now();
-      localizedDeltaDate = getRelativeTimeString(deltaMSec, locales);
+      if (deltaMSec != 0) {
+        localizedDeltaDate = getRelativeTimeString(deltaMSec, locales);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -37,5 +47,5 @@
 </script>
 <Tooltip
   text={localizedDeltaDate}
-  tooltipText={intlDTF}
+  tooltipText={tooltipText}
 />
