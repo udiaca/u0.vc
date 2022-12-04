@@ -6,8 +6,8 @@ title: "To-Do"
 This app/blog/writing exercise would like to explore, in no particular order:
 
 - [Analytics, Tracking, and GDPR](/todo?utm_source=ToDo&utm_medium=Website&utm_campaign=RealTime&utm_content=Analytics)
-- [Running SQLite in the browser on Cloudflare Pages](/en/posts/enabling-client-side-search)
-  - [An every-languages dictionary on a static site for free!](/todo?utm_source=ToDo&utm_medium=Website&utm_campaign=RealTime&utm_content=Languages)
+- [x] [SQLite3 FTS5 Search on Cloudflare Pages](/en/posts/enabling-client-side-search)
+- [An every-languages dictionary on a static site for free!](/todo?utm_source=ToDo&utm_medium=Website&utm_campaign=RealTime&utm_content=Languages)
 - [Authentication, from "Scratch"!](/en/posts/using-oauth-2)
 - [Square, and Other Payment Processors](/todo?utm_source=ToDo&utm_medium=Website&utm_campaign=RealTime&utm_content=Payments)
 - [Localization? i18n? Country, Region, Reason, and Language Codes](/todo?utm_source=ToDo&utm_medium=Website&utm_campaign=RealTime&utm_content=Localization)
