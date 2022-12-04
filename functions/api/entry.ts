@@ -3,6 +3,7 @@ export interface IndexEntryPayload {
   content: string;
   published: string;
   updated: string;
+  rowId: number; // cheeky way to insert/replace into fts5 virtual table
 }
 
 
@@ -17,14 +18,15 @@ const InsertEntry = `
 `;
 
 const InsertFTS = `
-  INSERT OR REPLACE INTO ftsEntries (url, content)
-  VALUES (?, ?);
+  INSERT OR REPLACE INTO ftsEntries (rowid, url, content)
+  VALUES (?, ?, ?);
 `;[]
 
 const SearchFTS = `
-  SELECT * FROM entries
-  JOIN ftsEntries ON ftsEntries.url = entries.url
-  WHERE ftsEntries = (?);
+  SELECT * FROM ftsEntries
+  JOIN entries ON entries.url = ftsEntries.url
+  WHERE ftsEntries = (?)
+  ORDER BY rank;
 `;
 
 
@@ -43,7 +45,13 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       }
     })
   } catch (err) {
-    return new Response(`${err}`, { status: 500, headers: { 'content-type': 'application/json' }});
+    const syntaxError = (err as SyntaxError)
+    return new Response(JSON.stringify({
+      name: syntaxError.name,
+      message: syntaxError.message,
+      cause: syntaxError.cause,
+      stack: syntaxError.stack,
+    }), { status: 500, headers: { 'content-type': 'application/json' }});
   }
 }
 
@@ -65,10 +73,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const payload = await request.json<IndexEntryPayload>()
 
   try {
-    const { url, content, published, updated } = payload;
+    const { url, content, published, updated, rowId } = payload;
     const result = await D1_U0_VC.batch([
       D1_U0_VC.prepare(InsertEntry).bind(url, published, updated),
-      D1_U0_VC.prepare(InsertFTS).bind(url, content)
+      D1_U0_VC.prepare(InsertFTS).bind(rowId, url, content)
     ]);
     return new Response(JSON.stringify({ result, url }), {
       status: 200, headers: {

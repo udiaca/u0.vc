@@ -9,7 +9,7 @@
     "start": "astro dev",
     "build": "astro build",
     "build:watch": "astro build && fswatch src | (while read; do npx astro build; done)",
-    "preview": "wrangler pages dev dist --local --compatibility-date=2022-10-27 --live-reload --local-protocol https --log-level debug",
+    "preview": "wrangler pages dev dist --local --compatibility-date=2022-10-27 --live-reload --d1=D1_U0_VC --local-protocol https --log-level debug",
     "astro": "astro",
     "deploy:preview": "astro build && wrangler pages publish dist --project-name u0-vc --branch preview --commit-dirty",
     "deploy:prod": "astro build && wrangler pages publish dist --project-name u0-vc --branch main --commit-dirty",
@@ -33,6 +33,7 @@
     "@cloudflare/workers-types": "^4.20221111.1",
     "@databases/split-sql-query": "^1.0.3",
     "@databases/sql": "^3.2.0",
+    "better-sqlite3": "^8.0.1",
     "wrangler": "^2.1.9"
   }
 }

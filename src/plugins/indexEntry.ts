@@ -11,7 +11,7 @@ import type { IndexEntryPayload } from "../../functions/api/entry.js";
 const DEV_PASSTHROUGH = "1ae724bfb63e05586d586a52b507b4c3";
 
 export default function indexEntry(): AstroIntegration {
-  const indexRoute = async (route: RouteData, nowISO = new Date().toISOString()) => {
+  const indexRoute = async (route: RouteData, rowId: number, nowISO = new Date().toISOString()) => {
     const { component, pathname } = route;
     const publishedAt = publishDateTime(component) || nowISO;
     const updatedAt = updatedDateTime(component) || nowISO;
@@ -35,7 +35,8 @@ export default function indexEntry(): AstroIntegration {
       url: pathname,
       content,
       published: publishedAt,
-      updated: updatedAt
+      updated: updatedAt,
+      rowId
     }
     const resp = await fetch('https://u0.vc/api/entry', {
       method: 'POST',
@@ -55,7 +56,7 @@ export default function indexEntry(): AstroIntegration {
     hooks: {
       "astro:build:done": async ({ routes }) => {
         const nowISO = new Date().toISOString();
-        await Promise.all(routes.map(route => indexRoute(route, nowISO)));
+        await Promise.all(routes.map((route, idx) => indexRoute(route, idx, nowISO)));
       },
     }
   }
