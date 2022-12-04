@@ -3,7 +3,8 @@
 
   const fetchEntrySearch = async (query) => {
     const searchParams = new URLSearchParams({q: query}).toString()
-    await fetch(`/api/entry?${searchParams}`)
+    const resp = await fetch(`/api/entry?${searchParams}`)
+    console.log('==== resp', resp)
   }
 
   const debounce = v => {

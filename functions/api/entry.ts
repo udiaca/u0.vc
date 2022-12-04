@@ -23,7 +23,7 @@ const InsertFTS = `
 `;[]
 
 const SearchFTS = `
-  SELECT * FROM ftsEntries
+  SELECT snippet(ftsEntries, -1, "⬡", "⬢", "⬣", 64) content, url FROM ftsEntries
   JOIN entries ON entries.url = ftsEntries.url
   WHERE ftsEntries = (?)
   ORDER BY rank;
