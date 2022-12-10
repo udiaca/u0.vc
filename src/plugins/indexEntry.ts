@@ -2,13 +2,12 @@
  * Astro Integration
  * Utility file for indexing Astro posts for SQLite search.
  */
-import type { AstroConfig, AstroIntegration, RouteData } from "astro";
+import type { AstroIntegration, RouteData } from "astro";
 import { publishDateTime, updatedDateTime } from "./gitDates.mjs";
 import { readFile } from 'fs/promises';
 import type { IndexEntryPayload } from "../../functions/api/entry.js";
 
-// const DEV_PASSTHROUGH = ""
-const DEV_PASSTHROUGH = "1ae724bfb63e05586d586a52b507b4c3";
+const DEV_PASSTHROUGH = process.env.DEV_PASSTHROUGH || "";
 
 export default function indexEntry(): AstroIntegration {
   const indexRoute = async (route: RouteData, rowId: number, nowISO = new Date().toISOString()) => {
@@ -55,8 +54,13 @@ export default function indexEntry(): AstroIntegration {
     name: '@udia/indexEntry',
     hooks: {
       "astro:build:done": async ({ routes }) => {
-        const nowISO = new Date().toISOString();
-        await Promise.all(routes.map((route, idx) => indexRoute(route, idx, nowISO)));
+        if (DEV_PASSTHROUGH) {
+          console.log("==== indexEntry.ts Indexing all routes to GitHub Pages")
+          const nowISO = new Date().toISOString();
+          await Promise.all(routes.map((route, idx) => indexRoute(route, idx, nowISO)));
+        } else {
+          console.log("==== indexEntry.ts Skipping pages indexing")
+        }
       },
     }
   }

@@ -12,6 +12,11 @@ export default defineConfig({
     remarkPlugins: [gitDatesPlugin],
     drafts: true
   },
+  vite: {
+    build: {
+      sourcemap: true,
+    },
+  },
   adapter: cloudflare({
     mode: "directory"
   }),
