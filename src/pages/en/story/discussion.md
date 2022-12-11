@@ -1,6 +1,7 @@
 ---
 layout: ../../../layouts/MarkdownLayout.astro
 title: Discussion with UDIA
+description: "Discussion with UDIA using Stable Diffusion and a limited imagination."
 center: true
 ---
 

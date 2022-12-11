@@ -3,7 +3,7 @@ import DateDelta from '../components/DateDelta.svelte'
 import { parseLocalesFromAcceptLanguage } from '../utils/parseLocalesFromAcceptLanguage'
 import BaseLayout from './BaseLayout.astro'
 const { frontmatter } = Astro.props
-const { title, center } = frontmatter || Astro.props
+const { title, center, description } = frontmatter || Astro.props
 
 const { publishedAt, updatedAt } = frontmatter
 
@@ -59,6 +59,7 @@ const prevUrl = prevMd?.url || '/'
 <MDLayout title={title}>
   <Fragment slot="head">
     <meta name="source-type" content="markdown" />
+    {!!description && <meta name="description" content="{description}" />}
   </Fragment>
 
   <div class="journey-steps-container">
@@ -84,6 +85,10 @@ const prevUrl = prevMd?.url || '/'
   <div id="markdown-wrapper" class={center ? 'center' : undefined}>
     <h1 id="markdown-title">{title}</h1>
     <div id="markdown-description">
+      {!!description && <>
+        <dt>Description</dt>
+        <dd>{description}</dd>
+      </>}
       <dl>
         {
           updatedAtDate.valueOf() !== publishedAtDate.valueOf() && (
