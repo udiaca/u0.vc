@@ -34,7 +34,7 @@ def recursive_reverse(items):
 
 def pair_cmp(base_left_stack, base_right_stack):
     """
-    1 if left < right, -1 if left > right, 0 if equal.
+    -1 if left < right, 1 if left > right, 0 if equal.
     """
 
     left_stack = deepcopy(base_left_stack)
