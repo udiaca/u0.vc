@@ -3,7 +3,6 @@
 # https://adventofcode.com/2022/day/11
 
 from functools import reduce
-from math import prod
 from queue import Queue
 from os import path
 
@@ -78,16 +77,6 @@ def read_and_parse_input():
         monkeys.append(monkey)
 
     return monkeys
-
-
-def largest_prime_factor(n):
-    i = 2
-    while i * i <= n:
-        if n % i:
-            i += 1
-        else:
-            n //= i
-    return n
 
 
 def main():
