@@ -11,6 +11,11 @@ description: "UDIA - Advent of Code Submissions"
 [adventofcode.com/2022](https://adventofcode.com/2022)
 
 
+### Day 6: Tuning Trouble
+
+[adventofcode.com/2022/day/6](https://adventofcode.com/2022/day/6)
+- [Part 1 & 2 Solution](/aoc/2022/06/run.py)
+
 ### Day 7: No Space Left On Device
 
 [adventofcode.com/2022/day/7](https://adventofcode.com/2022/day/7)
@@ -52,3 +57,9 @@ description: "UDIA - Advent of Code Submissions"
 [adventofcode.com/2022/day/13](https://adventofcode.com/2022/day/13)
 - [Part 1 Solution](/aoc/2022/13/run.py)
 - [Part 2 Solution](/aoc/2022/13/run2.py)
+
+### Day 14: Regolith Reservoir
+
+[adventofcode.com/2022/day/14](https://adventofcode.com/2022/day/14)
+- [Part 1 Solution](/aoc/2022/14/run.py)
+- [Part 2 Solution](/aoc/2022/14/run2.py)
