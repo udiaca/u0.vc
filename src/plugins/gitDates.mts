@@ -5,6 +5,18 @@
 
 import * as child from "node:child_process";
 
+export function lastModifiedDateTime(mdPath: string) {
+  try {
+    return child
+      .execFileSync("date", ["-I", "seconds", "-r", mdPath], {
+        encoding: "utf8",
+      })
+      .trim();
+  } catch (_) {
+    return "";
+  }
+}
+
 /**
  * Get the first commit ISO 8601 timestamp for the file.
  * @param {string} mdPath Path to file
@@ -15,7 +27,7 @@ export function publishDateTime(mdPath: string) {
     return child
       .execFileSync(
         "git",
-        ["log", "--diff-filter=A", "--follow", "--format=%cI", "--", mdPath],
+        ["log", "-1", "--diff-filter=A", "--follow", "--format=%cI", "--", mdPath],
         { encoding: "utf8" }
       )
       .trim();
@@ -32,7 +44,7 @@ export function publishDateTime(mdPath: string) {
 export function updatedDateTime(mdPath: string) {
   try {
     return child
-      .execFileSync("git", ["log", "-1", "--pretty=format:%cI", "--", mdPath], {
+      .execFileSync("git", ["log", "-1", "--format=%cI", "--", mdPath], {
         encoding: "utf8",
       })
       .trim();
@@ -43,13 +55,16 @@ export function updatedDateTime(mdPath: string) {
 
 export function gitDatesPlugin() {
   return function (_: never, file: any) {
-    const nowISO = new Date().toISOString();
-    const publishedAt = publishDateTime(file.path) || nowISO;
-    const updatedAt = updatedDateTime(file.path) || nowISO;
+    const publishedAt = publishDateTime(file.path) || lastModifiedDateTime(file.path);
+    const updatedAt = updatedDateTime(file.path) || lastModifiedDateTime(file.path);
+    const lastModifiedAt = lastModifiedDateTime(file.path);
+
+    console.log("====", file.path, publishedAt)
 
     file.data.astro.frontmatter = {
       publishedAt,
       updatedAt,
+      lastModifiedAt,
       ...file.data.astro.frontmatter,
     };
   };

@@ -1,6 +1,7 @@
 ---
 import DateDelta from '../components/DateDelta.svelte'
 import { parseLocalesFromAcceptLanguage } from '../utils/parseLocalesFromAcceptLanguage'
+import postComparator from '../utils/postComparator'
 import BaseLayout from './BaseLayout.astro'
 const { frontmatter } = Astro.props
 const { title, center, description } = frontmatter || Astro.props
@@ -28,12 +29,7 @@ const locales = parseLocalesFromAcceptLanguage(
 
 const allPosts = await Astro.glob('../pages/**/*.md');
 
-allPosts.sort((a, b) => {
-  const aDate = parseDate(a.frontmatter.publishedAt)
-  const bDate = parseDate(b.frontmatter.publishedAt)
-  return aDate.valueOf() - bDate.valueOf()
-})
-.reverse();
+allPosts.sort(postComparator).reverse();
 
 // get the current post within all posts
 const curIdx = allPosts.findIndex((allPost) => allPost.url === Astro.props.url)
@@ -43,7 +39,7 @@ const lastIdx = allPosts.length - 1
 
 const firstMd = allPosts[0]
 const prevMd = allPosts[prevIdx]
-const curMd = allPosts[curIdx]
+// const curMd = allPosts[curIdx]
 const nextMd = allPosts[nextIdx]
 const lastMd = allPosts[lastIdx]
 

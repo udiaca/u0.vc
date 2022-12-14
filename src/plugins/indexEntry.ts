@@ -3,7 +3,7 @@
  * Utility file for indexing Astro posts for SQLite search.
  */
 import type { AstroIntegration, RouteData } from "astro";
-import { publishDateTime, updatedDateTime } from "./gitDates.mjs";
+import { publishDateTime, updatedDateTime, lastModifiedDateTime } from "./gitDates.mjs";
 import { readFile } from 'fs/promises';
 import type { IndexEntryPayload } from "../../functions/api/entry.js";
 
@@ -12,8 +12,8 @@ const DEV_PASSTHROUGH = process.env.DEV_PASSTHROUGH || "";
 export default function indexEntry(): AstroIntegration {
   const indexRoute = async (route: RouteData, rowId: number, nowISO = new Date().toISOString()) => {
     const { component, pathname } = route;
-    const publishedAt = publishDateTime(component) || nowISO;
-    const updatedAt = updatedDateTime(component) || nowISO;
+    const publishedAt = publishDateTime(component) || lastModifiedDateTime(component) || nowISO;
+    const updatedAt = updatedDateTime(component) || lastModifiedDateTime(component) || nowISO;
 
     // Possible: make a CURL request to web server and parse the HTML + store
     console.log(pathname, JSON.stringify({publishedAt, updatedAt}));

@@ -1,17 +1,13 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import postComparator from "../../utils/postComparator";
 
 const title = 'All';
 
 const allPosts = await Astro.glob('./**/*.md');
 
 // sort by most recently published
-allPosts.sort((a, b) => {
-  const aDate = new Date(a.frontmatter.publishedAt)
-  const bDate = new Date(b.frontmatter.publishedAt)
-  return aDate.valueOf() - bDate.valueOf()
-})
-.reverse();
+allPosts.sort(postComparator).reverse();
 
 ---
 
