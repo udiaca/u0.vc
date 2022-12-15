@@ -63,3 +63,9 @@ description: "UDIA - Advent of Code Submissions"
 [adventofcode.com/2022/day/14](https://adventofcode.com/2022/day/14)
 - [Part 1 Solution](/aoc/2022/14/run.py)
 - [Part 2 Solution](/aoc/2022/14/run2.py)
+
+### Day 15: Beacon Exclusion Zone
+
+[adventofcode.com/2022/day/15](https://adventofcode.com/2022/day/15)
+- [Part 1 Solution](/aoc/2022/15/run.py)
+- [Part 2 Solution](/aoc/2022/15/run2.py)
