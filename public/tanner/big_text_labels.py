@@ -3,13 +3,13 @@
 from PIL import Image, ImageEnhance, ImageFont, ImageDraw
 from os import path
 
-def fit_text(text, script_dir, font_path, label_path, font_size):
+def fit_text(text, script_dir, font_path, label_path, font_size, anchor="lt"):
     img = Image.open(label_path)
     draw = ImageDraw.Draw(img)
     print(f"img.size: {img.size}")
 
     font = ImageFont.truetype(font_path, size=font_size)
-    space_bbox = font.getbbox(" ")
+    space_bbox = font.getbbox(" ", anchor=anchor)
     [space_left, space_upper, space_right, space_lower] = space_bbox
     space_width = abs(space_left) + abs(space_right)
     space_height = abs(space_upper) + abs(space_lower)
@@ -17,8 +17,9 @@ def fit_text(text, script_dir, font_path, label_path, font_size):
 
     text_cur = [0, 0]
     line_bottom = 0
+
     for word in text.split():
-        word_bbox = font.getbbox(word)
+        word_bbox = font.getbbox(word, anchor=anchor)
         [word_left, word_upper, word_right, word_lower] = word_bbox
         word_width = abs(word_left) + abs(word_right)
         word_height = abs(word_upper) + abs(word_lower)
@@ -52,7 +53,7 @@ def fit_text(text, script_dir, font_path, label_path, font_size):
 
 
         # print(f"{word:>10}, word_bbox: {word_bbox}, word_rec: {word_rec}")
-        draw.text(text_cur, word, font=font, fill="black")
+        draw.text(text_cur, word, font=font, fill="black", anchor=anchor)
         draw.rectangle(
             word_rec, outline="#663399"
         )  # optional. draw a border around the text.
