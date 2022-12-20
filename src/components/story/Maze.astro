@@ -1,0 +1,155 @@
+<script>
+  function main() {
+    const thisWindow = window || null
+    // if the window object is null, we're still on the server. Do nothing
+    if (thisWindow == null) return
+    const { addEventListener, requestAnimationFrame } = thisWindow
+    const canvas = document.getElementById('maze') as HTMLCanvasElement
+    if (!canvas) return
+    const context = canvas.getContext('2d')
+    if (!context) return
+
+    // Maze globals
+    let cellSize = 1
+    let xOffset = 0
+    let yOffset = 0
+
+    const renderGridCell = (cell: [number, number], fillStyle='grey') => {
+      const [colIdx, rowIdx] = cell
+      context.fillStyle = fillStyle
+      context.lineWidth = 1;
+      context.beginPath();
+      const x = colIdx * cellSize;
+      const y = rowIdx * cellSize;
+      context.fillRect(xOffset + x + 1, yOffset + y + 1, cellSize - 2, cellSize - 2)
+    }
+
+    const renderCellConnection = (
+      cellA: [number, number],
+      cellB: [number, number]
+    ) => {
+      // which wall are we breaking down? relative to cellA
+      const aColIdx = cellA[0]
+      const aRowIdx = cellA[1]
+      const bColIdx = cellB[0]
+      const bRowIdx = cellB[1]
+
+      // determine the boundary box
+      const minColIdx = Math.min(aColIdx, bColIdx)
+      const minRowIdx = Math.min(aRowIdx, bRowIdx)
+      const maxColIdx = Math.max(aColIdx, bColIdx)
+      const maxRowIdx = Math.max(aRowIdx, bRowIdx)
+
+      const x = minColIdx * cellSize
+      const y = minRowIdx * cellSize
+      const w = maxColIdx > minColIdx ? cellSize : cellSize - 2
+      const h = maxRowIdx > minRowIdx ? cellSize: cellSize - 2
+
+      renderGridCell(cellA, '#663399')
+      renderGridCell(cellB, '#663399')
+      context.fillStyle = '#663399'
+      context.fillRect(xOffset + x + 1, yOffset + y + 1, w, h)
+      // context.strokeStyle = '#000000'
+      // context.strokeRect(minX, minY, deltaX, deltaY)
+    }
+
+    // generate maze using iterative DFS
+    const visitedCells: Record<string, boolean | undefined> = {}
+    const visitQueue: [number, number][] = []
+
+    // Canvas should be responsive
+    const onResizeWindow = () => {
+      const { innerWidth, innerHeight } = window || {}
+      canvas.width = innerWidth || 0
+      canvas.height = innerHeight || 0
+
+      cellSize = Math.floor(Math.min(canvas.width, canvas.height) / 40)
+      xOffset = Math.floor((canvas.width % cellSize) / 2)
+      yOffset = Math.floor((canvas.height % cellSize) / 2)
+
+      // if the canvas is resized, reset the maze
+      visitQueue.length = 0
+      const x = Math.floor(canvas.width / cellSize * 0.5)
+      const y = Math.floor(canvas.height / cellSize * 0.5)
+      visitQueue.push([x, y])
+      for (const key in visitedCells) {
+        delete visitedCells[key]
+      }
+      visitedCells[`${[x, y]}`] = true
+
+      const gridCols = Math.floor(canvas.width / cellSize)
+      const gridRows = Math.floor(canvas.height / cellSize)
+
+      // draw the grid of squares
+      for (let colIdx = 0; colIdx < gridCols; colIdx++) {
+        for (let rowIdx = 0; rowIdx < gridRows; rowIdx++) {
+          // draw this cell at the specified colIdx, rowIdx
+          renderGridCell([colIdx, rowIdx])
+        }
+      }
+    }
+
+    addEventListener('resize', onResizeWindow)
+    onResizeWindow()
+
+    // render the frame
+    const renderFrame: FrameRequestCallback = (_timestamp) => {
+      const gridCols = Math.floor(canvas.width / cellSize)
+      const gridRows = Math.floor(canvas.height / cellSize)
+
+      if (visitQueue.length > 0) {
+        // find all neighbors that have not been visited
+        const curCell = visitQueue.pop()!
+        const [curCellColIdx, curCellRowIdx] = curCell
+
+        const neighbors: [number, number][] = []
+
+        if (
+          curCellColIdx - 1 >= 0 &&
+          !visitedCells[`${[curCellColIdx - 1, curCellRowIdx]}`]
+        ) {
+          neighbors.push([curCellColIdx - 1, curCellRowIdx])
+        }
+        if (
+          curCellColIdx + 1 < gridCols &&
+          !visitedCells[`${[curCellColIdx + 1, curCellRowIdx]}`]
+        ) {
+          neighbors.push([curCellColIdx + 1, curCellRowIdx])
+        }
+        if (
+          curCellRowIdx - 1 >= 0 &&
+          !visitedCells[`${[curCellColIdx, curCellRowIdx - 1]}`]
+        ) {
+          neighbors.push([curCellColIdx, curCellRowIdx - 1])
+        }
+        if (
+          curCellRowIdx + 1 < gridRows &&
+          !visitedCells[`${[curCellColIdx, curCellRowIdx + 1]}`]
+        ) {
+          neighbors.push([curCellColIdx, curCellRowIdx + 1])
+        }
+
+        if (neighbors.length) {
+          visitQueue.push(curCell)
+          // choose one neighbor at random
+          const neighborIdx = Math.floor(Math.random() * neighbors.length)
+          const neighbor = neighbors[neighborIdx]!
+          // remove the wall between curCell and neighbor
+          renderCellConnection(curCell, neighbor)
+          // mark chosen cell as visited and push to stack
+          visitQueue.push(neighbor)
+          visitedCells[`${neighbor}`] = true
+        }
+      }
+
+      requestAnimationFrame(renderFrame)
+    }
+
+    requestAnimationFrame(renderFrame)
+  }
+
+  // call the main function
+  main()
+</script>
+
+<canvas id="maze">Maze</canvas>

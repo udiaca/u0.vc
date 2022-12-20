@@ -1,0 +1,27 @@
+<svg version="1.1"
+     width="256" height="256"
+     viewBox="-1 -1 258 258"
+     xmlns="http://www.w3.org/2000/svg">
+  <path
+    id="logo-udia"
+    d="M 128 0 L 238.9 64 V 192 L 128 256 L 17.1 192 V 64 Z
+       M 128 10 L 230 69 V 187 L 128 246 L 26 187 V 69 Z
+       M 135 69 H 145 L 121 187 H 111 Z
+       M 50 120 V 136 L 97 170 V 154 L 60 128 L 97 102 V 86 Z
+       M 206 120 V 136 L 159 170 V 154 L 196 128 L 159 102 V 86 Z"
+  />
+  <style>
+    #logo-udia {
+      fill: #111111;
+      fill-rule: evenodd;
+      stroke: rebeccapurple;
+      stroke-linejoin: round;
+      stroke-width: 1;
+    }
+    @media (prefers-color-scheme: dark) {
+      #logo-udia {
+        fill: #EEEEEE;
+      }
+    }
+  </style>
+</svg>

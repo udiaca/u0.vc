@@ -4,7 +4,7 @@ import { parseLocalesFromAcceptLanguage } from '../utils/parseLocalesFromAcceptL
 import postComparator from '../utils/postComparator'
 import BaseLayout from './BaseLayout.astro'
 const { frontmatter } = Astro.props
-const { title, center, description } = frontmatter || Astro.props
+const { title, center, description, markdownStyle } = frontmatter || Astro.props
 
 const { publishedAt, updatedAt } = frontmatter
 

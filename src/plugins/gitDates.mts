@@ -59,7 +59,7 @@ export function gitDatesPlugin() {
     const updatedAt = updatedDateTime(file.path) || lastModifiedDateTime(file.path);
     const lastModifiedAt = lastModifiedDateTime(file.path);
 
-    console.log("====", file.path, publishedAt)
+    // console.log("====", file.path, publishedAt)
 
     file.data.astro.frontmatter = {
       publishedAt,
