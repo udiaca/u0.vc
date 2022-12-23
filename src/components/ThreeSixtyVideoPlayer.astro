@@ -1,0 +1,117 @@
+---
+// December 1, 2022
+const { videoSrc = 'https://r2.u0.vc/videos/360/R0011671_st.MP4' } = Astro.props
+// todo: also support dynamic (client side) specification of video src?
+---
+<input type="hidden" id="videoSrc" name="videoSrc" value={videoSrc}>
+<script>
+  import {
+    Scene,
+    PerspectiveCamera,
+    WebGLRenderer,
+    SphereGeometry,
+    VideoTexture,
+    MeshBasicMaterial,
+    BackSide,
+    Mesh,
+    Vector3,
+    SkeletonHelper
+  } from 'three'
+
+  // create a scene
+  const scene = new Scene()
+
+  // create a perspective camera
+  // https://threejs.org/docs/#api/en/cameras/PerspectiveCamera
+  const width = window.innerWidth
+  const height = window.innerHeight
+  const camera = new PerspectiveCamera(75, width / height, 1, 100)
+
+    // create a renderer
+  // https://threejs.org/docs/#api/en/renderers/WebGLRenderer
+  const renderer = new WebGLRenderer()
+  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setSize(width, height)
+  renderer.xr.enabled = true
+  renderer.xr.setReferenceSpaceType('local')
+
+  // create a video element and set attributes for VideoTexture
+  const videoElement = document.createElement('video')
+  videoElement.src = (document.getElementById('videoSrc')! as HTMLInputElement).value
+  videoElement.loop = true
+  videoElement.muted = true
+  videoElement.playsInline = true
+  videoElement.crossOrigin = 'anonymous'
+  videoElement.play()
+
+  // handle window resize
+  const onResizeWindow = () => {
+    const { innerWidth: width, innerHeight: height } = window || {}
+    camera.aspect
+    camera.aspect = width / height
+    camera.updateProjectionMatrix()
+    renderer.setSize(width, height)
+  }
+  addEventListener('resize', onResizeWindow)
+  onResizeWindow()
+
+
+  // display the renderer
+  document.body.appendChild(renderer.domElement)
+
+  // create a sphere geometry
+  // https://threejs.org/docs/#api/en/geometries/SphereGeometry
+  const geometry = new SphereGeometry(10, 32, 32)
+
+  // create a VideoTexture
+  const texture = new VideoTexture(videoElement)
+
+  // create a material from the texture
+  const material = new MeshBasicMaterial({ map: texture })
+
+  // need to use back side - surface of the sphere is facing outside but we put the camera inside of the sphere
+  material.side = BackSide
+  // create a mesh and add to the scene
+  const mesh = new Mesh(geometry, material)
+  mesh.scale.set(-1, 1, 1) // invert mesh for backside orientation correction
+  scene.add(mesh)
+
+  // debugging helper
+  const box = new SkeletonHelper( mesh );
+  scene.add(box)
+
+  renderer.setAnimationLoop(() => renderer.render(scene, camera))
+
+  // zoom in / out
+  const clamp = (v: number, min: number, max: number) =>
+    Math.max(min, Math.min(v, max))
+  renderer.domElement.addEventListener('wheel', (e) => {
+    camera.fov = clamp(camera.fov + e.deltaY / 10, 10, 120)
+    // need to call this function after changing most of properties in PerspectiveCamera
+    camera.updateProjectionMatrix()
+  })
+
+  // rotate camera
+  let mouseDown = false
+  renderer.domElement.addEventListener('mousedown', (e) => {
+    if (e.button === 0) mouseDown = true
+    videoElement.muted = false
+  })
+
+  addEventListener('mouseup', (e) => {
+    if (e.button === 0) mouseDown = false
+  })
+
+  addEventListener('mousemove', (e) => {
+    if (!mouseDown) return
+
+    const { movementX, movementY } = e
+
+    const rotateUpDownVal = movementY / 100
+    const rotateLeftRightVal = movementX / 100
+    camera.rotateOnWorldAxis(new Vector3(0, 1, 0), rotateLeftRightVal)
+    camera.rotateOnAxis(new Vector3(1, 0, 0), rotateUpDownVal)
+
+    camera.quaternion.normalize()
+  })
+</script>

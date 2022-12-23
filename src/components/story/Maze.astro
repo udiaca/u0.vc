@@ -14,16 +14,22 @@
     let xOffset = 0
     let yOffset = 0
 
-    const renderGridCell = (cell: [number, number], fillStyle='grey') => {
+    const renderGridCell = (cell: [number, number], fillStyle = 'grey') => {
       const [colIdx, rowIdx] = cell
       context.fillStyle = fillStyle
-      context.lineWidth = 1;
-      context.beginPath();
-      const x = colIdx * cellSize;
-      const y = rowIdx * cellSize;
-      context.fillRect(xOffset + x + 1, yOffset + y + 1, cellSize - 2, cellSize - 2)
+      context.lineWidth = 1
+      context.beginPath()
+      const x = colIdx * cellSize
+      const y = rowIdx * cellSize
+      context.fillRect(
+        xOffset + x + 1,
+        yOffset + y + 1,
+        cellSize - 2,
+        cellSize - 2
+      )
     }
 
+    let lastCellB: [number, number] | null = null
     const renderCellConnection = (
       cellA: [number, number],
       cellB: [number, number]
@@ -43,12 +49,16 @@
       const x = minColIdx * cellSize
       const y = minRowIdx * cellSize
       const w = maxColIdx > minColIdx ? cellSize : cellSize - 2
-      const h = maxRowIdx > minRowIdx ? cellSize: cellSize - 2
+      const h = maxRowIdx > minRowIdx ? cellSize : cellSize - 2
 
       renderGridCell(cellA, '#663399')
-      renderGridCell(cellB, '#663399')
+      renderGridCell(cellB, '#ffffff')
       context.fillStyle = '#663399'
       context.fillRect(xOffset + x + 1, yOffset + y + 1, w, h)
+      if (lastCellB) {
+        renderGridCell(lastCellB, '#663399')
+      }
+      lastCellB = cellB
       // context.strokeStyle = '#000000'
       // context.strokeRect(minX, minY, deltaX, deltaY)
     }
@@ -69,8 +79,8 @@
 
       // if the canvas is resized, reset the maze
       visitQueue.length = 0
-      const x = Math.floor(canvas.width / cellSize * 0.5)
-      const y = Math.floor(canvas.height / cellSize * 0.5)
+      const x = Math.floor((canvas.width / cellSize) * 0.5)
+      const y = Math.floor((canvas.height / cellSize) * 0.5)
       visitQueue.push([x, y])
       for (const key in visitedCells) {
         delete visitedCells[key]
@@ -92,54 +102,68 @@
     addEventListener('resize', onResizeWindow)
     onResizeWindow()
 
-    // render the frame
-    const renderFrame: FrameRequestCallback = (_timestamp) => {
+    const renderFrame: FrameRequestCallback = () => {
       const gridCols = Math.floor(canvas.width / cellSize)
       const gridRows = Math.floor(canvas.height / cellSize)
-
       if (visitQueue.length > 0) {
-        // find all neighbors that have not been visited
-        const curCell = visitQueue.pop()!
-        const [curCellColIdx, curCellRowIdx] = curCell
+        // helper variable to prevent unnecessary animation frame request
+        let hasRendered = false
+        while (!hasRendered) {
+          // find all neighbors that have not been visited
+          const curCell = visitQueue.pop()
+          if (!curCell) {
+            if (lastCellB) {
+              renderGridCell(lastCellB, '#663399')
+              lastCellB = null
+            }
+            hasRendered = true
+            break
+          }
+          const [curCellColIdx, curCellRowIdx] = curCell
 
-        const neighbors: [number, number][] = []
+          const neighbors: [number, number][] = []
 
-        if (
-          curCellColIdx - 1 >= 0 &&
-          !visitedCells[`${[curCellColIdx - 1, curCellRowIdx]}`]
-        ) {
-          neighbors.push([curCellColIdx - 1, curCellRowIdx])
-        }
-        if (
-          curCellColIdx + 1 < gridCols &&
-          !visitedCells[`${[curCellColIdx + 1, curCellRowIdx]}`]
-        ) {
-          neighbors.push([curCellColIdx + 1, curCellRowIdx])
-        }
-        if (
-          curCellRowIdx - 1 >= 0 &&
-          !visitedCells[`${[curCellColIdx, curCellRowIdx - 1]}`]
-        ) {
-          neighbors.push([curCellColIdx, curCellRowIdx - 1])
-        }
-        if (
-          curCellRowIdx + 1 < gridRows &&
-          !visitedCells[`${[curCellColIdx, curCellRowIdx + 1]}`]
-        ) {
-          neighbors.push([curCellColIdx, curCellRowIdx + 1])
-        }
+          if (
+            curCellColIdx - 1 >= 0 &&
+            !visitedCells[`${[curCellColIdx - 1, curCellRowIdx]}`]
+          ) {
+            neighbors.push([curCellColIdx - 1, curCellRowIdx])
+          }
+          if (
+            curCellColIdx + 1 < gridCols &&
+            !visitedCells[`${[curCellColIdx + 1, curCellRowIdx]}`]
+          ) {
+            neighbors.push([curCellColIdx + 1, curCellRowIdx])
+          }
+          if (
+            curCellRowIdx - 1 >= 0 &&
+            !visitedCells[`${[curCellColIdx, curCellRowIdx - 1]}`]
+          ) {
+            neighbors.push([curCellColIdx, curCellRowIdx - 1])
+          }
+          if (
+            curCellRowIdx + 1 < gridRows &&
+            !visitedCells[`${[curCellColIdx, curCellRowIdx + 1]}`]
+          ) {
+            neighbors.push([curCellColIdx, curCellRowIdx + 1])
+          }
 
-        if (neighbors.length) {
-          visitQueue.push(curCell)
-          // choose one neighbor at random
-          const neighborIdx = Math.floor(Math.random() * neighbors.length)
-          const neighbor = neighbors[neighborIdx]!
-          // remove the wall between curCell and neighbor
-          renderCellConnection(curCell, neighbor)
-          // mark chosen cell as visited and push to stack
-          visitQueue.push(neighbor)
-          visitedCells[`${neighbor}`] = true
+          if (neighbors.length) {
+            visitQueue.push(curCell)
+            // choose one neighbor at random
+            const neighborIdx = Math.floor(Math.random() * neighbors.length)
+            const neighbor = neighbors[neighborIdx]!
+            // remove the wall between curCell and neighbor
+            renderCellConnection(curCell, neighbor)
+            // mark chosen cell as visited and push to stack
+            visitQueue.push(neighbor)
+            visitedCells[`${neighbor}`] = true
+            hasRendered = true
+          }
         }
+      } else if (lastCellB) {
+        renderGridCell(lastCellB, '#663399')
+        lastCellB = null
       }
 
       requestAnimationFrame(renderFrame)

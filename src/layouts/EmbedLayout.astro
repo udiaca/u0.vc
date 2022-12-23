@@ -46,10 +46,11 @@ try {
     <slot />
     <GlobalStyles />
     <noscript><code>Javascript is disabled in your web browser.</code></noscript>
-    <style>
-      .logo {
-        padding: 1em 0px;
-      }
+    <style is:global>
+      * {
+          width: 100vw;
+          height: 100vh;
+        }
     </style>
   </body>
 </html>
