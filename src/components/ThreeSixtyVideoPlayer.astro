@@ -1,9 +1,15 @@
 ---
 // December 1, 2022
-const { videoSrc = 'https://r2.u0.vc/videos/360/R0011671_st.MP4' } = Astro.props
-// todo: also support dynamic (client side) specification of video src?
+interface ThreeSixtyVideoPlayerProps {
+  videoSrc: string | undefined,
+  // sources always take priority over videoSrc
+  sources: Record<string, string> | undefined  // key is src, value is type
+}
+const { videoSrc, sources } = Astro.props as ThreeSixtyVideoPlayerProps
+const rawProps = JSON.stringify({ videoSrc, sources })
+
 ---
-<input type="hidden" id="videoSrc" name="videoSrc" value={videoSrc}>
+<input type="hidden" id="360-video-raw-props" name="raw" value={rawProps}>
 <script>
   import {
     Scene,
@@ -35,9 +41,32 @@ const { videoSrc = 'https://r2.u0.vc/videos/360/R0011671_st.MP4' } = Astro.props
   renderer.xr.enabled = true
   renderer.xr.setReferenceSpaceType('local')
 
+  // grab raw video props and convert (how to pass astro server prop to script better?)
+  const rawProps = (document.getElementById('360-video-raw-props')! as HTMLInputElement).value
+  const { videoSrc, sources } = JSON.parse(rawProps) as {
+    videoSrc: string | undefined,
+    // sources always take priority over videoSrc
+    sources: Record<string, string> | undefined  // key is url, value is type
+  }
+
   // create a video element and set attributes for VideoTexture
   const videoElement = document.createElement('video')
-  videoElement.src = (document.getElementById('videoSrc')! as HTMLInputElement).value
+
+  if (sources) {
+    // if sources is defined, set it takes priority over videoSrc
+    for (const src in sources) {
+      // append new <source> html elements within the video
+      const sourceElement = document.createElement('source')
+      sourceElement.src = src
+      sourceElement.type = sources[src]!
+      videoElement.appendChild(sourceElement)
+    }
+  } else if (videoSrc) {
+    // fallback to videoSrc (single src on the video element)
+    videoElement.src = (document.getElementById('videoSrc')! as HTMLInputElement).value
+  } else {
+    console.error("neither sources nor videoSrc were supplied")
+  }
   videoElement.loop = true
   videoElement.muted = true
   videoElement.playsInline = true
@@ -102,15 +131,20 @@ const { videoSrc = 'https://r2.u0.vc/videos/360/R0011671_st.MP4' } = Astro.props
     if (e.button === 0) mouseDown = false
   })
 
+  let totalRotateUpDown = 0
   addEventListener('mousemove', (e) => {
     if (!mouseDown) return
 
     const { movementX, movementY } = e
-
     const rotateUpDownVal = movementY / 100
     const rotateLeftRightVal = movementX / 100
+
+    const updownBoundaryDelta = Math.abs(totalRotateUpDown + rotateUpDownVal)
+    if (updownBoundaryDelta <= Math.PI / 2) {
+      totalRotateUpDown += rotateUpDownVal
+      camera.rotateOnAxis(new Vector3(1, 0, 0), rotateUpDownVal)
+    }
     camera.rotateOnWorldAxis(new Vector3(0, 1, 0), rotateLeftRightVal)
-    camera.rotateOnAxis(new Vector3(1, 0, 0), rotateUpDownVal)
 
     camera.quaternion.normalize()
   })

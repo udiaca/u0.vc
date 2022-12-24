@@ -1,8 +1,15 @@
 ---
 import ThreeSixtyVideoPlayer from '../../components/ThreeSixtyVideoPlayer.astro'
 import EmbedLayout from '../../layouts/EmbedLayout.astro'
+
+// Birdo balcony fron December 1st, 2022
+const sources = {
+  'https://r2.u0.vc/videos/360/R0011671_st.webm': 'video/webm',
+  'https://r2.u0.vc/videos/360/R0011671_st.ogg': 'video/ogg',
+  'https://r2.u0.vc/videos/360/R0011671_st.mp4': 'video/mp4',
+}
 ---
 
 <EmbedLayout>
-  <ThreeSixtyVideoPlayer />
+  <ThreeSixtyVideoPlayer sources={sources} />
 </EmbedLayout>
