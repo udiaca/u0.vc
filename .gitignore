@@ -22,3 +22,7 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 venv/
+
+# github private key pem file
+*private-key.pem
+*private-key-pkcs8.pem

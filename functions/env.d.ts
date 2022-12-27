@@ -8,6 +8,8 @@ interface Env {
   CLOUDFLARE_API_PROJECT_NAME: string;
   CLOUDFLARE_API_TOKEN_READ_WORKERS: string;
   DEV_PASSTHROUGH: string | undefined;
+  GITHUB_APP_ID: string | undefined;
+  GITHUB_APP_PEM_KEY_CONTENTS: string | undefined;
 
   DO_SESSION: DurableObjectNamespace;
   DO_USER: DurableObjectNamespace;
