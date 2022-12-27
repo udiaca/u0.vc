@@ -1,6 +1,5 @@
 ---
 import { bestMatch } from "@udia/mime-parser";
-import Meta from "../components/Meta.astro";
 import { languageTags } from "../i18n/languages";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
@@ -34,12 +33,8 @@ Astro.response.statusText = statusText;
 {
   redirectTo ? (
     <meta http-equiv="refresh" content={`0;url=${redirectTo}${Astro.url.search}`} />
-  ) : (
-    <>
-      <BaseLayout>
-        <h1>{statusText}</h1>
-        <Meta />
-      </BaseLayout>
-    </>
-  )
+  ) : null
 }
+<BaseLayout title={statusText}>
+  <h1>{statusText}</h1>
+</BaseLayout>

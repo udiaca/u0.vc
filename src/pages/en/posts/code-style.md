@@ -38,6 +38,10 @@ Order of personal importance/preference.
 
 1. `memory safe` > `use after free` vulnerable
 
+1. `minimize dependencies` >>> `huge package.json and node_modules`
+
+    Whenever possible, rely on existing APIs, not build-time libraries. 
+
 ```
 (*) Automated processes can compile/transpile code.
 (**) In dynamically typed languages, try to use type hints.

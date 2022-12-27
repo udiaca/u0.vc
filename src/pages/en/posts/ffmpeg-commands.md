@@ -6,7 +6,7 @@ draft: true
 ---
 
 [FFmpeg](https://ffmpeg.org/) is software that helps in the processing of audio and video.
-Refer to the [FFmpeg Codecs Documentation] for a complete list of supported decoders and encoders.
+Refer to the [FFmpeg Codecs Documentation](https://ffmpeg.org/ffmpeg-codecs.html) for a complete list of supported decoders and encoders.
 This tool is used to process media for the HTML `video` element (refer to the [Can I use "Video element"](https://caniuse.com/video) usage page).
 
 In order to maintain maximum browser support, media should be available as:
@@ -59,7 +59,7 @@ To determine the number of bits in a file, run `ls -l`. For example, `ls -l R001
 
 Divide this number by 1000 to get number of kilobits (1000 bits).
 
-```python3
+```python
 1881177697 // 1000
 # 1881177
 ```

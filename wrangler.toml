@@ -1,12 +1,15 @@
 name = "u0-workers"
-main = "worker/index.ts"
-compatibility_date = "2022-12-27"
+main = "src/index.ts"
+compatibility_date = "2022-11-11"
 
-[durable_objects]
-bindings = [
-  { name = "DO_SESSION", class_name = "DOSession" },
-  { name = "DO_USER", class_name = "DOUser" },
-]
+# this has to be commented out due to wrangler pages dev not supporting
+# durable object bindings.
+# uncomment this whenever working with Durable Objects is needed
+# [durable_objects]
+# bindings = [
+#   { name = "DO_SESSION", class_name = "DOSession" },
+#   { name = "DO_USER", class_name = "DOUser" },
+# ]
 
 [[migrations]]
 tag = "v1"

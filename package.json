@@ -10,7 +10,8 @@
     "start": "astro dev",
     "build": "astro build",
     "build:watch": "astro build && fswatch src | (while read; do npx astro build; done)",
-    "preview": "wrangler pages dev dist --local --compatibility-date=2022-10-27 --live-reload --d1=D1_U0_VC --local-protocol https --log-level debug",
+    "preview": "wrangler pages dev dist --compatibility-date=2022-11-11 --live-reload --d1=D1_U0_VC --local-protocol https",
+    "preview:experimental": "wrangler pages dev dist --compatibility-date=2022-11-11 --experimental-local",
     "astro": "astro",
     "deploy:preview": "astro build && wrangler pages publish dist --project-name u0-vc --branch preview --commit-dirty",
     "deploy:prod": "astro build && wrangler pages publish dist --project-name u0-vc --branch main --commit-dirty",
@@ -24,8 +25,8 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^4.1.0",
-    "@astrojs/rss": "^1.0.3",
+    "@astrojs/cloudflare": "^5.0.0",
+    "@astrojs/rss": "^2.0.0",
     "@astrojs/svelte": "^1.0.2",
     "@octokit/auth-app": "^4.0.7",
     "@udia/mime-parser": "^1.0.0",
@@ -38,8 +39,10 @@
     "@cloudflare/workers-types": "^4.20221111.1",
     "@databases/split-sql-query": "^1.0.3",
     "@databases/sql": "^3.2.0",
+    "@miniflare/tre": "^3.0.0-next.8",
     "@types/three": "^0.146.0",
     "better-sqlite3": "^8.0.1",
+    "miniflare": "^2.11.0",
     "typescript": "^4.9.4",
     "wrangler": "^2.1.9"
   }
