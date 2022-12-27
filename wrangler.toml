@@ -1,0 +1,17 @@
+name = "u0-workers"
+main = "worker/index.ts"
+compatibility_date = "2022-12-27"
+
+[durable_objects]
+bindings = [
+  { name = "DO_SESSION", class_name = "DOSession" },
+  { name = "DO_USER", class_name = "DOUser" },
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["DOSession"]
+
+[[migrations]]
+tag = "v2"
+new_classes = ["DOUser"]

@@ -13,6 +13,13 @@ npm i
 npm run dev
 ```
 
+### Worker
+
+To run the underlying Cloudflare Worker code, use the following command.
+```
+npm run dev:worker
+```
+
 ## Development Commands
 
 | Command                | Action                                             |
