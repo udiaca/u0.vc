@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Deployments from "../components/Deployments.svelte";
 import { getCached } from "../utils/caches";
+import { parseLocalesFromAcceptLanguage } from "../utils/parseLocalesFromAcceptLanguage";
 
 const title = "Deployments";
 
@@ -62,11 +63,17 @@ const showNext =
   (resultInfo.page - 1) * resultInfo.per_page + resultInfo.count <
   resultInfo.total_count;
 const showPrev = resultInfo.page > 1;
+
+
+const locales = parseLocalesFromAcceptLanguage(
+  Astro.request.headers.get('accept-language') || ''
+)
+
 ---
 
 <BaseLayout title={title}>
   <h1>Deployments</h1>
-  <Deployments client:load deployments={result} />
+  <Deployments client:load deployments={result} locales={locales} />
   <div class="pagination">
     {showPrev && <a href={curPath + `?page=${resultInfo.page - 1}`}>prev</a>}
     <span>Page {resultInfo.page}</span>

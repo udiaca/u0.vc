@@ -1,39 +1,53 @@
 <script lang="ts">
-  export let deployments: CFPagesDeployment[] = [];
-  export let commitPrefixUrl: string =
-    "https://github.com/udiaca/u0.vc/commit/";
-  const formatter = new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-    timeStyle: "long",
-  });
+  import DateDelta from './DateDelta.svelte'
+
+  export let deployments: CFPagesDeployment[] = []
+  export let locales: string[] = []
+  export let commitPrefixUrl: string = 'https://github.com/udiaca/u0.vc/commit/'
 </script>
 
 <div class="container">
   {#each deployments as dep, index (dep.id)}
     <div class="deployment">
-      <div class="links">
-        {#if dep.aliases !== null && dep.aliases.length}
-          {#each dep.aliases as alias, index (alias)}
-            <a class="alias" href={alias} target="_blank" rel="noreferrer"
-              >{alias}</a
-            >
-          {/each}
-        {/if}
-        <a href={dep.url} target="_blank" rel="noreferrer">{dep.url}</a>
-      </div>
+      <span class="environment">{dep.environment}</span>
       <div class="deployment-type">
-        <span class="label"><code>{dep.environment}</code></span>
         <code>{dep.deployment_trigger.type}</code>
       </div>
+
+      {#if dep.aliases !== null && dep.aliases.length}
+        {#each dep.aliases as alias, index (alias)}
+          <a
+            class="deployment-link alias"
+            href={alias}
+            target="_blank"
+            rel="noreferrer">{alias}</a
+          >
+        {/each}
+      {/if}
+      <a class="deployment-link" href={dep.url} target="_blank" rel="noreferrer"
+        >{dep.url}</a
+      >
+      <div class="full-width">
+        <span>
+          <code>modified_on</code>
+          <DateDelta {locales} toDelta={new Date(dep.modified_on)} />
+        </span>
+      </div>
+      <div class="full-width">
+        <span>
+          <code>created_on</code>
+          <DateDelta {locales} toDelta={new Date(dep.created_on)} />
+        </span>
+      </div>
+      <div class="full-width">
+        <code
+          ><pre class="no-margin">{dep.deployment_trigger.metadata
+              .commit_message}</pre></code
+        >
+      </div>
       <a href={commitPrefixUrl + dep.deployment_trigger.metadata.commit_hash}>
-        <code><pre>{dep.deployment_trigger.metadata.commit_message}</pre></code>
+        github commit
       </a>
-      <dl>
-        <dt><code>modified_on</code></dt>
-        <dd><span>{formatter.format(new Date(dep.modified_on))}</span></dd>
-        <dt><code>created_on</code></dt>
-        <dd><span>{formatter.format(new Date(dep.created_on))}</span></dd>
-      </dl>
     </div>
   {/each}
 </div>
@@ -41,74 +55,45 @@
 <style>
   .container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1em;
-    max-width: 100vw;
-    width: calc(100% - 20px);
+    flex-direction: column;
   }
-
   .deployment {
-    background-color: var(--mute-background-color);
-    color: var(--emph-color);
-    border-radius: 10px;
     display: flex;
-    height: 260px;
-    flex-direction: column;
-    position: relative;
-    width: 300px;
-    padding: 0.5rem;
-    gap: 0.2rem;
-    overflow-y: auto;
+    flex-wrap: wrap;
+    column-gap: 0.5em;
+    row-gap: 0.5em;
+    position: sticky;
+    top: 0;
+    background-color: var(--background-color);
   }
-
-  @media only screen and (max-width: 599px) {
-    .deployment {
-      width: 100%;
-    }
+  .deployment:not(:first-child) {
+    padding-bottom: 0.5em;
+    border-top: 1px double var(--emph-color);
   }
-  @media only screen and (min-width: 600px) {
-    .deployment {
-      width: 45%;
-    }
+  .deployment:not(:last-child) {
+    padding-bottom: 0.5em;
   }
-  @media only screen and (min-width: 889px) {
-    .deployment {
-      width: 30%;
-    }
-  }
-  @media only screen and (min-width: 1200px) {
-    .deployment {
-      width: 300px;
-    }
-  }
-
-  .links {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    padding-top: 0.5rem;
-  }
-
-  .alias:before {
-    content: "\2731";
-  }
-
-  .deployment-type {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-  }
-
-  .label {
-    width: fit-content;
-    align-items: center;
-    background-color: var(--label-primary-color);
-    border-radius: 1rem;
-    box-sizing: border-box;
+  span.environment {
+    padding: 4px 8px;
+    background-color: var(--emph-color);
+    border-radius: 0px 0px 4px 4px;
     display: inline-flex;
-    padding: 0.3rem 0.7rem;
-    user-select: none;
     white-space: nowrap;
+    user-select: none;
+    align-items: center;
+    box-sizing: border-box;
+    line-height: 1;
+  }
+
+  .deployment:first-child span.environment {
+    border-radius: 4px;
+  }
+
+  div.full-width {
+    width: 100vw;
+  }
+
+  .no-margin {
+    margin: 0;
   }
 </style>
