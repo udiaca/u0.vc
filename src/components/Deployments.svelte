@@ -9,6 +9,12 @@
 <div class="container">
   {#each deployments as dep, index (dep.id)}
     <div class="deployment">
+      <div class="full-width">
+        <code>
+          <pre class="no-margin">{dep.deployment_trigger.metadata
+              .commit_message}</pre>
+        </code>
+      </div>
       <span class="environment">{dep.environment}</span>
       <code>{dep.deployment_trigger.type}</code>
       <code>{dep.latest_stage.name}</code>
@@ -38,15 +44,10 @@
           <DateDelta {locales} toDelta={new Date(dep.created_on)} />
         </span>
       </div>
-      <div class="full-width">
-        <code>
-          <pre class="no-margin">{dep.deployment_trigger.metadata
-              .commit_message}</pre>
-        </code>
-      </div>
       <a href={commitPrefixUrl + dep.deployment_trigger.metadata.commit_hash}>
-        github commit
+        github commit {dep.deployment_trigger.metadata.commit_dirty ? '(dirty)' : ''}
       </a>
+      <strong></strong>
       <!-- <code>
         <pre>{JSON.stringify(dep, undefined, 2)}</pre>
       </code> -->
@@ -68,7 +69,7 @@
     top: 0;
     background-color: var(--background-color);
     max-height: 100vh;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
   }
   .deployment:not(:first-child) {
     padding-bottom: 0.5em;
