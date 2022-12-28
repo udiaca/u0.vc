@@ -10,10 +10,9 @@
   {#each deployments as dep, index (dep.id)}
     <div class="deployment">
       <span class="environment">{dep.environment}</span>
-      <div class="deployment-type">
-        <code>{dep.deployment_trigger.type}</code>
-      </div>
-
+      <code>{dep.deployment_trigger.type}</code>
+      <code>{dep.latest_stage.name}</code>
+      <code>{dep.latest_stage.status}</code>
       {#if dep.aliases !== null && dep.aliases.length}
         {#each dep.aliases as alias, index (alias)}
           <a
@@ -40,14 +39,17 @@
         </span>
       </div>
       <div class="full-width">
-        <code
-          ><pre class="no-margin">{dep.deployment_trigger.metadata
-              .commit_message}</pre></code
-        >
+        <code>
+          <pre class="no-margin">{dep.deployment_trigger.metadata
+              .commit_message}</pre>
+        </code>
       </div>
       <a href={commitPrefixUrl + dep.deployment_trigger.metadata.commit_hash}>
         github commit
       </a>
+      <!-- <code>
+        <pre>{JSON.stringify(dep, undefined, 2)}</pre>
+      </code> -->
     </div>
   {/each}
 </div>
@@ -65,6 +67,8 @@
     position: sticky;
     top: 0;
     background-color: var(--background-color);
+    max-height: 100vh;
+    overflow-y: scroll;
   }
   .deployment:not(:first-child) {
     padding-bottom: 0.5em;

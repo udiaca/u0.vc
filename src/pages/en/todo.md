@@ -5,6 +5,35 @@ title: "To-Do"
 
 This app/blog/writing exercise would like to explore, in no particular order:
 
+# Music Review
+
+Let's just listen to music and vibe to it or something.
+Rough categorizations.
+
+**Excellent**
+
+0. [Alex G - God Save The Animals](/en/mr/Alex G - God Save The Animals)
+
+**Good**
+
+0. `Various Artists - INFOHAZARD`
+0. `C418 - Minecraft, Volume Alpha`
+0. `Bad Bunny - Un verano sin ti`
+0. `Joji - SMITHEREENS`
+0. `Post Malone - Hollywood's Bleeding`
+0. [Aitch - Close to Home](/en/mr/Aitch - Close to Home)
+
+**Mediocre**
+
+0. `Taylor Swift - Midnights`
+
+## Want
+
+- `Alex G - House of Sugar`
+- `Alex G - Rocket`
+
+# Misc
+
 - [Analytics, Tracking, and GDPR](/todo?utm_source=ToDo&utm_medium=Website&utm_campaign=RealTime&utm_content=Analytics)
 - [x] [SQLite3 FTS5 Search on Cloudflare Pages](/en/posts/enabling-client-side-search)
 - [An every-languages dictionary on a static site for free!](/todo?utm_source=ToDo&utm_medium=Website&utm_campaign=RealTime&utm_content=Languages)

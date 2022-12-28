@@ -1,5 +1,5 @@
 <script>
-  import { fetchTimeout } from '../utils/fetchTimeout'
+  import { fetchTimeoutWithRetries } from '../utils/fetchTimeout'
 
   let timer
   let results = null
@@ -16,7 +16,7 @@
       // https://discord.com/channels/595317990191398933/992060581832032316/1048810875898843238
       // const resp = await fetch(`/api/entry?${searchParams}`)
       loading = true
-      const resp = await fetchTimeout(`https://u0.vc/api/entry?${searchParams}`)
+      const resp = await fetchTimeoutWithRetries(`https://u0.vc/api/entry?${searchParams}`, undefined, [10000, 20000, 60000])
       const payload = await resp.json()
       const { results: _results, meta } = payload
       results = _results

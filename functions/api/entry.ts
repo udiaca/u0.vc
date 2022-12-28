@@ -36,7 +36,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { D1_U0_VC } = env;
 
   const url = new URL(request.url)
-  const search = url.searchParams.get('q') || ''
+  const search = encodeURIComponent(url.searchParams.get('q') || '')
 
   try {
     const result = await D1_U0_VC.prepare(SearchFTS).bind(search).all<FTSEntry>();

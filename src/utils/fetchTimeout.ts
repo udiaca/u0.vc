@@ -14,3 +14,16 @@ export const fetchTimeout = (input: RequestInfo | URL, init: RequestInit | undef
     clearTimeout(timeoutId);
   })
 }
+
+export const fetchTimeoutWithRetries = async (input: RequestInfo | URL, init: RequestInit | undefined = undefined, retryTimeoutsMs: number[] = [5000]) => {
+  let lastException;
+  for (const retryTimeoutMs of retryTimeoutsMs) {
+    try {
+      const resp = await fetchTimeout(input, init, retryTimeoutMs)
+      return resp;
+    } catch (exception) {
+      lastException = exception
+    }
+  }
+  return lastException;
+}
