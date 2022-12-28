@@ -2,6 +2,8 @@
 import { bestMatch } from "@udia/mime-parser";
 import { languageTags } from "../i18n/languages";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import EmbedLayout from "../layouts/EmbedLayout.astro";
+import MarkdownLayout from "../layouts/MarkdownLayout.astro";
 
 const acceptLanguage = Astro.request.headers.get("accept-language");
 let language = "en";
@@ -28,6 +30,8 @@ const statusText =
     ? "Not Found"
     : "Error";
 Astro.response.statusText = statusText;
+
+const pageStatusText = `[...path].astro ${statusText}`
 ---
 
 {
@@ -35,6 +39,7 @@ Astro.response.statusText = statusText;
     <meta http-equiv="refresh" content={`0;url=${redirectTo}${Astro.url.search}`} />
   ) : null
 }
-<BaseLayout title={statusText}>
-  <h1>{statusText}</h1>
+<BaseLayout title={pageStatusText}>
+  <h1>{pageStatusText}</h1>
+  <code><pre>{JSON.stringify(Astro.response, undefined, 2)}</pre></code>
 </BaseLayout>
