@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/MarkdownLayout.astro
+layout: ../../../../layouts/MarkdownLayout.astro
 title: "Alex G - God Save The Animals"
 description: "Music Review: Alex G - God Save The Animals"
 ---

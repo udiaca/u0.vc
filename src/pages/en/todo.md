@@ -12,7 +12,7 @@ Rough categorizations.
 
 **Excellent**
 
-0. [Alex G - God Save The Animals](/en/mr/Alex G - God Save The Animals)
+0. [Alex G - God Save The Animals](/en/mr/Alex_G/God_Save_The_Animals)
 
 **Good**
 
@@ -21,7 +21,7 @@ Rough categorizations.
 0. `Bad Bunny - Un verano sin ti`
 0. `Joji - SMITHEREENS`
 0. `Post Malone - Hollywood's Bleeding`
-0. [Aitch - Close to Home](/en/mr/Aitch - Close to Home)
+0. [Aitch - Close to Home](/en/mr/Aitch/Close_to_Home)
 
 **Mediocre**
 

@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/MarkdownLayout.astro
+layout: ../../../../layouts/MarkdownLayout.astro
 title: "Aitch - Close to Home"
 description: "Music Review: Aitch - Close to Home"
 ---
