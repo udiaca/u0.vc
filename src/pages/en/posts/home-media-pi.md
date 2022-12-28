@@ -242,21 +242,31 @@ This enables server system alerts to be emailed to me.
 ```
 # Default values for all accounts
 defaults
-auth on
-tls on
+auth           on
+tls            on
 
-# Gmail
-account gmail
-host smtp.gmail.com
-from username@gmail.com
-
-port 587
-user username
-password **your password**
+# Amazon SES SMTP User
+account        awsses
+host           email-smtp.us-west-2.amazonaws.com
+port           587
+tls_starttls   on
+from           noreply@udia.ca
+user           aws_smtp_username
+password       aws_smtp_password
 
 # Syslog logging with facility LOG_MAIL instead of the default LOG_USER.
 syslog LOG_MAIL
 
 # Set a default account
-account default : gmail
+account default : awsses
+```
+
+Replace *aws_smtp_username* and *aws_smtp_password* with your SMTP user details.
+
+Logs are available at `/var/log/mail.log`.
+
+Test the configuration
+
+```bash
+echo "This is a test email" | msmtp --debug your@emailaddress.com
 ```

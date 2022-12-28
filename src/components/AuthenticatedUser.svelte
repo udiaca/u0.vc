@@ -60,5 +60,6 @@
     right: 1em;
     border: 1px dashed var(--emph-color);
     transition: opacity 1s ease;
+    z-index: 3;
   }
 </style>
