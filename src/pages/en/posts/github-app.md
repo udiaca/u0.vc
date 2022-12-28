@@ -87,14 +87,14 @@ Third. [Ensure that the request to get the authenticated application is working]
 }
 ```
 
-## Using the GitHub API in your app
+# Using the GitHub API in your app
 
 Now that we have our App, let's [use the github api and add a new label to issues opened in the repository](https://docs.github.com/en/developers/apps/guides/using-the-github-api-in-your-app).
 NOTE: The Github documentation steps are written for `Ruby`, but we can tweak it slightly for our Cloudflare Pages app.
 
-### Webhook Initial Setup
-
 [Setup a webhook to handle events when Issues changes](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues).
+
+## Webhook Initial Setup
 
 > Created a stub webhook endpoint at `functions/api/webhooks/github.ts`
 >
@@ -104,7 +104,8 @@ NOTE: The Github documentation steps are written for `Ruby`, but we can tweak it
 >
 > `ngrok http https://127.0.0.1:8788`
 >
-> - This is less than ideal due to the fact that ngrok is a freemium tiered service and that the forwarding URL changes each time.
+> - This is less than ideal due to the fact that ngrok is an external freemium tiered service and that the forwarding URL changes each time.
+> - We should be able to get around this in the future with [the GitHub CLI extension for webhooks](https://docs.github.com/en/developers/webhooks-and-events/webhooks/receiving-webhooks-with-the-github-cli#receiving-webhooks-with-github-cli).
 >
 > [Then we ensure that this webhook is added to the repository.](https://github.com/udiaca/u0.vc/settings/hooks)
 
@@ -272,7 +273,7 @@ NOTE: The Github documentation steps are written for `Ruby`, but we can tweak it
 }
 ```
 
-### Secure Webhook with Secret
+## Secure Webhook with Secret
 
 [Secure the webhooks with a secret token as well before deploying this out to production.](https://docs.github.com/en/developers/webhooks-and-events/webhooks/securing-your-webhooks)
 
@@ -285,6 +286,8 @@ I generated a new random secret and set the environment variable `GITHUB_WEBHOOK
 [This secret is used to hash our webhook requests and then stored in the header as `x-hub-signature-256`.](https://docs.github.com/en/developers/webhooks-and-events/webhooks/securing-your-webhooks#validating-payloads-from-github)
 
 ```typescript
+import { timeSafeCompareStrings } from "@udia/crypt"
+
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request, env } = context
   const { GITHUB_WEBHOOK_SECRET } = env
@@ -303,7 +306,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const hashedBody = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
   const generatedSignature = `sha256=${hashedBody}`
 
-  if (signature != generatedSignature) {
+  if (!await timeSafeCompareStrings(signature, generatedSignature)) {
     return new Response("x-hub-signature-256 hash mismatch", { status: 400 })
   }
 
@@ -312,4 +315,47 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   return new Response(await blob.text(), { headers: { 'content-type': 'application/json' } });
 };
 ```
+
+## Dispatch Add Label Request
+
+```typescript
+// if a new issue is created, set a label on the issue
+const githubEvent = request.headers.get('x-github-event')
+if (
+  githubEvent === 'issues'
+  && reqPayload
+  && reqPayload['repository']['name']
+  && reqPayload['issue']['number']
+  && reqPayload['repository']['owner']['login']
+) {
+  const repositoryName = reqPayload['repository']['name']
+  const issueNumber = reqPayload['issue']['number']
+  const ownerName = reqPayload['repository']['owner']['login']
+
+  const appAuth = createAppAuth({
+    appId: GITHUB_APP_ID,
+    privateKey: GITHUB_APP_PEM_KEY_CONTENTS,
+    clientId: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    installationId: GITHUB_APP_INSTALLATION_ID
+  });
+  // const { token } = await auth({ type: 'app' })
+  const authType = await appAuth({ type: 'installation' })
+  const { token } = authType
+  const issuesLabelsEndpoint = `https://api.github.com/repos/${ownerName}/${repositoryName}/issues/${issueNumber}/labels`
+  return fetch(issuesLabelsEndpoint, {
+    body: JSON.stringify({
+      labels: ['udia-acknowledged']
+    }),
+    method: 'POST',
+    headers: {
+      "authorization": `Bearer ${token}`,
+      "user-agent": "u0vc",
+      "accept": "application/vnd.github+json"
+    }
+  })
+}
+```
+
+Great! [Now every new issue created should have the `udia-acknowledged` label added to it.](https://github.com/udiaca/u0.vc/issues/10)
 

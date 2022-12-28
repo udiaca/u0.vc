@@ -26,7 +26,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     return new Response('no GITHUB_CLIENT_SECRET set', { status: 500 })
   }
 
-  const auth = createAppAuth({
+  const appAuth = createAppAuth({
     appId: GITHUB_APP_ID,
     privateKey: GITHUB_APP_PEM_KEY_CONTENTS,
     clientId: GITHUB_CLIENT_ID,
@@ -37,8 +37,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   //   type: "oauth-app",
   // });
   
-  const { token } = await auth({ type: 'app' })
-
+  const { token } = await appAuth({ type: 'app' })
 
   return fetch("https://api.github.com/app", {
     headers: {

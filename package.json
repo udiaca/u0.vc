@@ -32,6 +32,7 @@
     "@udia/crypt": "^1.0.2",
     "@udia/mime-parser": "^1.0.0",
     "astro": "^1.6.0",
+    "octokit": "^2.0.10",
     "sql.js-httpvfs": "^0.8.12",
     "svelte": "^3.52.0",
     "three": "^0.148.0"
