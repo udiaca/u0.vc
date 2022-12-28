@@ -92,9 +92,9 @@ Third. [Ensure that the request to get the authenticated application is working]
 Now that we have our App, let's [use the github api and add a new label to issues opened in the repository](https://docs.github.com/en/developers/apps/guides/using-the-github-api-in-your-app).
 NOTE: The Github documentation steps are written for `Ruby`, but we can tweak it slightly for our Cloudflare Pages app.
 
-Step 1. Add Issues Permission within Github App Settings.
+### Webhook Initial Setup
 
-Step 2. [Setup a webhook to handle events when Issues changes](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues).
+[Setup a webhook to handle events when Issues changes](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues).
 
 > Created a stub webhook endpoint at `functions/api/webhooks/github.ts`
 >
@@ -272,5 +272,44 @@ Step 2. [Setup a webhook to handle events when Issues changes](https://docs.gith
 }
 ```
 
+### Secure Webhook with Secret
+
 [Secure the webhooks with a secret token as well before deploying this out to production.](https://docs.github.com/en/developers/webhooks-and-events/webhooks/securing-your-webhooks)
+
+---
+
+I generated a new random secret and set the environment variable `GITHUB_WEBHOOK_SECRET`.
+
+`xxd -l 32 -c 32 -p < /dev/random`
+
+[This secret is used to hash our webhook requests and then stored in the header as `x-hub-signature-256`.](https://docs.github.com/en/developers/webhooks-and-events/webhooks/securing-your-webhooks#validating-payloads-from-github)
+
+```typescript
+export const onRequest: PagesFunction<Env> = async (context) => {
+  const { request, env } = context
+  const { GITHUB_WEBHOOK_SECRET } = env
+
+  const blob = await request.blob()
+  const bodyBuffer = await blob.arrayBuffer()
+  const signature = request.headers.get('x-hub-signature-256')
+  const keyBytes = new TextEncoder().encode(GITHUB_WEBHOOK_SECRET)
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw", keyBytes, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
+  )
+  const sig = await crypto.subtle.sign("HMAC", cryptoKey, bodyBuffer)
+
+  // convert signature digest into hexadecimal string
+  const hashArray = Array.from(new Uint8Array(sig))
+  const hashedBody = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+  const generatedSignature = `sha256=${hashedBody}`
+
+  if (signature != generatedSignature) {
+    return new Response("x-hub-signature-256 hash mismatch", { status: 400 })
+  }
+
+  // we have passed the Github webhook security checks
+  // and can now handle business logic appropriately here
+  return new Response(await blob.text(), { headers: { 'content-type': 'application/json' } });
+};
+```
 

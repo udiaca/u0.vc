@@ -10,6 +10,7 @@ interface Env {
   DEV_PASSTHROUGH: string | undefined;
   GITHUB_APP_ID: string | undefined;
   GITHUB_APP_PEM_KEY_CONTENTS: string | undefined;
+  GITHUB_WEBHOOK_SECRET: string | undefined;
 
   DO_SESSION: DurableObjectNamespace;
   DO_USER: DurableObjectNamespace;
