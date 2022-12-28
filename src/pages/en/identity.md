@@ -1,13 +1,14 @@
 ---
 layout: ../../layouts/MarkdownLayout.astro
 title: "Identity"
+center: true
 ---
 
 [I am UDIA, the identity.](/)
 
 I am an `attention` idle game.
 
-I am a complicated `todo list`.
+I am a [complicated `todo list`](/en/todo).
 
 ## More Technical
 

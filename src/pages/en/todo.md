@@ -13,24 +13,35 @@ Rough categorizations.
 **Excellent**
 
 0. [Alex G - God Save The Animals](/en/mr/Alex_G/God_Save_The_Animals)
+0. The Weeknd - Dawn FM
 
 **Good**
 
-0. `Various Artists - INFOHAZARD`
-0. `C418 - Minecraft, Volume Alpha`
-0. `Bad Bunny - Un verano sin ti`
-0. `Joji - SMITHEREENS`
-0. `Post Malone - Hollywood's Bleeding`
+0. Various Artists - INFOHAZARD
+0. C418 - Minecraft, Volume Alpha
+0. Bad Bunny - Un verano sin ti
+0. Alex G - House of Sugar
+0. Joji - SMITHEREENS
+0. Post Malone - Hollywood's Bleeding
 0. [Aitch - Close to Home](/en/mr/Aitch/Close_to_Home)
 
 **Mediocre**
 
-0. `Taylor Swift - Midnights`
+0. Taylor Swift - Midnights
+
+## To Listen
+
+- Sun Ra - Prophet *avant-garde jazz*
 
 ## Want
 
-- `Alex G - House of Sugar`
-- `Alex G - Rocket`
+- Sun Ra - Prophet
+- Alex G - Rocket
+- The Lumineers - BRIGHTSIDE
+
+# Personal Quality of Life
+
+-[ ] Backup strategy?
 
 # Misc
 
