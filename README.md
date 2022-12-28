@@ -40,6 +40,23 @@ Alternatively, a manual deploy may be triggered by running `npm run deploy`.
 
 We use [Cloudflare Pages](https://pages.cloudflare.com/)'s product offering to deploy to the edge network. There are currently no actively managed servers.
 
+## Deploy Worker
+
+**To deploy the underlying Cloudflare Worker code, uncomment the `wrangler.toml` lines first!**
+
+```
+# this has to be commented out due to wrangler pages dev not supporting
+# durable object bindings.
+# uncomment this whenever working with Durable Objects is needed
+# [durable_objects]
+# bindings = [
+#   { name = "DO_SESSION", class_name = "DOSession" },
+#   { name = "DO_USER", class_name = "DOUser" },
+# ]
+```
+
+Then run `npm run deploy:worker`.
+
 ## Static Assets Upload
 https://developers.cloudflare.com/r2/examples/rclone/
 
@@ -47,12 +64,6 @@ https://developers.cloudflare.com/r2/examples/rclone/
 rclone tree r2:u0-vc
 rclone sync --progress --exclude .DS_Store r2.u0.vc r2:u0-vc
 ```
-
-# Companion Repository
-
-Due to limitations with Cloudflare Pages, durable objects must be bound into pages and cannot be run locally.
-
-Refer to [udiaca/u0-workers](https://github.com/udiaca/u0-workers) for the durable objects code base.
 
 # License
 
