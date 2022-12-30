@@ -115,6 +115,9 @@ Let's add a functions API endpoint `/api/auth/ory` that returns the authenticate
 
 **work in progress**: `functions/api/auth/ory/[[path]].ts`
 
+**update**: instead of dealing with this local tunnel and all of the challenges. rely on the serverless function to proxy out similar to their [official supported next-edge integration](https://github.com/ory/integrations/blob/main/src/next-edge/index.ts)
+
+
 ```typescript
 import { Configuration, FrontendApi } from "@ory/client";
 
@@ -176,25 +179,6 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     return new Response("missing cookie", { status: 400 })
   }
 
-  // const ory = new FrontendApi(
-  //   new Configuration({
-  //     oryBasePath,
-  //     baseOptions: {
-  //       withCredentials: true,
-  //     },
-  //   }),
-  // )
-
-  /**
-   * Return the currently authenticated user
-   */
-  // return fetch(`${oryApiUrl.origin}/sessions/whoami`, {
-  //   headers: {
-  //     cookie
-  //   },
-  //   credentials: "include",
-  // })
-
   /**
    * Forward the request to ory, but strip out the leading /api/auth/ory/*
    */
@@ -209,5 +193,4 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     headers: { cookie }
   })
 };
-
 ```

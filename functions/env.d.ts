@@ -13,6 +13,7 @@ interface Env {
   GITHUB_APP_INSTALLATION_ID: string | undefined;
   GITHUB_WEBHOOK_SECRET: string | undefined;
   ORY_SDK_URL: string | undefined;
+  ORY_KRATOS_URL: string | undefined;
 
   DO_SESSION: DurableObjectNamespace;
   DO_USER: DurableObjectNamespace;

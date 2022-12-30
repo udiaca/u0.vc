@@ -13,6 +13,7 @@ Rough categorizations.
 **Excellent**
 
 0. [Alex G - God Save The Animals](/en/mr/Alex_G/God_Save_The_Animals)
+0. TK - Fantastic Magic
 0. The Weeknd - Dawn FM
 
 **Good**

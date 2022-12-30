@@ -1,0 +1,226 @@
+import { parseSetCookie, serialize } from "../../src/utils/parseCookie"
+
+function filterRequestHeaders(
+  headers: Headers,
+  forwardAdditionalHeaders?: string[],
+): Record<string, string> {
+  const defaultForwardedHeaders = [
+    "accept",
+    "accept-charset",
+    "accept-encoding",
+    "accept-language",
+    "authorization",
+    "cache-control",
+    "content-type",
+    "cookie",
+    "host",
+    "user-agent",
+    "referer",
+  ]
+
+  const newHeaders: Record<string, string> = {}
+
+  headers.forEach((value, key) => {
+    if (defaultForwardedHeaders.includes(key) || (forwardAdditionalHeaders ?? []).includes(key)) {
+      newHeaders[key] = value
+    }
+  })
+
+  return newHeaders
+}
+
+const encode = (v: string) => v
+
+interface CreateApiHandlerOptions {
+  /**
+   * If set overrides the API Base URL. Usually, this URL
+   * is taken from the ORY_KRATOS_URL environment variable.
+   *
+   * If you don't have a project you can use the playground project SDK URL:
+   *
+   *  https://playground.projects.oryapis.com
+   */
+  apiBaseUrlOverride?: string
+
+  /**
+   * Per default, this handler will strip the cookie domain from
+   * the Set-Cookie instruction which is recommended for most set ups.
+   *
+   * If you are running this app on a subdomain and you want the session and CSRF cookies
+   * to be valid for the whole TLD, you can use this setting to force a cookie domain.
+   *
+   * Please be aware that his method disables the `dontUseTldForCookieDomain` option.
+   */
+  forceCookieDomain?: string
+
+  /**
+   * Per default the cookie will be set on the hosts top-level-domain. If the app
+   * runs on www.example.org, the cookie domain will be set automatically to example.org.
+   *
+   * Set this option to true to disable that behaviour.
+   */
+  dontUseTldForCookieDomain?: boolean
+
+  /**
+   * If set to true will set the "Secure" flag for all cookies. This might come in handy when you deploy
+   * not on Vercel.
+   */
+  forceCookieSecure?: boolean | undefined
+
+  /**
+   * If set to true will fallback to the playground if no other value is set for the Ory SDK URL.
+   */
+  fallbackToPlayground?: boolean
+
+  /*
+   * Per default headers are filtered to forward only a fixed list.
+   *
+   * If you need to forward additional headers you can use this setting to define them.
+   */
+  forwardAdditionalHeaders?: string[]
+}
+
+function guessCookieDomain(
+  url: string | undefined,
+  options: CreateApiHandlerOptions,
+) {
+  if (!url || options.forceCookieDomain) {
+    return options.forceCookieDomain
+  }
+
+  if (options.dontUseTldForCookieDomain) {
+    return undefined
+  }
+
+  try {
+    const urlObj = new URL(url || "")
+    return urlObj.hostname
+  } catch {
+    return undefined
+  }
+}
+
+function getBaseUrl(options: CreateApiHandlerOptions, env: Env) {
+  let baseUrl = options.fallbackToPlayground
+    ? "https://playground.projects.oryapis.com/"
+    : ""
+
+  if (env.ORY_SDK_URL) {
+    baseUrl = env.ORY_SDK_URL
+  }
+
+  if (env.ORY_KRATOS_URL) {
+    baseUrl = env.ORY_KRATOS_URL
+  }
+
+  if (env.ORY_SDK_URL && env.ORY_KRATOS_URL) {
+    throw new Error("Only one of ORY_SDK_URL or ORY_KRATOS_URL can be set.")
+  }
+
+  if (options.apiBaseUrlOverride) {
+    baseUrl = options.apiBaseUrlOverride
+  }
+
+  return baseUrl.replace(/\/$/, "")
+}
+
+export const onRequest: PagesFunction<Env> = async (context) => {
+  const { request: req, env } = context
+
+  const reqUrl = new URL(req.url)
+  const search = reqUrl.searchParams
+  const path = reqUrl.pathname.replace(/^\/ory/, "")
+
+  const options: CreateApiHandlerOptions = {
+    fallbackToPlayground: true,
+    dontUseTldForCookieDomain: false,
+    forwardAdditionalHeaders: [],
+    forceCookieSecure: true
+  }
+  const baseUrl = getBaseUrl(options, env)
+  const url = `${baseUrl}${path}?${search.toString()}`
+
+  // if (path === "/ui/welcome") {
+  //   // A special for redirecting to the home page
+  //   // if we were being redirected to the hosted UI
+  //   // welcome page.
+  //   return new Response(null, { status: 303, headers: { 'location': '/' } })
+  // }
+
+  // const isTls = reqUrl.protocol === 'https:'
+  const isTls = true;
+
+  const forwardToOryHeaders = filterRequestHeaders(
+    req.headers,
+    options.forwardAdditionalHeaders,
+  )
+
+  forwardToOryHeaders["X-Ory-Base-URL-Rewrite"] = "false"
+  forwardToOryHeaders["Ory-Base-URL-Rewrite"] = "false"
+  forwardToOryHeaders["Ory-No-Custom-Domain-Redirect"] = "true"
+
+  const newOryRequestInit = {
+    redirect: 'manual' as const,
+    headers: forwardToOryHeaders,
+    // credentials: "include" as const,
+  }
+  const toOryRequest = new Request(url, new Request(req, newOryRequestInit));
+  console.log(toOryRequest)
+  const oryResp = await fetch(toOryRequest)
+  console.log(oryResp)
+  const fwdResp = new Response(oryResp.body, { headers: oryResp.headers, status: oryResp.status, statusText: oryResp.statusText })
+
+  let location = oryResp.headers.get('location')
+  oryResp
+  if (location) {
+    if (location.indexOf(baseUrl) === 0) {
+      location = location.replace(
+        baseUrl,
+        "/ory",
+      )
+    } else if (
+      location.indexOf("/api/kratos/public/") === 0 ||
+      location.indexOf("/self-service/") === 0 ||
+      location.indexOf("/ui/") === 0
+    ) {
+      location = "/ory" + location
+    }
+    fwdResp.headers.set('location', location)
+  }
+
+  const secure =
+    options.forceCookieSecure === undefined
+      ? isTls
+      : options.forceCookieSecure
+
+  const forwardedHost = req.headers.get('x-forwarded-host')
+  const host = forwardedHost || req.headers.get('host') || reqUrl.host
+
+  const domain = guessCookieDomain(host, options)
+
+  const setCookieHeader = oryResp.headers.get('set-cookie') || ""
+
+  console.log(`==== typeof setCookieHeader: ${typeof setCookieHeader}`)
+  console.log(`==== setCookieHeader: ${setCookieHeader}`)
+
+  const fwdSetCookieHeaders = parseSetCookie(setCookieHeader)
+    .map((cookie) => ({
+      ...cookie,
+      domain,
+      secure,
+      encode,
+    }))
+    .map(({ value, name, ...options }: any) =>
+      serialize(name, value, options),
+    )
+
+  console.log(`==== typeof fwdSetCookieHeaders: ${typeof fwdSetCookieHeaders}`)
+  console.log(`==== fwdSetCookieHeaders: ${JSON.stringify(fwdSetCookieHeaders)}`)
+
+  if (fwdSetCookieHeaders.length) {
+    fwdResp.headers.set('set-cookie', fwdSetCookieHeaders.join(","))
+  }
+
+  console.log(fwdResp)
+  return fwdResp
+};
