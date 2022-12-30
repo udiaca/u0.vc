@@ -148,6 +148,21 @@ class OryRewriteHandler implements HTMLRewriterElementContentHandlers {
   }
 }
 
+class OryContentHandler implements HTMLRewriterElementContentHandlers {
+  reqUrl: URL
+  baseUrlHostname: string
+  constructor(reqUrl: URL, baseUrl: string) {
+    this.reqUrl = reqUrl
+    this.baseUrlHostname = new URL(baseUrl).hostname
+  }
+  text(text: Text) {
+    if (text.text && text.text.includes(this.baseUrlHostname)) {
+      const newText = text.text.replaceAll(this.baseUrlHostname, `https://${this.reqUrl.host}/ory`)
+      text.replace(newText)
+    }
+  }
+}
+
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request: req, env } = context
 
@@ -245,12 +260,9 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   // gross hack to rewrite the form action to use our proxied endpoint
   return new HTMLRewriter()
-    .on('form', new OryRewriteHandler(
-      reqUrl, baseUrl
-    ))
-    .on('a', new OryRewriteHandler(
-      reqUrl, baseUrl
-    ))
+    .on('form', new OryRewriteHandler(reqUrl, baseUrl))
+    .on('a', new OryRewriteHandler(reqUrl, baseUrl))
+    .on('div', new OryContentHandler(reqUrl, baseUrl))
     .transform(fwdResp);
 
   // return fwdResp
