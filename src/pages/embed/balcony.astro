@@ -1,5 +1,5 @@
 ---
-import ThreeSixtyVideoPlayer from '../../components/ThreeSixtyVideoPlayer.astro'
+// import ThreeSixtyVideoPlayer from '../../components/ThreeSixtyVideoPlayer.astro'
 import EmbedLayout from '../../layouts/EmbedLayout.astro'
 
 // Birdo balcony fron December 1st, 2022
@@ -11,5 +11,11 @@ const sources = {
 ---
 
 <EmbedLayout>
-  <ThreeSixtyVideoPlayer sources={sources} />
+  <code>
+    this was removed because it increased our build to 2.6M
+  </code>
+  <code>
+    after removing our three.js dependent lib our dist folder became 504K
+  </code>
+  <!-- <ThreeSixtyVideoPlayer sources={sources} /> -->
 </EmbedLayout>

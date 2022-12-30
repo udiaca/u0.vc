@@ -65,4 +65,4 @@ print('Dimentions:', height, width)
 
 ----
 
-[My work in progress](/tanner/big_text_labels.py)
+[My work in progress](https://r2.u0.vc/tanner/big_text_labels.py)
