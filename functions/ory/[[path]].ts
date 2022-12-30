@@ -124,6 +124,30 @@ function getBaseUrl(options: CreateApiHandlerOptions, env: Env) {
   return baseUrl.replace(/\/$/, "")
 }
 
+/**
+ * Slack: https://ory-community.slack.com/archives/C010F7Z4XM1/p1672384248090049
+ * I am trying to modify the ory/integrations/next-edge logic to work with Cloudflare Functions.
+ * I can proxy through to the Ory provided UI using https://u0.vc/ory/ui/welcome but within the Sign In and Sign Up flows the POST request calls the project slug endpoint and subsequently throws a CSRF mismatch error. I suspect that this is due to the returned form not using the proxied endpoint as its form action. Can I get some guidance here?
+ * See also: https://github.com/udiaca/u0.vc/blob/preview/functions/ory/%5B%5Bpath%5D%5D.ts
+ */
+class OryRewriteHandler implements HTMLRewriterElementContentHandlers {
+  reqUrl: URL
+  baseUrl: string
+  constructor(reqUrl: URL, baseUrl: string) {
+    this.reqUrl = reqUrl
+    this.baseUrl = baseUrl
+  }
+  element(element: Element) {
+    const attributes = ["action", "href"]
+    attributes.forEach(attribute => {
+      const value = element.getAttribute(attribute)
+      if (value && value.indexOf(this.baseUrl) === 0) {
+        element.setAttribute(attribute, value.replace(this.baseUrl, `https://${this.reqUrl.host}/ory`))
+      }
+    })
+  }
+}
+
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request: req, env } = context
 
@@ -165,9 +189,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // credentials: "include" as const,
   }
   const toOryRequest = new Request(url, new Request(req, newOryRequestInit));
-  console.log(toOryRequest)
   const oryResp = await fetch(toOryRequest)
-  console.log(oryResp)
   const fwdResp = new Response(oryResp.body, { headers: oryResp.headers, status: oryResp.status, statusText: oryResp.statusText })
 
   let location = oryResp.headers.get('location')
@@ -217,10 +239,19 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   console.log(`==== typeof fwdSetCookieHeaders: ${typeof fwdSetCookieHeaders}`)
   console.log(`==== fwdSetCookieHeaders: ${JSON.stringify(fwdSetCookieHeaders)}`)
 
-  if (fwdSetCookieHeaders.length) {
-    fwdResp.headers.set('set-cookie', fwdSetCookieHeaders.join(","))
-  }
+  fwdSetCookieHeaders.forEach(fwdSetCookieHeader => {
+    fwdResp.headers.append('set-cookie', fwdSetCookieHeader)
+  })
 
-  console.log(fwdResp)
-  return fwdResp
+  // gross hack to rewrite the form action to use our proxied endpoint
+  return new HTMLRewriter()
+    .on('form', new OryRewriteHandler(
+      reqUrl, baseUrl
+    ))
+    .on('a', new OryRewriteHandler(
+      reqUrl, baseUrl
+    ))
+    .transform(fwdResp);
+
+  // return fwdResp
 };
