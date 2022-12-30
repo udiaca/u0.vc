@@ -43,6 +43,21 @@ Rough categorizations.
 
 -[ ] Backup strategy?
 
+app where you can enter in math in the URL and it will parse it out and render the output
+
+Hardest part would be to make these things equivalent
+
+- `https://math.u0.vc/1+2/234`
+- `https://math.u0.vc/?q=1%2B2%2F234`
+- `https://u0.vc/math/1+2/234`
+- `https://u0.vc/math/?q=1%2B2%2F234`
+
+```
+= 1+(2/234)
+= 1.00854700855
+```
+
+
 # Misc
 
 - [Analytics, Tracking, and GDPR](/todo?utm_source=ToDo&utm_medium=Website&utm_campaign=RealTime&utm_content=Analytics)

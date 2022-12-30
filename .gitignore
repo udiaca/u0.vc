@@ -26,3 +26,6 @@ venv/
 # github private key pem file
 *private-key.pem
 *private-key-pkcs8.pem
+
+# localhost ssl certificates
+localhost*.pem

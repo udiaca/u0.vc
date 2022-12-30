@@ -10,14 +10,37 @@ git clone git@github.com:udiaca/u0.vc.git
 cd u0.vc
 
 npm i
-npm run dev
+npm run build # build astro site
+npm run dev # starts astro development server on port 3000
+
+npm run build:watch # watch for changes and build astro site
+npm run preview # starts cloudflare pages preview server on port 8788
 ```
+
+### Local HTTPS Proxy
+
+Use [mkcert](https://github.com/FiloSottile/mkcert)
+
+```bash
+mkcert -install
+mkcert localhost 127.0.0.1 ::1
+```
+
+Now run the local ssl development proxy script.
+
+```bash
+npm run proxy:https
+# alternatively
+npx local-ssl-proxy --source 8788 --target 8789 --key localhost+2-key.pem --cert localhost+2.pem
+```
+
 
 ### Worker
 
 To run the underlying Cloudflare Worker code, use the following command.
-```
-npm run dev:worker
+
+```bash
+npm run dev:worker # starts cloudflare workers dev server on port 8787
 ```
 
 ## Development Commands

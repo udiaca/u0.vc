@@ -12,6 +12,7 @@ interface Env {
   GITHUB_APP_PEM_KEY_CONTENTS: string | undefined;
   GITHUB_APP_INSTALLATION_ID: string | undefined;
   GITHUB_WEBHOOK_SECRET: string | undefined;
+  ORY_SDK_URL: string | undefined;
 
   DO_SESSION: DurableObjectNamespace;
   DO_USER: DurableObjectNamespace;
