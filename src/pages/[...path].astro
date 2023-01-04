@@ -1,9 +1,15 @@
 ---
+/**
+ * Logic for [...path] and [path] are identical.
+ * 1. Try adding in the language tag to path
+ * 2. Attempt to fetch the file from our public Cloudflare R2 bucket
+ * 3. Return 404.
+ *
+ * If any step fails with an exception, return 500.
+ */
 import { bestMatch } from "@udia/mime-parser";
 import { languageTags } from "../i18n/languages";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import EmbedLayout from "../layouts/EmbedLayout.astro";
-import MarkdownLayout from "../layouts/MarkdownLayout.astro";
 
 const acceptLanguage = Astro.request.headers.get("accept-language");
 let language = "en";
@@ -12,10 +18,11 @@ if (acceptLanguage) {
 }
 
 const { path } = Astro.params;
+console.log(`==== ${path}`)
+
 const langPath = `/${language}/${path}`;
 const pages = await Astro.glob("./**/*");
 const urls = pages.map((page) => page.url);
-
 let redirectTo = null;
 if (urls.includes(langPath)) {
   redirectTo = langPath;

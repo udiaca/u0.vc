@@ -163,6 +163,45 @@ class OryContentHandler implements HTMLRewriterElementContentHandlers {
   }
 }
 
+const rewriteOryLocationHeader = (location: string, baseUrl: string, reqUrl: URL) => {
+  // our location is the Ory provided project slug uri (e.g. https://*.projects.oryapis.com/path)
+  // so we need to replace this with /ory/path
+  if (location.indexOf(baseUrl) === 0) {
+    return location.replace(
+      baseUrl,
+      "/ory",
+    )
+  }
+
+  // our location is redirecting to an ory managed endpoint but does not have /ory prefix
+  if (
+    location.indexOf("/api/kratos/public/") === 0 ||
+    location.indexOf("/self-service/") === 0 ||
+    location.indexOf("/ui/") === 0
+  ) {
+    return "/ory" + location
+  }
+
+  try {
+    const locationUrl = new URL(location)
+    const search = locationUrl.searchParams
+    const redirectUri = search.get('redirect_uri')
+    // we may have a GitHub OpenID Connect flow callback
+    // and we need to convert the redirect_uri_mismatch to equal our CF functions proxy endpoint
+    if (redirectUri) {
+      let rewrittenRedirectUri = rewriteOryLocationHeader(redirectUri, baseUrl, reqUrl)
+      if (rewrittenRedirectUri.indexOf("/ory") === 0) {
+        // redirect_uri needs to go back to original request origin
+        rewrittenRedirectUri = `${reqUrl.origin}${rewrittenRedirectUri}`
+      }
+
+      search.set("redirect_uri", rewrittenRedirectUri)
+      location = `${locationUrl.origin}${locationUrl.pathname}?${search.toString()}`
+    }
+  } catch {}
+  return location
+}
+
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request: req, env } = context
 
@@ -207,22 +246,9 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const oryResp = await fetch(toOryRequest)
   const fwdResp = new Response(oryResp.body, { headers: oryResp.headers, status: oryResp.status, statusText: oryResp.statusText })
 
-  let location = oryResp.headers.get('location')
-  oryResp
+  const location = oryResp.headers.get('location')
   if (location) {
-    if (location.indexOf(baseUrl) === 0) {
-      location = location.replace(
-        baseUrl,
-        "/ory",
-      )
-    } else if (
-      location.indexOf("/api/kratos/public/") === 0 ||
-      location.indexOf("/self-service/") === 0 ||
-      location.indexOf("/ui/") === 0
-    ) {
-      location = "/ory" + location
-    }
-    fwdResp.headers.set('location', location)
+    fwdResp.headers.set('location', rewriteOryLocationHeader(location, baseUrl, reqUrl))
   }
 
   const secure =
