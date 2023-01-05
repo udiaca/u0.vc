@@ -18,5 +18,7 @@ interface Env {
   DO_SESSION: DurableObjectNamespace;
   DO_USER: DurableObjectNamespace;
 
+  R2_U0_VC: R2Bucket;
   D1_U0_VC: D1Database;
+  U0_WORKERS: Fetcher;
 }

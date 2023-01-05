@@ -2,14 +2,28 @@ name = "u0-workers"
 main = "src/index.ts"
 compatibility_date = "2022-11-11"
 
+[[queues.producers]]
+  queue = "q0-u0-vc"
+  binding = "Q0_U0_VC"
+
+[[queues.consumers]]
+  queue = "q0-u0-vc"
+  max_batch_size = 100
+  max_batch_timeout = 30
+
+[[r2_buckets]]
+  bucket_name = "u0-vc"
+  preview_bucket_name = "preview-u0-vc"
+  binding = "R2_U0_VC"
+
 # this has to be commented out due to wrangler pages dev not supporting
 # durable object bindings.
 # uncomment this whenever working with Durable Objects is needed
-# [durable_objects]
-# bindings = [
-#   { name = "DO_SESSION", class_name = "DOSession" },
-#   { name = "DO_USER", class_name = "DOUser" },
-# ]
+[durable_objects]
+bindings = [
+  { name = "DO_SESSION", class_name = "DOSession" },
+  { name = "DO_USER", class_name = "DOUser" },
+]
 
 [[migrations]]
 tag = "v1"
