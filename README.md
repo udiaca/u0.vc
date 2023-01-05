@@ -85,7 +85,7 @@ https://developers.cloudflare.com/r2/examples/rclone/
 
 ```bash
 rclone tree r2:u0-vc
-rclone sync --progress --exclude .DS_Store r2.u0.vc r2:u0-vc
+rclone sync --progress --exclude .DS_Store --exclude redacted.sqlite3 r2.u0.vc r2:u0-vc
 ```
 
 # License
