@@ -27,8 +27,12 @@ export async function get({ request, params }) {
   // }
 
   let redirectTo = null
+  console.log(`==== path ${path}`)
+  const forceRedirectEn = ['', 'all', 'identity', 'author']
   if (path === '/') {
     redirectTo = '/en'
+  } else if (forceRedirectEn.indexOf(path) >= 0) {
+    redirectTo = `/en/${path}`
   }
 
   const reqUrl = new URL(request.url)
@@ -36,7 +40,8 @@ export async function get({ request, params }) {
     return new Response(null, {
       status: 302,
       headers: {
-        location: reqUrl.origin + redirectTo,
+        // location: reqUrl.origin + redirectTo,
+        location: redirectTo
       },
     })
   }
